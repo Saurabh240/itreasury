@@ -1,4 +1,4 @@
-package com.vitti.treasuryAutomation;
+package com.vitira.treasuryAutomation;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

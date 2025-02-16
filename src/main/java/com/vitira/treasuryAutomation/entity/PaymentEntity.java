@@ -1,4 +1,4 @@
-package com.vitti.treasuryAutomation.entity;
+package com.vitira.treasuryAutomation.entity;
 
 public class PaymentEntity {
     

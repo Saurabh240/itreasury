@@ -1,8 +1,8 @@
-package com.vitti.treasuryAutomation.controller;
+package com.vitira.treasuryAutomation.controller;
 
-import com.vitti.treasuryAutomation.dto.PaymentRequest;
-import com.vitti.treasuryAutomation.dto.PaymentResponse;
-import com.vitti.treasuryAutomation.service.PaymentService;
+import com.vitira.treasuryAutomation.dto.PaymentRequest;
+import com.vitira.treasuryAutomation.dto.PaymentResponse;
+import com.vitira.treasuryAutomation.service.PaymentService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;

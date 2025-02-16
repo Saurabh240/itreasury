@@ -1,10 +1,10 @@
-package com.vitti.treasuryAutomation.service;
+package com.vitira.treasuryAutomation.service;
 
-import com.vitti.treasuryAutomation.dto.PaymentRequest;
-import com.vitti.treasuryAutomation.dto.PaymentResponse;
-import com.vitti.treasuryAutomation.entity.PaymentEntity;
-import com.vitti.treasuryAutomation.repository.PaymentRepository;
-// import com.vitti.treasuryAutomation.exception.PaymentNotFoundException;
+import com.vitira.treasuryAutomation.dto.PaymentRequest;
+import com.vitira.treasuryAutomation.dto.PaymentResponse;
+import com.vitira.treasuryAutomation.entity.PaymentEntity;
+import com.vitira.treasuryAutomation.repository.PaymentRepository;
+// import com.vitira.treasuryAutomation.exception.PaymentNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

@@ -1,7 +1,7 @@
-package com.vitti.treasuryAutomation.repository;
+package com.vitira.treasuryAutomation.repository;
 
-import com.vitti.treasuryAutomation.entity.PaymentEntity;
-import com.vitti.treasuryAutomation.dto.PaymentRequest;
+import com.vitira.treasuryAutomation.entity.PaymentEntity;
+import com.vitira.treasuryAutomation.dto.PaymentRequest;
 import org.springframework.stereotype.Repository;
 
 @Repository

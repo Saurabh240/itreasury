@@ -1,0 +1,33 @@
+package com.vitira.treasuryAutomation.config;
+
+import java.net.URI;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+
+import org.apache.olingo.odata2.api.ODataService;
+import org.apache.olingo.odata2.api.ODataServiceFactory;
+import org.apache.olingo.odata2.api.ep.EntityProvider;
+import org.apache.olingo.odata2.api.ep.EntityProviderWriteProperties;
+import org.apache.olingo.odata2.api.uri.URISyntaxException;
+import org.apache.olingo.odata2.core.ep.AtomEntityProvider;
+
+@Configuration
+public class ODataConfig {
+
+    private final String BASE_ERP_ODATA_URL = "https://your-erp-system.com/odata.svc";
+
+    @Bean
+    public ODataService oDataService() {
+        return ODataServiceFactory.create();
+    }
+
+    @Bean
+    public EntityProvider entityProvider() {
+        return new AtomEntityProvider();
+    }
+
+    @Bean
+    public EntityProviderWriteProperties entityProviderWriteProperties() throws URISyntaxException {
+        return EntityProviderWriteProperties.serviceRoot(new URI(BASE_ERP_ODATA_URL)).build();
+    }
+}

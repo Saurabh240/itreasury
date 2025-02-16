@@ -1,4 +1,4 @@
-package com.vitti.treasuryAutomation.dto;
+package com.vitira.treasuryAutomation.dto;
 
 public class PaymentResponse {
     

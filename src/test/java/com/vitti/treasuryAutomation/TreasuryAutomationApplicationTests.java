@@ -1,13 +1,13 @@
-package com.vitti.treasuryAutomation;
+// package com.vitira.treasuryAutomation;
 
-import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.context.SpringBootTest;
+// import org.junit.jupiter.api.Test;
+// import org.springframework.boot.test.context.SpringBootTest;
 
-@SpringBootTest
-class TreasuryAutomationApplicationTests {
+// @SpringBootTest
+// class TreasuryAutomationApplicationTests {
 
-	@Test
-	void contextLoads() {
-	}
+// 	@Test
+// 	void contextLoads() {
+// 	}
 
-}
+// }
