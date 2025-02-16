@@ -30,6 +30,10 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 
+import org.springframework.stereotype.Component;
+
+import com.vitira.treasuryAutomation.helpers.ODataConverter;
+
 import org.apache.olingo.client.api.ODataClient;
 import org.apache.olingo.client.api.communication.request.cud.ODataDeleteRequest;
 import org.apache.olingo.client.api.communication.request.cud.ODataEntityCreateRequest;
@@ -55,6 +59,7 @@ import org.apache.olingo.client.core.ODataClientFactory;
 import org.apache.olingo.commons.api.edm.Edm;
 import org.apache.olingo.commons.api.edm.EdmComplexType;
 import org.apache.olingo.commons.api.edm.EdmEntityType;
+import org.apache.olingo.commons.api.edm.EdmPrimitiveTypeKind;
 import org.apache.olingo.commons.api.edm.EdmProperty;
 import org.apache.olingo.commons.api.edm.EdmSchema;
 import org.apache.olingo.commons.api.edm.FullQualifiedName;
@@ -64,15 +69,122 @@ import org.apache.olingo.commons.api.format.ContentType;
 /**
  *
  */
+@Component
 public class ERPClientApp {
   private ODataClient client;
-  private final String BASE_ERP_ODATA_URL = "http://localhost:8080/odata4/odata4.svc"; 
+  private Edm edm;
+  private final String BASE_ERP_ODATA_URL = "http://localhost:8080/odata-server-30/cars.svc"; 
   
   public ERPClientApp() {
-    client = ODataClientFactory.getClient();
+	  
+    this.client = ODataClientFactory.getClient();
+    try {
+		this.edm = readEdm(BASE_ERP_ODATA_URL);
+	} catch (IOException e) {
+		System.out.println("ERROR: odata server connection failure. Please check if odata-server is running.");
+		e.printStackTrace();
+	}
   }
 
-  void perform() throws Exception {
+  public String readEntities(String entityName) {
+    ClientEntitySetIterator<ClientEntitySet, ClientEntity> iterator = readEntities(edm, BASE_ERP_ODATA_URL, entityName);
+    
+    String jsonString = "";
+    try {
+    	ODataConverter<String> odataConverter = new ODataConverter<>(String.class);
+		jsonString = odataConverter.clientEntitySetIteratorToJson(iterator);
+	} catch (Exception e) {
+		e.printStackTrace();
+	}
+        
+    return jsonString;
+  }
+  
+
+  public List<ClientEntity> getEntities(String entityName) {
+    ClientEntitySetIterator<ClientEntitySet, ClientEntity> iterator = readEntities(edm, BASE_ERP_ODATA_URL, entityName);
+    
+    List<ClientEntity> result = new ArrayList<>();
+    while (iterator.hasNext()) {
+        ClientEntity clientEntity = iterator.next();
+        result.add(clientEntity);
+    }
+        
+    return result;
+  }
+
+  public ClientEntity readEntity(String entityName, Long id) {
+	  return readEntityWithKey(edm, BASE_ERP_ODATA_URL, entityName, id);
+  }
+
+  private static String toJson(Collection<ClientProperty> properties, int level) {
+    StringBuilder b = new StringBuilder();
+
+    int count = 0;
+    for (ClientProperty entry : properties) {
+      intend(b, level);
+      ClientValue value = entry.getValue();
+      if (value.isCollection()) {
+        ClientCollectionValue cclvalue = value.asCollection();
+        b.append(toJson(cclvalue.asJavaCollection(), level + 1));
+      } else if (value.isComplex()) {
+        ClientComplexValue cpxvalue = value.asComplex();
+        b.append("\"").append(entry.getName()).append("\":").append(toJson(cpxvalue.asJavaMap(), level + 1));
+      } else if (value.isEnum()) {
+        ClientEnumValue cnmvalue = value.asEnum();
+        b.append(entry.getName()).append(": ");
+        b.append(cnmvalue.getValue()).append("\n");
+      } else if (value.isPrimitive()) {
+        b.append("\"").append(entry.getName()).append("\"").append(": ");
+        if(count != 0)
+        	b.append(",\n");
+        if(value.asPrimitive().getTypeKind().equals(EdmPrimitiveTypeKind.String)) {
+        	b.append("\"").append(value).append("\"");
+        }
+        else b.append(value);
+      }
+      ++count;
+    }
+    return b.toString();
+  }
+  
+  private static String toJson(Map<String, Object> properties, int level) {
+    StringBuilder b = new StringBuilder();
+    Set<Entry<String, Object>> entries = properties.entrySet();
+    
+    int count = 0;
+    b.append("{\n");
+    for (Entry<String, Object> entry : entries) {
+      intend(b, level);
+      
+
+      
+      if(count == 0)
+    	  b.append("\"").append(entry.getKey()).append("\"").append(": ");
+      else
+    	  b.append(",\"").append(entry.getKey()).append("\"").append(": ");
+    	  
+      Object value = entry.getValue();
+      if(value instanceof Map) {
+        value = toJson((Map<String, Object>) value, level+1);
+      } else if(value instanceof Calendar) {
+        Calendar cal = (Calendar) value;
+        value = SimpleDateFormat.getInstance().format(cal.getTime());
+      } else if(value instanceof String) {
+    	  value = "\"%s\"".formatted(value);
+      }
+      b.append(value);
+      
+      ++count;
+    }
+    b.append("},\n");
+    
+    // remove last line break
+    b.deleteCharAt(b.length()-1);
+    return b.toString();
+  }
+
+  private void perform() throws Exception {
     String serviceUrl = this.BASE_ERP_ODATA_URL;
 
     print("\n----- Read Edm ------------------------------");
@@ -99,8 +211,7 @@ public class ERPClientApp {
     }
     
     print("\n----- Read Entities ------------------------------");
-    ClientEntitySetIterator<ClientEntitySet, ClientEntity> iterator = 
-      readEntities(edm, serviceUrl, "Manufacturers");
+    ClientEntitySetIterator<ClientEntitySet, ClientEntity> iterator = readEntities(edm, serviceUrl, "Manufacturers");
 
     while (iterator.hasNext()) {
       ClientEntity ce = iterator.next();
@@ -240,13 +351,13 @@ public class ERPClientApp {
     return response.getBody();
   }
 
-  public ClientEntity readEntityWithKey(Edm edm, String serviceUri, String entitySetName, Object keyValue) {
+  private ClientEntity readEntityWithKey(Edm edm, String serviceUri, String entitySetName, Object keyValue) {
     URI absoluteUri = client.newURIBuilder(serviceUri).appendEntitySetSegment(entitySetName)
       .appendKeySegment(keyValue).build();
     return readEntity(edm, absoluteUri);
   }
 
-  public ClientEntity readEntityWithKeyExpand(Edm edm, String serviceUri, String entitySetName, Object keyValue,
+  private ClientEntity readEntityWithKeyExpand(Edm edm, String serviceUri, String entitySetName, Object keyValue,
     String expandRelationName) {
     URI absoluteUri = client.newURIBuilder(serviceUri).appendEntitySetSegment(entitySetName).appendKeySegment(keyValue)
       .expand(expandRelationName).build();
@@ -266,7 +377,7 @@ public class ERPClientApp {
     return client.getBinder().getODataEntity(client.getDeserializer(ContentType.APPLICATION_JSON).toEntity(input));
   }
 
-  public ClientEntity createEntity(Edm edm, String serviceUri, String entitySetName, ClientEntity ce) {
+  private ClientEntity createEntity(Edm edm, String serviceUri, String entitySetName, ClientEntity ce) {
     URI absoluteUri = client.newURIBuilder(serviceUri).appendEntitySetSegment(entitySetName).build();
     return createEntity(edm, absoluteUri, ce);
   }
@@ -280,7 +391,7 @@ public class ERPClientApp {
     return response.getBody();
   }
 
-  public int updateEntity(Edm edm, String serviceUri, String entityName, Object keyValue, ClientEntity ce) {
+  private int updateEntity(Edm edm, String serviceUri, String entityName, Object keyValue, ClientEntity ce) {
     URI absoluteUri = client.newURIBuilder(serviceUri).appendEntitySetSegment(entityName)
       .appendKeySegment(keyValue).build();
     ODataEntityUpdateRequest<ClientEntity> request = 
@@ -290,7 +401,7 @@ public class ERPClientApp {
     return response.getStatusCode();
   }
 
-  public int deleteEntity(String serviceUri, String entityName, Object keyValue) throws IOException {
+  private int deleteEntity(String serviceUri, String entityName, Object keyValue) throws IOException {
     URI absoluteUri = client.newURIBuilder(serviceUri).appendEntitySetSegment(entityName)
       .appendKeySegment(keyValue).build();
     ODataDeleteRequest request = client.getCUDRequestFactory().getDeleteRequest(absoluteUri);

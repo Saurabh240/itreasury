@@ -24,7 +24,7 @@ public class PaymentController {
         PaymentRequest internalPaymentRequest = new PaymentRequest();
         internalPaymentRequest.setPaymentId(id);
 
-        //Now pass this internal request object to the service layer for processing
+        // Now pass this internal request object to the service layer for processing
         PaymentResponse paymentResponse = paymentService.getPaymentDetailsById(internalPaymentRequest);
 
         return ResponseEntity.ok(paymentResponse);
