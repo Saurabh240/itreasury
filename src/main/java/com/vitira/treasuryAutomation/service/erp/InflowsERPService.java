@@ -8,9 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.vitira.treasuryAutomation.dto.InflowsRequest;
 import com.vitira.treasuryAutomation.dto.InflowsResponse;
-import com.vitira.treasuryAutomation.dto.PaymentResponse;
 import com.vitira.treasuryAutomation.entity.InflowsEntity;
-import com.vitira.treasuryAutomation.entity.PaymentEntity;
 import com.vitira.treasuryAutomation.helpers.ODataConverter;
 
 @Service
@@ -22,9 +20,9 @@ public class InflowsERPService extends ERPService {
         
         List<InflowsResponse> result = new ArrayList<>();
         for(ClientEntity ce : entities) {
-        	ODataConverter<InflowsEntity> pojoConverter = new ODataConverter<>(InflowsEntity.class);
+        	ODataConverter<InflowsEntity> odataConverter = new ODataConverter<>(InflowsEntity.class);
         	try {
-				InflowsEntity entity = pojoConverter.clientEntityToPojo(ce);
+				InflowsEntity entity = odataConverter.clientEntityToPojo(ce);
 				InflowsResponse response = mapModelToDto(entity);
 				result.add(response);
 			} catch (Exception e) {

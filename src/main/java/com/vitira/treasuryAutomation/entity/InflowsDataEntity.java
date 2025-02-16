@@ -10,6 +10,11 @@ public class InflowsDataEntity {
     private double others;
     private double totalInflows;
     
+    // Note: Default constructor for deserization working correctly
+    public InflowsDataEntity() {
+    	
+    }
+    
     public InflowsDataEntity(double localCollections, double exportSales, double taxRefunds, double interestReceipts,
 			double loanAvailed, double others) {
 		super();

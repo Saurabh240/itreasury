@@ -8,18 +8,13 @@ import org.apache.olingo.client.api.domain.ClientEntity;
 import org.apache.olingo.client.api.domain.ClientEntitySet;
 import org.apache.olingo.client.api.domain.ClientEntitySetIterator;
 import org.apache.olingo.client.api.domain.ClientProperty;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.DependsOn;
-import org.springframework.stereotype.Component;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
-@Component
-@DependsOn("objectMapper")
 public class ODataConverter<T> {
 
-	@Autowired
     private ObjectMapper objectMapper;
 	
 	
@@ -27,6 +22,10 @@ public class ODataConverter<T> {
 
     public ODataConverter(Class<T> clazz) {
         this.clazz = clazz;
+        
+        // TODO: Currently we are facing issues to @AutoWired ObjectMapper from JacksonConfig class(Global init)
+        this.objectMapper = new ObjectMapper();
+        this.objectMapper.registerModule(new JavaTimeModule());
     }
 
     public T clientEntityToPojo(ClientEntity clientEntity) throws Exception {
