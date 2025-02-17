@@ -19,7 +19,7 @@ public class PaymentController {
     PaymentService paymentService;
 
     @GetMapping("/{id}")
-    public ResponseEntity<PaymentResponse> getPaymentById(@PathVariable Long id) {
+    public ResponseEntity<PaymentResponse> getPaymentById(@PathVariable("id") Long id) {
         // First map the incoming request data to an internal Payment request DTO object
         PaymentRequest internalPaymentRequest = new PaymentRequest();
         internalPaymentRequest.setPaymentId(id);
