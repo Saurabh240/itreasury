@@ -36,9 +36,9 @@ public class InflowsERPService extends ERPService {
 	public InflowsResponse getInflowsById(InflowsRequest req) {
         ClientEntity ce = erpClientApp.readEntity(ES_INFLOWS_NAME, req.getId());
         InflowsResponse result = null;
-    	ODataConverter<InflowsEntity> pojoConverter = new ODataConverter<>(InflowsEntity.class);
+    	ODataConverter<InflowsEntity> odataConverter = new ODataConverter<>(InflowsEntity.class);
     	try {
-			InflowsEntity entity = pojoConverter.clientEntityToPojo(ce);
+			InflowsEntity entity = odataConverter.clientEntityToPojo(ce);
 			result = mapModelToDto(entity);
 		} catch (Exception e) {
 			e.printStackTrace();

@@ -26,8 +26,10 @@ dependencies {
 	// Used for serializing and deserializing the LocalDateTime objects
 	implementation group: 'com.fasterxml.jackson.datatype', name: 'jackson-datatype-jsr310', version: '2.18.2'
 
-	implementation group: 'org.apache.olingo', name: 'olingo-odata2-core', version: '2.0.13'
-	implementation group: 'org.apache.olingo', name: 'odata-client-core', version: '5.0.0'
+	//implementation group: 'org.apache.olingo', name: 'olingo-odata2-core', version: '2.0.13'
+	implementation('org.apache.olingo:odata-client-core:5.0.0') {
+        exclude group: 'commons-logging', module: 'commons-logging'
+    }
 
 
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'

@@ -1,32 +1,38 @@
 package com.vitira.treasuryAutomation.dto;
 
+import java.time.LocalDate;
+
+import com.vitira.treasuryAutomation.entity.OutflowsDataEntity;
+
 
 public class OutflowsRequest {
-	private Long paymentId;
-    private Double amount;
-    private String currency;
-
-    public Long getPaymentId() {
-        return paymentId;
+	private Long id;
+    private LocalDate date;
+    private OutflowsDataEntity outflowsData;
+    
+ // Getters and Setters
+    public Long getId() {
+        return id;
     }
 
-    public void setPaymentId(Long paymentId) {
-        this.paymentId = paymentId;
+    public void setId(Long id) {
+        this.id = id;
     }
 
-    public Double getAmount() {
-        return amount;
+    public LocalDate getDate() {
+        return date;
     }
 
-    public void setAmount(Double amount) {
-        this.amount = amount;
+    public void setDate(LocalDate date) {
+        this.date = date;
     }
 
-    public String getCurrency() {
-        return currency;
+    public OutflowsDataEntity getOutflowsData() {
+        return outflowsData;
     }
 
-    public void setCurrency(String currency) {
-        this.currency = currency;
+    public void setOutflowsData(OutflowsDataEntity outflowsData) {
+        this.outflowsData = outflowsData;
     }
+    
 }
