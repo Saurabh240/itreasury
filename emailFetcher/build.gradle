@@ -1,0 +1,12 @@
+plugins {
+    id 'buildlogic.java-library-conventions'
+}
+
+dependencies {
+    // api project(':list')
+    implementation group: 'org.jsoup', name: 'jsoup', version: '1.18.3'
+    
+    // https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-mail
+	implementation group: 'org.springframework.boot', name: 'spring-boot-starter-mail', version: '3.4.3'
+    
+}

@@ -1,1 +1,2 @@
 rootProject.name = 'treasuryAutomation'
+include('emailFetcher')
