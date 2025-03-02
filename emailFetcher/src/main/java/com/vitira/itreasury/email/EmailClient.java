@@ -1,4 +1,4 @@
-package com.lpsoftware.emailFetcher.email;
+package com.vitira.itreasury.email;
 
 import java.util.Date;
 import java.util.List;
@@ -7,8 +7,8 @@ import java.io.IOException;
 
 import javax.mail.MessagingException;
 
-import com.lpsoftware.emailFetcher.config.ConfigurationManager;
-import com.lpsoftware.emailFetcher.model.Email;
+import com.vitira.itreasury.config.ConfigurationManager;
+import com.vitira.itreasury.model.Email;
 
 public class EmailClient {
     private final EmailFetcher fetcher;

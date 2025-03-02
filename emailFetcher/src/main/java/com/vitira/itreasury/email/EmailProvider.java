@@ -1,4 +1,4 @@
-package com.lpsoftware.emailFetcher.email;
+package com.vitira.itreasury.email;
 
 public enum EmailProvider {
     GMAIL,

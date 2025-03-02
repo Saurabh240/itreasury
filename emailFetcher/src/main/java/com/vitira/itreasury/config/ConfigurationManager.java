@@ -1,4 +1,4 @@
-package com.lpsoftware.emailFetcher.config;
+package com.vitira.itreasury.config;
 
 import java.io.IOException;
 import java.util.Properties;

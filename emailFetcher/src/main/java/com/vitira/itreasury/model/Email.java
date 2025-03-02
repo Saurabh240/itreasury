@@ -1,4 +1,4 @@
-package com.lpsoftware.emailFetcher.model;
+package com.vitira.itreasury.model;
 
 import java.util.Date;
 import java.util.List;

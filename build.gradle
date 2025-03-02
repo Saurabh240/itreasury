@@ -13,6 +13,18 @@ java {
 	}
 }
 
+allprojects {
+    ext {
+        springDatasourceUrl = 'jdbc:postgresql://localhost:5432/postgres'
+        springDatasourceUsername = 'postgres'
+        springDatasourcePassword = 'postgres'
+        springDatasourceDriverClassName = 'org.postgresql.Driver'
+        springJpaHibernateDdlAuto = 'update'
+        springJpaShowSql = true
+        springJpaHibernateDialect = 'org.hibernate.dialect.PostgreSQLDialect' 
+    }
+}
+
 repositories {
 	mavenCentral()
 }
@@ -26,24 +38,40 @@ dependencies {
 	// Used for serializing and deserializing the LocalDateTime objects
 	implementation group: 'com.fasterxml.jackson.datatype', name: 'jackson-datatype-jsr310', version: '2.18.2'
 
-	//implementation group: 'org.apache.olingo', name: 'olingo-odata2-core', version: '2.0.13'
 	implementation('org.apache.olingo:odata-client-core:5.0.0') {
         exclude group: 'commons-logging', module: 'commons-logging'
     }
-
-	implementation group: 'com.prowidesoftware', name: 'pw-swift-core', version: 'SRU2024-10.2.5'
 
 
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 	
 	configurations.all {
-    	exclude group: 'org.springframework.boot', module: 'spring-boot-starter-logging'
-	}
+    	exclude group: 'org.springframework.boot', module: 'spring-boot-starter-logging'	}
 	
+
 	implementation project(':emailFetcher')
+	implementation project(':swiftParser')
 }
 
 tasks.named('test') {
 	useJUnitPlatform()
+}
+
+subprojects {
+    apply plugin: 'java'
+    apply plugin: 'io.spring.dependency-management'
+
+    group = 'com.vitira'
+	version = '0.0.1-SNAPSHOT'
+
+    repositories {
+        mavenCentral()
+    }
+
+    dependencyManagement {
+        imports {
+            mavenBom "org.springframework.boot:spring-boot-dependencies:3.4.3"
+        }
+    }
 }

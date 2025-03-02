@@ -1,4 +1,4 @@
-package com.lpsoftware.emailFetcher.email;
+package com.vitira.itreasury.email;
 
 import java.util.Properties;
 
@@ -7,7 +7,7 @@ import javax.mail.MessagingException;
 import javax.mail.PasswordAuthentication;
 import javax.mail.Session;
 
-import com.lpsoftware.emailFetcher.config.ConfigurationManager;
+import com.vitira.itreasury.config.ConfigurationManager;
 
 public class OutlookFetcher extends AbstractEmailFetcher {
 
