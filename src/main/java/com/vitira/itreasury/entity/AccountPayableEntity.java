@@ -1,33 +1,33 @@
 package com.vitira.itreasury.entity;
 
 public class AccountPayableEntity {
-    
-    private Long paymentId;
-    private Double amount;
-    private String currency;
 
-    public Long getPaymentId() {
-        return paymentId;
-    }
+	private Long paymentId;
+	private Double amount;
+	private String currency;
 
-    public void setPaymentId(Long paymentId) {
-        this.paymentId = paymentId;
-    }
+	public Long getPaymentId() {
+		return paymentId;
+	}
 
-    public Double getAmount() {
-        return amount;
-    }
+	public void setPaymentId(Long paymentId) {
+		this.paymentId = paymentId;
+	}
 
-    public void setAmount(Double amount) {
-        this.amount = amount;
-    }
+	public Double getAmount() {
+		return amount;
+	}
 
-    public String getCurrency() {
-        return currency;
-    }
+	public void setAmount(Double amount) {
+		this.amount = amount;
+	}
 
-    public void setCurrency(String currency) {
-        this.currency = currency;
-    }
-    
+	public String getCurrency() {
+		return currency;
+	}
+
+	public void setCurrency(String currency) {
+		this.currency = currency;
+	}
+
 }

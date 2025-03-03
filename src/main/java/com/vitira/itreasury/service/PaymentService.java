@@ -10,29 +10,29 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class PaymentService {
-    
-    @Autowired
-    private PaymentRepository paymentRepository;
 
-    public PaymentResponse getPaymentDetailsById(PaymentRequest internalPaymentObj) {
-        
-        // PaymentEntity payment = paymentRepository.findPaymentById(internalPaymentObj.getPaymentId()).orElseThrow(() -> new PaymentNotFoundException("Payment not found"));
-        PaymentEntity payment = paymentRepository.findPaymentById(internalPaymentObj);
-        
-        // Now map it to PaymentResponse DTO
-        PaymentResponse paymentResponse = mapModelToDto(payment);
+	@Autowired
+	private PaymentRepository paymentRepository;
 
-        return paymentResponse;
-    }
-    
-    private PaymentResponse mapModelToDto(PaymentEntity payment) {
-    	
-    	PaymentResponse paymentResponse = new PaymentResponse(
-    			payment.getPaymentId(), 
-    			payment.getAmount(), 
-    			payment.getCurrency());
-    	
-    	return paymentResponse;
-    }
+	public PaymentResponse getPaymentDetailsById(PaymentRequest internalPaymentObj) {
+
+		// PaymentEntity payment =
+		// paymentRepository.findPaymentById(internalPaymentObj.getPaymentId()).orElseThrow(()
+		// -> new PaymentNotFoundException("Payment not found"));
+		PaymentEntity payment = paymentRepository.findPaymentById(internalPaymentObj);
+
+		// Now map it to PaymentResponse DTO
+		PaymentResponse paymentResponse = mapModelToDto(payment);
+
+		return paymentResponse;
+	}
+
+	private PaymentResponse mapModelToDto(PaymentEntity payment) {
+
+		PaymentResponse paymentResponse = new PaymentResponse(payment.getPaymentId(), payment.getAmount(),
+				payment.getCurrency());
+
+		return paymentResponse;
+	}
 
 }

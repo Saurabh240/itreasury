@@ -9,59 +9,59 @@ import jakarta.persistence.Lob;
 @Entity
 public class SwiftMessage {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
 
-    private String referenceNumber;
-    private String sender;
-    private String receiver;
-    
-    @Lob
-    private String messageContent;
+	private String referenceNumber;
+	private String sender;
+	private String receiver;
 
-    // Default constructor
-    public SwiftMessage() {
-    }
+	@Lob
+	private String messageContent;
 
-    // Getters and Setters
-    public Long getId() {
-        return id;
-    }
+	// Default constructor
+	public SwiftMessage() {
+	}
 
-    public void setId(Long id) {
-        this.id = id;
-    }
+	// Getters and Setters
+	public Long getId() {
+		return id;
+	}
 
-    public String getReferenceNumber() {
-        return referenceNumber;
-    }
+	public void setId(Long id) {
+		this.id = id;
+	}
 
-    public void setReferenceNumber(String referenceNumber) {
-        this.referenceNumber = referenceNumber;
-    }
+	public String getReferenceNumber() {
+		return referenceNumber;
+	}
 
-    public String getSender() {
-        return sender;
-    }
+	public void setReferenceNumber(String referenceNumber) {
+		this.referenceNumber = referenceNumber;
+	}
 
-    public void setSender(String sender) {
-        this.sender = sender;
-    }
+	public String getSender() {
+		return sender;
+	}
 
-    public String getReceiver() {
-        return receiver;
-    }
+	public void setSender(String sender) {
+		this.sender = sender;
+	}
 
-    public void setReceiver(String receiver) {
-        this.receiver = receiver;
-    }
+	public String getReceiver() {
+		return receiver;
+	}
 
-    public String getMessageContent() {
-        return messageContent;
-    }
+	public void setReceiver(String receiver) {
+		this.receiver = receiver;
+	}
 
-    public void setMessageContent(String messageContent) {
-        this.messageContent = messageContent;
-    }
+	public String getMessageContent() {
+		return messageContent;
+	}
+
+	public void setMessageContent(String messageContent) {
+		this.messageContent = messageContent;
+	}
 }

@@ -65,283 +65,283 @@ import org.apache.olingo.commons.api.edm.EdmSchema;
 import org.apache.olingo.commons.api.edm.FullQualifiedName;
 import org.apache.olingo.commons.api.format.ContentType;
 
-
 /**
  *
  */
 @Component
 public class ERPClientApp {
-  private ODataClient client;
-  private Edm edm;
-  private final String BASE_ERP_ODATA_URL = "http://localhost:8080/odata-server-30/cars.svc"; 
-  
-  public ERPClientApp() {
-	  
-    this.client = ODataClientFactory.getClient();
-    // TODO: Once odata-server is running correctly then uncomment below lines
+	private ODataClient client;
+	private Edm edm;
+	private final String BASE_ERP_ODATA_URL = "http://localhost:8080/odata-server-30/cars.svc";
+
+	public ERPClientApp() {
+
+		this.client = ODataClientFactory.getClient();
+		// TODO: Once odata-server is running correctly then uncomment below lines
 //    try {
 //		this.edm = readEdm(BASE_ERP_ODATA_URL);
 //	} catch (IOException | BeanCreationException e) {
 //		System.out.println("ERROR: odata server connection failure. Please check if odata-server is running.");
 //		e.printStackTrace();
 //	}
-  }
-
-  public String readEntities(String entityName) {
-    ClientEntitySetIterator<ClientEntitySet, ClientEntity> iterator = readEntities(edm, BASE_ERP_ODATA_URL, entityName);
-    
-    String jsonString = "";
-    try {
-    	ODataConverter<String> odataConverter = new ODataConverter<>(String.class);
-		jsonString = odataConverter.clientEntitySetIteratorToJson(iterator);
-	} catch (Exception e) {
-		e.printStackTrace();
 	}
-        
-    return jsonString;
-  }
-  
 
-  public List<ClientEntity> getEntities(String entityName) {
-    ClientEntitySetIterator<ClientEntitySet, ClientEntity> iterator = readEntities(edm, BASE_ERP_ODATA_URL, entityName);
-    
-    List<ClientEntity> result = new ArrayList<>();
-    while (iterator.hasNext()) {
-        ClientEntity clientEntity = iterator.next();
-        result.add(clientEntity);
-    }
-        
-    return result;
-  }
+	public String readEntities(String entityName) {
+		ClientEntitySetIterator<ClientEntitySet, ClientEntity> iterator = readEntities(edm, BASE_ERP_ODATA_URL,
+				entityName);
 
-  public ClientEntity readEntity(String entityName, Long id) {
-	  return readEntityWithKey(edm, BASE_ERP_ODATA_URL, entityName, id);
-  }
+		String jsonString = "";
+		try {
+			ODataConverter<String> odataConverter = new ODataConverter<>(String.class);
+			jsonString = odataConverter.clientEntitySetIteratorToJson(iterator);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 
+		return jsonString;
+	}
 
-  private void perform() throws Exception {
-    String serviceUrl = this.BASE_ERP_ODATA_URL;
+	public List<ClientEntity> getEntities(String entityName) {
+		ClientEntitySetIterator<ClientEntitySet, ClientEntity> iterator = readEntities(edm, BASE_ERP_ODATA_URL,
+				entityName);
 
-    print("\n----- Read Edm ------------------------------");
-    Edm edm = readEdm(serviceUrl);
-    List<FullQualifiedName> ctFqns = new ArrayList<>();
-    List<FullQualifiedName> etFqns = new ArrayList<>();
-    for (EdmSchema schema : edm.getSchemas()) {
-      for (EdmComplexType complexType : schema.getComplexTypes()) {
-        ctFqns.add(complexType.getFullQualifiedName());
-      }
-      for (EdmEntityType entityType : schema.getEntityTypes()) {
-        etFqns.add(entityType.getFullQualifiedName());
-      }
-    }
-    print("Found ComplexTypes", ctFqns);
-    print("Found EntityTypes", etFqns);
+		List<ClientEntity> result = new ArrayList<>();
+		while (iterator.hasNext()) {
+			ClientEntity clientEntity = iterator.next();
+			result.add(clientEntity);
+		}
 
-    print("\n----- Inspect each property and its type of the first entity: " + etFqns.get(0) + "----");
-    EdmEntityType etype = edm.getEntityType(etFqns.get(0));
-    for (String propertyName : etype.getPropertyNames()) {
-      EdmProperty property = etype.getStructuralProperty(propertyName);
-      FullQualifiedName typeName = property.getType().getFullQualifiedName();
-      print("property '" + propertyName + "' " + typeName);
-    }
-    
-    print("\n----- Read Entities ------------------------------");
-    ClientEntitySetIterator<ClientEntitySet, ClientEntity> iterator = readEntities(edm, serviceUrl, "Manufacturers");
+		return result;
+	}
 
-    while (iterator.hasNext()) {
-      ClientEntity ce = iterator.next();
-      print("Entry:\n" + prettyPrint(ce.getProperties(), 0));
-    }
+	public ClientEntity readEntity(String entityName, Long id) {
+		return readEntityWithKey(edm, BASE_ERP_ODATA_URL, entityName, id);
+	}
 
-    print("\n----- Read Entry ------------------------------");
-    ClientEntity entry = readEntityWithKey(edm, serviceUrl, "Manufacturers", 1);
-    print("Single Entry:\n" + prettyPrint(entry.getProperties(), 0));
+	private void perform() throws Exception {
+		String serviceUrl = this.BASE_ERP_ODATA_URL;
 
-    //
-    print("\n----- Read Entity with $expand  ------------------------------");
-    entry = readEntityWithKeyExpand(edm, serviceUrl, "Manufacturers", 1, "Cars");
-    print("Single Entry with expanded Cars relation:\n" + prettyPrint(entry.getProperties(), 0));
+		print("\n----- Read Edm ------------------------------");
+		Edm edm = readEdm(serviceUrl);
+		List<FullQualifiedName> ctFqns = new ArrayList<>();
+		List<FullQualifiedName> etFqns = new ArrayList<>();
+		for (EdmSchema schema : edm.getSchemas()) {
+			for (EdmComplexType complexType : schema.getComplexTypes()) {
+				ctFqns.add(complexType.getFullQualifiedName());
+			}
+			for (EdmEntityType entityType : schema.getEntityTypes()) {
+				etFqns.add(entityType.getFullQualifiedName());
+			}
+		}
+		print("Found ComplexTypes", ctFqns);
+		print("Found EntityTypes", etFqns);
 
-    //
-    print("\n----- Read Entities with $filter  ------------------------------");
-    iterator = readEntitiesWithFilter(edm, serviceUrl, "Manufacturers", "Name eq 'Horse Powered Racing'");
-    while (iterator.hasNext()) {
-      ClientEntity ce = iterator.next();
-      print("Entry:\n" + prettyPrint(ce.getProperties(), 0));
-    }
+		print("\n----- Inspect each property and its type of the first entity: " + etFqns.get(0) + "----");
+		EdmEntityType etype = edm.getEntityType(etFqns.get(0));
+		for (String propertyName : etype.getPropertyNames()) {
+			EdmProperty property = etype.getStructuralProperty(propertyName);
+			FullQualifiedName typeName = property.getType().getFullQualifiedName();
+			print("property '" + propertyName + "' " + typeName);
+		}
 
-    // skip everything as odata4 sample/server only supporting retrieval
-    print("\n----- Create Entry ------------------------------");
-    ClientEntity ce = loadEntity("/mymanufacturer.json");
-    entry = createEntity(edm, serviceUrl, "Manufacturers", ce);
+		print("\n----- Read Entities ------------------------------");
+		ClientEntitySetIterator<ClientEntitySet, ClientEntity> iterator = readEntities(edm, serviceUrl,
+				"Manufacturers");
 
-    print("\n----- Update Entry ------------------------------");
-    ce = loadEntity("/mymanufacturer2.json");
-    int sc = updateEntity(edm, serviceUrl, "Manufacturers", 123, ce);
-    print("Updated successfully: " + sc);
-    entry = readEntityWithKey(edm, serviceUrl, "Manufacturers", 123);
-    print("Updated Entry successfully: " + prettyPrint(entry.getProperties(), 0));
+		while (iterator.hasNext()) {
+			ClientEntity ce = iterator.next();
+			print("Entry:\n" + prettyPrint(ce.getProperties(), 0));
+		}
 
+		print("\n----- Read Entry ------------------------------");
+		ClientEntity entry = readEntityWithKey(edm, serviceUrl, "Manufacturers", 1);
+		print("Single Entry:\n" + prettyPrint(entry.getProperties(), 0));
 
-    print("\n----- Delete Entry ------------------------------");
-    sc = deleteEntity(serviceUrl, "Manufacturers", 123);
-    print("Deletion of Entry was successfully: " + sc);
+		//
+		print("\n----- Read Entity with $expand  ------------------------------");
+		entry = readEntityWithKeyExpand(edm, serviceUrl, "Manufacturers", 1, "Cars");
+		print("Single Entry with expanded Cars relation:\n" + prettyPrint(entry.getProperties(), 0));
 
-    try {
-      print("\n----- Verify Delete Entry ------------------------------");
-      readEntityWithKey(edm, serviceUrl, "Manufacturers", 123);
-    } catch(Exception e) {
-      print(e.getMessage());
-    }
-  }
+		//
+		print("\n----- Read Entities with $filter  ------------------------------");
+		iterator = readEntitiesWithFilter(edm, serviceUrl, "Manufacturers", "Name eq 'Horse Powered Racing'");
+		while (iterator.hasNext()) {
+			ClientEntity ce = iterator.next();
+			print("Entry:\n" + prettyPrint(ce.getProperties(), 0));
+		}
 
-  private static void print(String content) {
-    System.out.println(content);
-  }
+		// skip everything as odata4 sample/server only supporting retrieval
+		print("\n----- Create Entry ------------------------------");
+		ClientEntity ce = loadEntity("/mymanufacturer.json");
+		entry = createEntity(edm, serviceUrl, "Manufacturers", ce);
 
-  private static void print(String content, List<?> list) {
-    System.out.println(content);
-    for (Object o : list) {
-        System.out.println("    " + o);
-    }
-      System.out.println();
-  }
+		print("\n----- Update Entry ------------------------------");
+		ce = loadEntity("/mymanufacturer2.json");
+		int sc = updateEntity(edm, serviceUrl, "Manufacturers", 123, ce);
+		print("Updated successfully: " + sc);
+		entry = readEntityWithKey(edm, serviceUrl, "Manufacturers", 123);
+		print("Updated Entry successfully: " + prettyPrint(entry.getProperties(), 0));
 
-  private static String prettyPrint(Map<String, Object> properties, int level) {
-    StringBuilder b = new StringBuilder();
-    Set<Entry<String, Object>> entries = properties.entrySet();
+		print("\n----- Delete Entry ------------------------------");
+		sc = deleteEntity(serviceUrl, "Manufacturers", 123);
+		print("Deletion of Entry was successfully: " + sc);
 
-    for (Entry<String, Object> entry : entries) {
-      intend(b, level);
-      b.append(entry.getKey()).append(": ");
-      Object value = entry.getValue();
-      if(value instanceof Map) {
-        value = prettyPrint((Map<String, Object>) value, level+1);
-      } else if(value instanceof Calendar) {
-        Calendar cal = (Calendar) value;
-        value = SimpleDateFormat.getInstance().format(cal.getTime());
-      }
-      b.append(value).append("\n");
-    }
-    // remove last line break
-    b.deleteCharAt(b.length()-1);
-    return b.toString();
-  }
-  
-  private static String prettyPrint(Collection<ClientProperty> properties, int level) {
-    StringBuilder b = new StringBuilder();
+		try {
+			print("\n----- Verify Delete Entry ------------------------------");
+			readEntityWithKey(edm, serviceUrl, "Manufacturers", 123);
+		} catch (Exception e) {
+			print(e.getMessage());
+		}
+	}
 
-    for (ClientProperty entry : properties) {
-      intend(b, level);
-      ClientValue value = entry.getValue();
-      if (value.isCollection()) {
-        ClientCollectionValue cclvalue = value.asCollection();
-        b.append(prettyPrint(cclvalue.asJavaCollection(), level + 1));
-      } else if (value.isComplex()) {
-        ClientComplexValue cpxvalue = value.asComplex();
-        b.append(prettyPrint(cpxvalue.asJavaMap(), level + 1));
-      } else if (value.isEnum()) {
-        ClientEnumValue cnmvalue = value.asEnum();
-        b.append(entry.getName()).append(": ");
-        b.append(cnmvalue.getValue()).append("\n");
-      } else if (value.isPrimitive()) {
-        b.append(entry.getName()).append(": ");
-        b.append(entry.getValue()).append("\n");
-      }
-    }
-    return b.toString();
-  }
+	private static void print(String content) {
+		System.out.println(content);
+	}
 
-  private static void intend(StringBuilder builder, int intendLevel) {
-    for (int i = 0; i < intendLevel; i++) {
-      builder.append("  ");
-    }
-  }
+	private static void print(String content, List<?> list) {
+		System.out.println(content);
+		for (Object o : list) {
+			System.out.println("    " + o);
+		}
+		System.out.println();
+	}
 
-  public Edm readEdm(String serviceUrl) throws IOException {
-    EdmMetadataRequest request = client.getRetrieveRequestFactory().getMetadataRequest(serviceUrl);
-    ODataRetrieveResponse<Edm> response = request.execute();
-    return response.getBody();
-  }
+	private static String prettyPrint(Map<String, Object> properties, int level) {
+		StringBuilder b = new StringBuilder();
+		Set<Entry<String, Object>> entries = properties.entrySet();
 
-  public ClientEntitySetIterator<ClientEntitySet, ClientEntity> readEntities(Edm edm, String serviceUri,
-    String entitySetName) {
-    URI absoluteUri = client.newURIBuilder(serviceUri).appendEntitySetSegment(entitySetName).build();
-    return readEntities(edm, absoluteUri);
-  }
+		for (Entry<String, Object> entry : entries) {
+			intend(b, level);
+			b.append(entry.getKey()).append(": ");
+			Object value = entry.getValue();
+			if (value instanceof Map) {
+				value = prettyPrint((Map<String, Object>) value, level + 1);
+			} else if (value instanceof Calendar) {
+				Calendar cal = (Calendar) value;
+				value = SimpleDateFormat.getInstance().format(cal.getTime());
+			}
+			b.append(value).append("\n");
+		}
+		// remove last line break
+		b.deleteCharAt(b.length() - 1);
+		return b.toString();
+	}
 
-  public ClientEntitySetIterator<ClientEntitySet, ClientEntity> readEntitiesWithFilter(Edm edm, String serviceUri,
-    String entitySetName, String filterName) {
-    URI absoluteUri = client.newURIBuilder(serviceUri).appendEntitySetSegment(entitySetName).filter(filterName).build();
-    return readEntities(edm, absoluteUri);
-  }
+	private static String prettyPrint(Collection<ClientProperty> properties, int level) {
+		StringBuilder b = new StringBuilder();
 
-  private ClientEntitySetIterator<ClientEntitySet, ClientEntity> readEntities(Edm edm, URI absoluteUri) {
-    System.out.println("URI = " + absoluteUri);
-    ODataEntitySetIteratorRequest<ClientEntitySet, ClientEntity> request = 
-      client.getRetrieveRequestFactory().getEntitySetIteratorRequest(absoluteUri);
-    request.setAccept("application/json");
-    ODataRetrieveResponse<ClientEntitySetIterator<ClientEntitySet, ClientEntity>> response = request.execute(); 
-      
-    return response.getBody();
-  }
+		for (ClientProperty entry : properties) {
+			intend(b, level);
+			ClientValue value = entry.getValue();
+			if (value.isCollection()) {
+				ClientCollectionValue cclvalue = value.asCollection();
+				b.append(prettyPrint(cclvalue.asJavaCollection(), level + 1));
+			} else if (value.isComplex()) {
+				ClientComplexValue cpxvalue = value.asComplex();
+				b.append(prettyPrint(cpxvalue.asJavaMap(), level + 1));
+			} else if (value.isEnum()) {
+				ClientEnumValue cnmvalue = value.asEnum();
+				b.append(entry.getName()).append(": ");
+				b.append(cnmvalue.getValue()).append("\n");
+			} else if (value.isPrimitive()) {
+				b.append(entry.getName()).append(": ");
+				b.append(entry.getValue()).append("\n");
+			}
+		}
+		return b.toString();
+	}
 
-  private ClientEntity readEntityWithKey(Edm edm, String serviceUri, String entitySetName, Object keyValue) {
-    URI absoluteUri = client.newURIBuilder(serviceUri).appendEntitySetSegment(entitySetName)
-      .appendKeySegment(keyValue).build();
-    return readEntity(edm, absoluteUri);
-  }
+	private static void intend(StringBuilder builder, int intendLevel) {
+		for (int i = 0; i < intendLevel; i++) {
+			builder.append("  ");
+		}
+	}
 
-  private ClientEntity readEntityWithKeyExpand(Edm edm, String serviceUri, String entitySetName, Object keyValue,
-    String expandRelationName) {
-    URI absoluteUri = client.newURIBuilder(serviceUri).appendEntitySetSegment(entitySetName).appendKeySegment(keyValue)
-      .expand(expandRelationName).build();
-    return readEntity(edm, absoluteUri);
-  }
+	public Edm readEdm(String serviceUrl) throws IOException {
+		EdmMetadataRequest request = client.getRetrieveRequestFactory().getMetadataRequest(serviceUrl);
+		ODataRetrieveResponse<Edm> response = request.execute();
+		return response.getBody();
+	}
 
-  private ClientEntity readEntity(Edm edm, URI absoluteUri) {
-    ODataEntityRequest<ClientEntity> request = client.getRetrieveRequestFactory().getEntityRequest(absoluteUri);
-    request.setAccept("application/json;odata.metadata=full");
-    ODataRetrieveResponse<ClientEntity> response = request.execute(); 
-      
-    return response.getBody();
-  }
-  
-  private ClientEntity loadEntity(String path) throws ODataDeserializerException {
-    InputStream input = getClass().getResourceAsStream(path);
-    return client.getBinder().getODataEntity(client.getDeserializer(ContentType.APPLICATION_JSON).toEntity(input));
-  }
+	public ClientEntitySetIterator<ClientEntitySet, ClientEntity> readEntities(Edm edm, String serviceUri,
+			String entitySetName) {
+		URI absoluteUri = client.newURIBuilder(serviceUri).appendEntitySetSegment(entitySetName).build();
+		return readEntities(edm, absoluteUri);
+	}
 
-  private ClientEntity createEntity(Edm edm, String serviceUri, String entitySetName, ClientEntity ce) {
-    URI absoluteUri = client.newURIBuilder(serviceUri).appendEntitySetSegment(entitySetName).build();
-    return createEntity(edm, absoluteUri, ce);
-  }
+	public ClientEntitySetIterator<ClientEntitySet, ClientEntity> readEntitiesWithFilter(Edm edm, String serviceUri,
+			String entitySetName, String filterName) {
+		URI absoluteUri = client.newURIBuilder(serviceUri).appendEntitySetSegment(entitySetName).filter(filterName)
+				.build();
+		return readEntities(edm, absoluteUri);
+	}
 
-  private ClientEntity createEntity(Edm edm, URI absoluteUri, ClientEntity ce) {
-    ODataEntityCreateRequest<ClientEntity> request = client.getCUDRequestFactory()
-      .getEntityCreateRequest(absoluteUri, ce);
-    request.setAccept("application/json");
-    ODataEntityCreateResponse<ClientEntity> response = request.execute(); 
-      
-    return response.getBody();
-  }
+	private ClientEntitySetIterator<ClientEntitySet, ClientEntity> readEntities(Edm edm, URI absoluteUri) {
+		System.out.println("URI = " + absoluteUri);
+		ODataEntitySetIteratorRequest<ClientEntitySet, ClientEntity> request = client.getRetrieveRequestFactory()
+				.getEntitySetIteratorRequest(absoluteUri);
+		request.setAccept("application/json");
+		ODataRetrieveResponse<ClientEntitySetIterator<ClientEntitySet, ClientEntity>> response = request.execute();
 
-  private int updateEntity(Edm edm, String serviceUri, String entityName, Object keyValue, ClientEntity ce) {
-    URI absoluteUri = client.newURIBuilder(serviceUri).appendEntitySetSegment(entityName)
-      .appendKeySegment(keyValue).build();
-    ODataEntityUpdateRequest<ClientEntity> request = 
-      client.getCUDRequestFactory().getEntityUpdateRequest(absoluteUri, UpdateType.PATCH, ce);
-    request.setAccept("application/json;odata.metadata=minimal");
-    ODataEntityUpdateResponse<ClientEntity> response = request.execute();
-    return response.getStatusCode();
-  }
+		return response.getBody();
+	}
 
-  private int deleteEntity(String serviceUri, String entityName, Object keyValue) throws IOException {
-    URI absoluteUri = client.newURIBuilder(serviceUri).appendEntitySetSegment(entityName)
-      .appendKeySegment(keyValue).build();
-    ODataDeleteRequest request = client.getCUDRequestFactory().getDeleteRequest(absoluteUri);
-    request.setAccept("application/json;odata.metadata=minimal");
-    ODataDeleteResponse response = request.execute();
-    return response.getStatusCode();
-  }
+	private ClientEntity readEntityWithKey(Edm edm, String serviceUri, String entitySetName, Object keyValue) {
+		URI absoluteUri = client.newURIBuilder(serviceUri).appendEntitySetSegment(entitySetName)
+				.appendKeySegment(keyValue).build();
+		return readEntity(edm, absoluteUri);
+	}
+
+	private ClientEntity readEntityWithKeyExpand(Edm edm, String serviceUri, String entitySetName, Object keyValue,
+			String expandRelationName) {
+		URI absoluteUri = client.newURIBuilder(serviceUri).appendEntitySetSegment(entitySetName)
+				.appendKeySegment(keyValue).expand(expandRelationName).build();
+		return readEntity(edm, absoluteUri);
+	}
+
+	private ClientEntity readEntity(Edm edm, URI absoluteUri) {
+		ODataEntityRequest<ClientEntity> request = client.getRetrieveRequestFactory().getEntityRequest(absoluteUri);
+		request.setAccept("application/json;odata.metadata=full");
+		ODataRetrieveResponse<ClientEntity> response = request.execute();
+
+		return response.getBody();
+	}
+
+	private ClientEntity loadEntity(String path) throws ODataDeserializerException {
+		InputStream input = getClass().getResourceAsStream(path);
+		return client.getBinder().getODataEntity(client.getDeserializer(ContentType.APPLICATION_JSON).toEntity(input));
+	}
+
+	private ClientEntity createEntity(Edm edm, String serviceUri, String entitySetName, ClientEntity ce) {
+		URI absoluteUri = client.newURIBuilder(serviceUri).appendEntitySetSegment(entitySetName).build();
+		return createEntity(edm, absoluteUri, ce);
+	}
+
+	private ClientEntity createEntity(Edm edm, URI absoluteUri, ClientEntity ce) {
+		ODataEntityCreateRequest<ClientEntity> request = client.getCUDRequestFactory()
+				.getEntityCreateRequest(absoluteUri, ce);
+		request.setAccept("application/json");
+		ODataEntityCreateResponse<ClientEntity> response = request.execute();
+
+		return response.getBody();
+	}
+
+	private int updateEntity(Edm edm, String serviceUri, String entityName, Object keyValue, ClientEntity ce) {
+		URI absoluteUri = client.newURIBuilder(serviceUri).appendEntitySetSegment(entityName).appendKeySegment(keyValue)
+				.build();
+		ODataEntityUpdateRequest<ClientEntity> request = client.getCUDRequestFactory()
+				.getEntityUpdateRequest(absoluteUri, UpdateType.PATCH, ce);
+		request.setAccept("application/json;odata.metadata=minimal");
+		ODataEntityUpdateResponse<ClientEntity> response = request.execute();
+		return response.getStatusCode();
+	}
+
+	private int deleteEntity(String serviceUri, String entityName, Object keyValue) throws IOException {
+		URI absoluteUri = client.newURIBuilder(serviceUri).appendEntitySetSegment(entityName).appendKeySegment(keyValue)
+				.build();
+		ODataDeleteRequest request = client.getCUDRequestFactory().getDeleteRequest(absoluteUri);
+		request.setAccept("application/json;odata.metadata=minimal");
+		ODataDeleteResponse response = request.execute();
+		return response.getStatusCode();
+	}
 }

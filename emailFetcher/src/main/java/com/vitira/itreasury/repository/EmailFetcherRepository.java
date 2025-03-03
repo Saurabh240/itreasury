@@ -22,8 +22,8 @@ public class EmailFetcherRepository {
 			client = new EmailClient();
 			List<Email> emails = client.executeFetch();
 			for (Email email : emails) {
-	            allAttachments.addAll(email.getAttachments());
-	        }
+				allAttachments.addAll(email.getAttachments());
+			}
 
 		} catch (IOException | MessagingException e) {
 			// TODO Auto-generated catch block

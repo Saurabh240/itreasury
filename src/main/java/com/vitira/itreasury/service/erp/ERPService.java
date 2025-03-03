@@ -7,8 +7,8 @@ import com.vitira.itreasury.odata.client.ERPClientApp;
 
 @Service
 public class ERPService {
-    
-    @Autowired
-    protected ERPClientApp erpClientApp;
+
+	@Autowired
+	protected ERPClientApp erpClientApp;
 
 }

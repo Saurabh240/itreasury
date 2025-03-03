@@ -4,35 +4,34 @@ import java.time.LocalDate;
 
 import com.vitira.itreasury.entity.OutflowsDataEntity;
 
-
 public class OutflowsRequest {
 	private Long id;
-    private LocalDate date;
-    private OutflowsDataEntity outflowsData;
-    
- // Getters and Setters
-    public Long getId() {
-        return id;
-    }
+	private LocalDate date;
+	private OutflowsDataEntity outflowsData;
 
-    public void setId(Long id) {
-        this.id = id;
-    }
+	// Getters and Setters
+	public Long getId() {
+		return id;
+	}
 
-    public LocalDate getDate() {
-        return date;
-    }
+	public void setId(Long id) {
+		this.id = id;
+	}
 
-    public void setDate(LocalDate date) {
-        this.date = date;
-    }
+	public LocalDate getDate() {
+		return date;
+	}
 
-    public OutflowsDataEntity getOutflowsData() {
-        return outflowsData;
-    }
+	public void setDate(LocalDate date) {
+		this.date = date;
+	}
 
-    public void setOutflowsData(OutflowsDataEntity outflowsData) {
-        this.outflowsData = outflowsData;
-    }
-    
+	public OutflowsDataEntity getOutflowsData() {
+		return outflowsData;
+	}
+
+	public void setOutflowsData(OutflowsDataEntity outflowsData) {
+		this.outflowsData = outflowsData;
+	}
+
 }

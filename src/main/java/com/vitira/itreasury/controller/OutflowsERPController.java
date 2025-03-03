@@ -20,26 +20,26 @@
 //@RequestMapping("/api/erp/outflows")
 //public class OutflowsERPController {
 //
-//    @Autowired
-//    private OutflowsERPService erpService;
+//	@Autowired
+//	private OutflowsERPService erpService;
 //
-//    @GetMapping
-//    public ResponseEntity<List<OutflowsResponse>> getCashInflows() {
-//    	
-//    	List<OutflowsResponse> outflowsResponses = erpService.getAllOutflows();
+//	@GetMapping
+//	public ResponseEntity<List<OutflowsResponse>> getCashInflows() {
 //
-//        return ResponseEntity.ok(outflowsResponses);
-//    }
-//    
-//    @GetMapping("/{id}")
-//    public ResponseEntity<OutflowsResponse> getCashInflowsById(@PathVariable Long id) {
-//    	
-//    	OutflowsRequest request = new OutflowsRequest();
-//    	request.setId(id);
-//    	
-//    	OutflowsResponse outflowsResponse = erpService.getInflowsById(request);
+//		List<OutflowsResponse> outflowsResponses = erpService.getAllOutflows();
 //
-//        return ResponseEntity.ok(outflowsResponse);
-//    }
-//    
+//		return ResponseEntity.ok(outflowsResponses);
+//	}
+//
+//	@GetMapping("/{id}")
+//	public ResponseEntity<OutflowsResponse> getCashInflowsById(@PathVariable Long id) {
+//
+//		OutflowsRequest request = new OutflowsRequest();
+//		request.setId(id);
+//
+//		OutflowsResponse outflowsResponse = erpService.getInflowsById(request);
+//
+//		return ResponseEntity.ok(outflowsResponse);
+//	}
+//
 //}

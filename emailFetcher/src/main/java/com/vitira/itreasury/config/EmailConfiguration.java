@@ -50,7 +50,7 @@
 ////		properties.put("host", host);
 ////		properties.put("host", host);
 ////		properties.put("host", host);
-//		
+//
 //		printMailConfig();
 //	}
 //

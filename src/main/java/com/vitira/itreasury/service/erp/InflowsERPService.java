@@ -14,38 +14,38 @@ import com.vitira.itreasury.helpers.ODataConverter;
 @Service
 public class InflowsERPService extends ERPService {
 	private final String ES_INFLOWS_NAME = "Inflows";
-	
+
 	public List<InflowsResponse> getAllInflows() {
 		List<ClientEntity> entities = erpClientApp.getEntities(ES_INFLOWS_NAME);
-        
-        List<InflowsResponse> result = new ArrayList<>();
-        for(ClientEntity ce : entities) {
-        	ODataConverter<InflowsEntity> odataConverter = new ODataConverter<>(InflowsEntity.class);
-        	try {
+
+		List<InflowsResponse> result = new ArrayList<>();
+		for (ClientEntity ce : entities) {
+			ODataConverter<InflowsEntity> odataConverter = new ODataConverter<>(InflowsEntity.class);
+			try {
 				InflowsEntity entity = odataConverter.clientEntityToPojo(ce);
 				InflowsResponse response = mapModelToDto(entity);
 				result.add(response);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
-        }
-        
-        return result;
-    }
-	
+		}
+
+		return result;
+	}
+
 	public InflowsResponse getInflowsById(InflowsRequest req) {
-        ClientEntity ce = erpClientApp.readEntity(ES_INFLOWS_NAME, req.getId());
-        InflowsResponse result = null;
-    	ODataConverter<InflowsEntity> odataConverter = new ODataConverter<>(InflowsEntity.class);
-    	try {
+		ClientEntity ce = erpClientApp.readEntity(ES_INFLOWS_NAME, req.getId());
+		InflowsResponse result = null;
+		ODataConverter<InflowsEntity> odataConverter = new ODataConverter<>(InflowsEntity.class);
+		try {
 			InflowsEntity entity = odataConverter.clientEntityToPojo(ce);
 			result = mapModelToDto(entity);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-        
-        return result;
-    }
+
+		return result;
+	}
 
 //    public InflowsEntity saveInflows(InflowsEntity inflowsEntity) {
 //        return inflowsRepository.save(inflowsEntity);
@@ -58,15 +58,12 @@ public class InflowsERPService extends ERPService {
 //    public void deleteInflowsById(Long id) {
 //        inflowsRepository.deleteById(id);
 //    }
-	
+
 	private InflowsResponse mapModelToDto(InflowsEntity entity) {
-    	
-		InflowsResponse response = new InflowsResponse(
-				entity.getId(), 
-				entity.getDatetime(), 
-				entity.getInflowsData());
-    	
-    	return response;
-    }
-	
+
+		InflowsResponse response = new InflowsResponse(entity.getId(), entity.getDatetime(), entity.getInflowsData());
+
+		return response;
+	}
+
 }

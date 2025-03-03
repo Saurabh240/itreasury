@@ -27,6 +27,9 @@ public class MT940Message {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 	
+	@Column(name = "transaction_reference_number", unique = true, nullable = false)
+	private String transactionReferenceNumber;
+	
 	@ManyToOne
     @JoinColumn(name = "bank_account_id", nullable = false)
     private BankAccount bankAccount;

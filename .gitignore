@@ -63,3 +63,6 @@ out/
 .vscode/
 
 .metadata/**/**
+
+MT940_trx_1.out
+MT940_trx_2.out

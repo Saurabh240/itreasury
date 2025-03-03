@@ -15,19 +15,19 @@ import org.springframework.web.bind.annotation.PathVariable;
 @RequestMapping("/payments")
 public class PaymentController {
 
-    @Autowired
-    PaymentService paymentService;
+	@Autowired
+	PaymentService paymentService;
 
-    @GetMapping("/{id}")
-    public ResponseEntity<PaymentResponse> getPaymentById(@PathVariable("id") Long id) {
-        // First map the incoming request data to an internal Payment request DTO object
-        PaymentRequest internalPaymentRequest = new PaymentRequest();
-        internalPaymentRequest.setPaymentId(id);
+	@GetMapping("/{id}")
+	public ResponseEntity<PaymentResponse> getPaymentById(@PathVariable("id") Long id) {
+		// First map the incoming request data to an internal Payment request DTO object
+		PaymentRequest internalPaymentRequest = new PaymentRequest();
+		internalPaymentRequest.setPaymentId(id);
 
-        // Now pass this internal request object to the service layer for processing
-        PaymentResponse paymentResponse = paymentService.getPaymentDetailsById(internalPaymentRequest);
+		// Now pass this internal request object to the service layer for processing
+		PaymentResponse paymentResponse = paymentService.getPaymentDetailsById(internalPaymentRequest);
 
-        return ResponseEntity.ok(paymentResponse);
-    }
+		return ResponseEntity.ok(paymentResponse);
+	}
 
 }

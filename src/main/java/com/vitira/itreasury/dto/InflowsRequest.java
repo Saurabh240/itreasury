@@ -6,32 +6,32 @@ import com.vitira.itreasury.entity.InflowsDataEntity;
 
 public class InflowsRequest {
 	private Long id;
-    private LocalDate date;
-    private InflowsDataEntity inflowsData;
-    
- // Getters and Setters
-    public Long getId() {
-        return id;
-    }
+	private LocalDate date;
+	private InflowsDataEntity inflowsData;
 
-    public void setId(Long id) {
-        this.id = id;
-    }
+	// Getters and Setters
+	public Long getId() {
+		return id;
+	}
 
-    public LocalDate getDate() {
-        return date;
-    }
+	public void setId(Long id) {
+		this.id = id;
+	}
 
-    public void setDate(LocalDate date) {
-        this.date = date;
-    }
+	public LocalDate getDate() {
+		return date;
+	}
 
-    public InflowsDataEntity getData() {
-        return inflowsData;
-    }
+	public void setDate(LocalDate date) {
+		this.date = date;
+	}
 
-    public void setData(InflowsDataEntity inflowsData) {
-        this.inflowsData = inflowsData;
-    }
+	public InflowsDataEntity getData() {
+		return inflowsData;
+	}
+
+	public void setData(InflowsDataEntity inflowsData) {
+		this.inflowsData = inflowsData;
+	}
 
 }

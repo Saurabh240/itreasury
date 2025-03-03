@@ -9,5 +9,5 @@ public class TreasuryAutomationApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(TreasuryAutomationApplication.class, args);
 	}
-	
+
 }

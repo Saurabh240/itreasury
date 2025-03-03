@@ -9,9 +9,9 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/")
 public class HomeController {
 
-    @GetMapping("/")
-    public ResponseEntity<String> homePage() {
-    	return ResponseEntity.ok("Hello World!");
-    }
+	@GetMapping("/")
+	public ResponseEntity<String> homePage() {
+		return ResponseEntity.ok("Hello World!");
+	}
 
 }

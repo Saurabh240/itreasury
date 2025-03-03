@@ -28,7 +28,7 @@ public class BankAccount {
 	@Column(name = "bank_code")
     private String bankCode;
     
-	@Column(name = "account_number")
+	@Column(name = "account_number", unique=true, nullable = false)
     private String accountNumber;
     
     @Column(name = "account_holder")

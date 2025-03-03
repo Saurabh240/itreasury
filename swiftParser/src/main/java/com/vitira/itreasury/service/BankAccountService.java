@@ -13,38 +13,37 @@ import java.util.List;
 @Service
 public class BankAccountService {
 
-    @Autowired
-    private BankAccountRepository repository;
+	@Autowired
+	private BankAccountRepository repository;
 
 //    public List<BankAccount> getAllBankAccounts() {
 //        return repository.findAll();
 //    }
 
-    public BankAccount saveBankAccount(BankAccount bankAccount) {
-        return repository.save(bankAccount);
-    }
+	public BankAccount saveBankAccount(BankAccount bankAccount) {
+		return repository.save(bankAccount);
+	}
 
-    public BankAccountResponse getBankAccountById(BankAccountRequest request) {
-    	
-    	BankAccount bankAccount = repository.findById(request.getId()).orElse(null);
-    	
-    	if(bankAccount != null) {
-    		BankAccountResponse response = new BankAccountResponse();
-        	response.setId(bankAccount.getId());
-        	response.setBankCode(bankAccount.getBankCode());
-        	response.setAccountNumber(bankAccount.getAccountNumber());
-        	response.setAccountHolder(bankAccount.getAccountHolder());
-        	response.setCurrency(bankAccount.getCurrency());
-        	response.setBankName(bankAccount.getBankName());
-        	
-        	return response;
-    	}
-    	
-    	
-        return null;
-    }
+	public BankAccountResponse getBankAccountById(BankAccountRequest request) {
 
-    public void deleteBankAccountById(Long id) {
-        repository.deleteById(id);
-    }
+		BankAccount bankAccount = repository.findById(request.getId()).orElse(null);
+
+		if (bankAccount != null) {
+			BankAccountResponse response = new BankAccountResponse();
+			response.setId(bankAccount.getId());
+			response.setBankCode(bankAccount.getBankCode());
+			response.setAccountNumber(bankAccount.getAccountNumber());
+			response.setAccountHolder(bankAccount.getAccountHolder());
+			response.setCurrency(bankAccount.getCurrency());
+			response.setBankName(bankAccount.getBankName());
+
+			return response;
+		}
+
+		return null;
+	}
+
+	public void deleteBankAccountById(Long id) {
+		repository.deleteById(id);
+	}
 }

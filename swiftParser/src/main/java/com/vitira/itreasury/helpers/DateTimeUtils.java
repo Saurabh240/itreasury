@@ -6,10 +6,11 @@ import java.util.Calendar;
 
 public class DateTimeUtils {
 
-    public static LocalDateTime calendarToLocalDateTime(Calendar calendar) {
-        if (calendar == null) {
-            throw new IllegalArgumentException("Calendar cannot be null");
-        }
-        return LocalDateTime.ofInstant(calendar.toInstant(), ZoneId.systemDefault());
-    }
+	public static LocalDateTime calendarToLocalDateTime(Calendar calendar) {
+		System.out.println(calendar);
+		if (calendar == null) {
+			return null;
+		}
+		return LocalDateTime.ofInstant(calendar.toInstant(), ZoneId.systemDefault());
+	}
 }

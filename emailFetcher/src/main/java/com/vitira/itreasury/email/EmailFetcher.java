@@ -11,7 +11,9 @@ import com.vitira.itreasury.config.ConfigurationManager;
 import com.vitira.itreasury.model.Email;
 
 public interface EmailFetcher {
-    void connect(ConfigurationManager configManager) throws MessagingException;
-    List<Email> fetchEmails(String subjectFilter, Date dateFilter) throws MessagingException, IOException;
-    void close() throws MessagingException;
+	void connect(ConfigurationManager configManager) throws MessagingException;
+
+	List<Email> fetchEmails(String subjectFilter, Date dateFilter) throws MessagingException, IOException;
+
+	void close() throws MessagingException;
 }
