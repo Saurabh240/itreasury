@@ -1,0 +1,24 @@
+services:
+  postgres_db:
+    image: postgres:14.12
+    container_name: postgres_db
+    # deploy:
+    #   resources:
+    #     limits:
+    #       cpus: "4"
+    #       memory: 5G
+    ports:
+      - "5432:5432"
+      # - "5500:5500"
+      # - "21:21"
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      PGDATA: /var/lib/postgresql/data/pgdata
+    volumes:
+      - type: bind
+        source: C:/Cloning
+        target: /dump
+      - type: bind
+        source: C:/Cloning/PGDATA
+        target: /var/lib/postgresql/data/pgdata

@@ -26,20 +26,8 @@ public class EmailFetcherService {
 	public void fetchEmailAttachments() {
 
 		List<String> attachments = repository.getAllAttachments();
-		attachments.forEach(this::processEmailAttachment);
-		
-
-	}
-
-	private void processEmailAttachment(String attachment) {
-		try {
-			InputStream attachmentStream = new FileInputStream(attachment);
-			String content = new String(attachmentStream.readAllBytes());
-			mt940Parser.parseAndSave(content);
-			
-			
-		} catch (Exception e) {
-			e.printStackTrace();
+		for(String attachment : attachments) {
+			mt940Parser.parseAndSave(attachment);
 		}
 	}
 
