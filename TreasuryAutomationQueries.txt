@@ -1,0 +1,36 @@
+1. Projected cash flows accurately
+2. e.g. MT940 File 
+3. ERP integration 
+
+Passwords: 
+Email : ratankhatri1437@gmail.com
+App Name: VITIRA
+Password: ytkf eeyx vcys xsvu
+
+Email: noreply.vitira@gmail.com
+Password: Laxman@123
+App Name: VITIRA
+App Password: vzev pcjx khiq gnln
+
+Email: no.reply.vitira@outlook.com
+Password: Vitira@2025
+App Name: VITIRA
+App Password: ixegeamfhubuvtyg
+Two Factor authentication code: 8RWPU-6GWG7-64KYE-QEFTD-HNZT2
+
+
+https://github.com/congptvnext/FetcherSenderEmail/tree/master
+
+For getting odata response in json : http://localhost:8080/odata-server-sample-30/cars.svc/Manufacturers?$format=application/json;odata.metadata=minimal
+
+Questions: 
+We need some open source or cracked version of ERP so that we can test our application end-to-end
+Also, we need higher configurations machines for testing
+1. How Client will provide exposure to the ERP system ?
+   a) using ODATA Service apis
+   b) using REST apis
+2. What data we will be fetching from the ERP? 
+   - AccountPayables and AccountRecievables but what will be inside it ?
+3. What will be the structure of the data which we will be getting from the ERP
+4. How customer will give access to account balances. i.e. where he/she will put the MT940 file?
+5. MT940 example file to fetch?
