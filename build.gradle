@@ -53,6 +53,7 @@ dependencies {
 
 	implementation project(':emailFetcher')
 	implementation project(':swiftParser')
+	implementation project(':fundPosition')
 }
 
 tasks.named('test') {

@@ -1,30 +1,29 @@
 package com.vitira.itreasury.service;
 
-import com.prowidesoftware.swift.model.SwiftTagListBlock;
-import com.prowidesoftware.swift.model.Tag;
-import com.prowidesoftware.swift.model.field.Field20;
-import com.prowidesoftware.swift.model.field.Field61;
-import com.prowidesoftware.swift.model.mt.mt9xx.MT940;
-
-import com.vitira.itreasury.entity.BankAccount;
-import com.vitira.itreasury.entity.MT940Message;
-import com.vitira.itreasury.entity.Transaction;
-import com.vitira.itreasury.repository.BankAccountRepository;
-import com.vitira.itreasury.repository.MT940MessageRepository;
-import com.vitira.itreasury.repository.TransactionRepository;
-import com.vitira.itreasury.helpers.DateTimeUtils;
+import java.io.File;
+import java.io.IOException;
+import java.math.BigDecimal;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
-import java.io.File;
-import java.io.IOException;
-import java.math.BigDecimal;
-import java.time.LocalDateTime;
-import java.util.Calendar;
-import java.util.ArrayList;
-import java.util.List;
+import com.prowidesoftware.swift.model.SwiftTagListBlock;
+import com.prowidesoftware.swift.model.Tag;
+import com.prowidesoftware.swift.model.field.Field20;
+import com.prowidesoftware.swift.model.field.Field61;
+import com.prowidesoftware.swift.model.mt.mt9xx.MT940;
+import com.vitira.itreasury.entity.BankAccount;
+import com.vitira.itreasury.entity.MT940Message;
+import com.vitira.itreasury.entity.Transaction;
+import com.vitira.itreasury.helpers.DateTimeUtils;
+import com.vitira.itreasury.repository.BankAccountRepository;
+import com.vitira.itreasury.repository.MT940MessageRepository;
+import com.vitira.itreasury.repository.TransactionRepository;
 
 @Service
 public class MT940ParserService {
@@ -58,12 +57,15 @@ public class MT940ParserService {
 		String accountNumber = mt.getField25().getAccount();
 		String accountHolder = "NA";
 		String bankName = "NA";
+
+		BigDecimal closingBalance = mt.getField62F().getAmountAsBigDecimal();
 		String currency = mt.getField62F().getCurrency(); // Closing available balance currency
 
 		System.out.println("BankCode: " + bankCode);
 		System.out.println("AccountNumber: " + accountNumber);
 		System.out.println("AccountHolder: " + accountHolder);
 		System.out.println("BankName: " + bankName);
+		System.out.println("closingBalance: " + closingBalance);
 		System.out.println("Currency: " + currency);
 
 		BankAccount bankAccount = new BankAccount();
@@ -71,6 +73,7 @@ public class MT940ParserService {
 		bankAccount.setAccountHolder(accountHolder);
 		bankAccount.setAccountNumber(accountNumber);
 		bankAccount.setBankName(bankName);
+		bankAccount.setClosingBalance(closingBalance);
 		bankAccount.setCurrency(currency);
 
 		try {
