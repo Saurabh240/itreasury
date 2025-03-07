@@ -18,6 +18,8 @@ App Name: VITIRA
 App Password: ixegeamfhubuvtyg
 Two Factor authentication code: 8RWPU-6GWG7-64KYE-QEFTD-HNZT2
 
+Email: vitira2025@outlook.com
+Password: Vitira@2025
 
 https://github.com/congptvnext/FetcherSenderEmail/tree/master
 
