@@ -25,6 +25,29 @@ https://github.com/congptvnext/FetcherSenderEmail/tree/master
 
 For getting odata response in json : http://localhost:8080/odata-server-sample-30/cars.svc/Manufacturers?$format=application/json;odata.metadata=minimal
 
+
+****************************************************************
+Categories for MT940 File:
+TDS : Taxes
+ICE Gate : Custom taxes
+CMS : Vendor payments
+IMP : Foreign vendor payments
+CHG : Charges (Bank)
+DR INT : Interests Outflow
+CR INT : Interests Inflow
+DR MF : Mutual Fund Invest Outflow
+CR MF : Mutual Fund Inflow
+Loan : Loan Availed
+DR Principal PRIN : Loan Repayment
+GST : Taxes
+DR Salary HR REIM : Salary
+DR FT : Fund Transfer Outflow
+CR FT : Fund Transfer Inflow
+DR and CR FT should be NIL at the end of the day
+Open Credit : Other than above
+Collections : Other than above
+****************************************************************
+
 Questions: 
 We need some open source or cracked version of ERP so that we can test our application end-to-end
 Also, we need higher configurations machines for testing
