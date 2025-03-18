@@ -45,7 +45,7 @@ public class MT940ParserService {
 			MT940 mt = MT940.parse(messageFile);
 			saveBankAccount(mt);
 		} catch (IOException e) {
-			e.printStackTrace();
+			System.err.println("Error parsing message file: " + e.getMessage());
 		}
 	}
 
@@ -73,7 +73,7 @@ public class MT940ParserService {
 		bankAccount.setAccountHolder(accountHolder);
 		bankAccount.setAccountNumber(accountNumber);
 		bankAccount.setBankName(bankName);
-		bankAccount.setClosingBalance(closingBalance);
+		bankAccount.setBalance(closingBalance);
 		bankAccount.setCurrency(currency);
 
 		try {

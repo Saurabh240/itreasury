@@ -1,19 +1,11 @@
 package com.vitira.itreasury.entity;
 
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
 import java.math.BigDecimal;
 import java.util.List;
-
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
 
 @Setter
 @Getter
@@ -24,26 +16,23 @@ public class BankAccount {
 	@Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
-	@Column(name = "bank_code")
     private String bankCode;
-    
-	@Column(name = "account_number", unique=true, nullable = false)
+	@Column(unique=true, nullable = false)
     private String accountNumber;
-    
-    @Column(name = "account_holder")
     private String accountHolder;
-    
-    @Column(name = "currency")
     private String currency;
-    
-    @Column(name = "bank_name")
     private String bankName;
-    
-    @Column(name = "closing_balance")
-    private BigDecimal closingBalance;
+    private BigDecimal balance;
     
     @OneToMany(mappedBy = "bankAccount", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<MT940Message> mt940Messages;
+
+    @ManyToOne
+    @JoinColumn(name = "company_id")
+    private Company company;
+
+    @ManyToOne
+    @JoinColumn(name = "bank_id")
+    private Bank bank;
     
 }

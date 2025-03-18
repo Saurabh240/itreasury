@@ -16,9 +16,9 @@ public class BankAccountService {
 	@Autowired
 	private BankAccountRepository repository;
 
-//    public List<BankAccount> getAllBankAccounts() {
-//        return repository.findAll();
-//    }
+    public List<BankAccount> getAllBankAccounts(Long companyId) {
+        return repository.findByCompanyId(companyId);
+    }
 
 	public BankAccount saveBankAccount(BankAccount bankAccount) {
 		return repository.save(bankAccount);
