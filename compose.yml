@@ -1,7 +1,7 @@
 services:
   postgres_db:
-    image: postgres:14.12
-    container_name: postgres_db
+    image: postgres:latest
+    container_name: postgres_sql_itreasury
     # deploy:
     #   resources:
     #     limits:
@@ -9,16 +9,32 @@ services:
     #       memory: 5G
     ports:
       - "5432:5432"
-      # - "5500:5500"
-      # - "21:21"
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: itreasury_db
       PGDATA: /var/lib/postgresql/data/pgdata
     volumes:
       - type: bind
         source: C:/Cloning
         target: /dump
-      - type: bind
-        source: C:/Cloning/PGDATA
-        target: /var/lib/postgresql/data/pgdata
+#      - type: bind
+#        source: C:/Cloning/PGDATA
+#        target: /var/lib/postgresql/data/pgdata
+    networks:
+      - spring-network
+    restart: unless-stopped
+
+  itreasury-api:
+    container_name: itreasury-api
+    image: vitira/itreasury:0.0.1-SNAPSHOT
+    ports:
+      - "8090:8090"
+    networks:
+      - spring-network
+    depends_on:
+      - postgres_db
+
+networks:
+  spring-network:
+    driver: bridge
