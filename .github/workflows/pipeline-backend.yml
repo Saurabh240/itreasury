@@ -83,7 +83,7 @@ jobs:
       - name: Compile project
         run: |
           chmod +x gradlew
-          ./gradlew clean compile
+          ./gradlew clean compileJava
 
   build-image:
     name: Build Docker image
