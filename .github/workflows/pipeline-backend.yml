@@ -46,12 +46,16 @@ jobs:
           java-version: '17'
           distribution: 'corretto'
 
+      - name: Print current working directory and contents
+        run: |
+          echo "Current working directory: $(pwd)"
+          echo "Contents of the current directory:"
+          ls -l
+
       - name: Running Unit Tests
         run: |
-          pwd
-          ls -l 
-          cd TreasuryAutomation
           echo "Starting running unit tests..."
+          chmod +x gradlew
           ./gradlew clean test
   build:
     runs-on: ubuntu-latest
