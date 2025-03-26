@@ -48,6 +48,10 @@ jobs:
 
       - name: Running Unit Tests
         run: |
+          pwd
+          ls -l 
+          cd TreasuryAutomation
+          echo "Starting running unit tests..."
           ./gradlew clean test
   build:
     runs-on: ubuntu-latest
