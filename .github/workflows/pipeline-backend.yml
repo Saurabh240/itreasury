@@ -73,8 +73,15 @@ jobs:
           java-version: '17'
           distribution: 'corretto'
 
+      - name: Print current working directory and contents
+        run: |
+          echo "Current working directory: $(pwd)"
+          echo "Contents of the current directory:"
+          ls -l
+
       - name: Compile project
         run: |
+          chmod +x gradlew
           ./gradlew clean compile
 
   build-image:
@@ -106,7 +113,7 @@ jobs:
           file: docker/backend/Dockerfile
           push: true
           platforms: linux/amd64
-          tags: ${{ secrets.DOCKERHUB_USERNAME }}/bsn-api:${{ steps.extract_version.outputs.VERSION }},${{ secrets.DOCKERHUB_USERNAME }}/bsn-api:latest
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/itreasury-api:${{ steps.extract_version.outputs.VERSION }},${{ secrets.DOCKERHUB_USERNAME }}/itreasury-api:latest
           build-args: |
             PROFILE=dev
             APP_VERSION=${{ steps.extract_version.outputs.VERSION }}
@@ -141,7 +148,7 @@ jobs:
 #    steps:
 #      - name: Check the docker container health status
 #        run: |
-#          if ! docker ps -a | grep bsn-api; then
+#          if ! docker ps -a | grep itreasury-api; then
 #            echo "Container is not running"
 #            exit 1
 #          fi
