@@ -4,13 +4,9 @@ FROM gradle:8.13-jdk17-ubi AS build
 WORKDIR /build
 
 # Copy Gradle build files and source code
-COPY ../../build.gradle settings.gradle gradlew /build/
-COPY ../../gradle /build/gradle/
-COPY ../../buildSrc /build/buildSrc/
-COPY ../../src /build/src/
-COPY ../../emailFetcher /build/emailFetcher/
-COPY ../../swiftParser /build/swiftParser/
-COPY ../../fundPosition /build/fundPosition/
+RUN ls -la /build
+COPY ../../itreasury/ /build/
+RUN ls -la /build
 
 # Change the permissions of the Gradle wrapper script
 RUN chmod +x gradlew

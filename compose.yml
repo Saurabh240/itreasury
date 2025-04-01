@@ -27,7 +27,7 @@ services:
 
   itreasury-api:
     container_name: itreasury-api
-    image: vitira/itreasury:0.0.1-SNAPSHOT
+    image: vitira/itreasury:latest
     ports:
       - "8090:8090"
     networks:

@@ -22,8 +22,12 @@ Email: vitira2025@outlook.com
 Password: Vitira@2025
 
 Docker Hub:
-Username: laxmanpawar
-Password Token: dckr_pat_ZRmAEAR8yp0FLgaVAk-5K31rgVI
+DOCKERHUB_USERNAME: laxmanpawar
+DOCKERHUB_TOKEN: dckr_pat_ZRmAEAR8yp0FLgaVAk-5K31rgVI
+
+Azure VM:
+VM_IP: 172.178.113.193
+VM_USERNAME: azureuser
 
 https://github.com/congptvnext/FetcherSenderEmail/tree/master
 
