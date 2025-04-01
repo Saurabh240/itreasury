@@ -35,6 +35,18 @@ dependencies {
 	implementation group: 'org.springframework.boot', name: 'spring-boot-devtools'
 	runtimeOnly 'org.postgresql:postgresql'
 
+	// Spring Security
+	implementation 'org.springframework.boot:spring-boot-starter-security'
+	
+	// JWT dependencies
+	implementation 'io.jsonwebtoken:jjwt-api:0.11.5'
+	runtimeOnly 'io.jsonwebtoken:jjwt-impl:0.11.5'
+	runtimeOnly 'io.jsonwebtoken:jjwt-jackson:0.11.5'
+
+	// Lombok
+	compileOnly 'org.projectlombok:lombok'
+	annotationProcessor 'org.projectlombok:lombok'
+
 	// Used for serializing and deserializing the LocalDateTime objects
 	implementation group: 'com.fasterxml.jackson.datatype', name: 'jackson-datatype-jsr310', version: '2.18.2'
 
@@ -72,7 +84,7 @@ subprojects {
     }
     
     dependencies {
-    	implementation 'org.projectlombok:lombok'
+    	compileOnly 'org.projectlombok:lombok'
     	annotationProcessor 'org.projectlombok:lombok'
     }
 
