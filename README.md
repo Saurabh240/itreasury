@@ -29,8 +29,9 @@ These instructions will help you set up and run the project on your local machin
 
 1. Clone the repository:
     ```sh
-    git clone git@github.com:laxmanpawar/TreasuryAutomation.git
+    git clone git@github.com:Pranjal-Vitira/TreasuryAutomation.git
     cd TreasuryAutomation
+    cd itreasury
     ```
 
 2. Build the project using Gradle:
@@ -40,7 +41,7 @@ These instructions will help you set up and run the project on your local machin
 
 3. Set up the containerized PostgreSQL database using Docker:
     ```sh
-    docker-compose up -d
+    docker compose up -d
     ```
 
 ## Running the Application
