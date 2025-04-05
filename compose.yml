@@ -21,8 +21,8 @@ services:
 #      - type: bind
 #        source: C:/Cloning/PGDATA
 #        target: /var/lib/postgresql/data/pgdata
-    networks:
-      - spring-network
+#    networks:
+#      - spring-network
     restart: unless-stopped
 
   itreasury-api:

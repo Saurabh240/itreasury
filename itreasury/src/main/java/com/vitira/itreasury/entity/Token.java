@@ -1,11 +1,10 @@
 package com.vitira.itreasury.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
-import java.util.List;
+import java.time.LocalDateTime;
 
 @Setter
 @Getter
@@ -14,18 +13,18 @@ import java.util.List;
 @NoArgsConstructor
 @Entity
 @EntityListeners(AuditingEntityListener.class)
-public class Role {
+public class Token {
 
-    public static final String USER = "USER";
     @Id
     @GeneratedValue
     private Long id;
+    private String token;
+    private LocalDateTime createdAt;
+    private LocalDateTime expiresAt;
+    private LocalDateTime validatedAt;
 
-    @Column(unique = true)
-    private String name;
+    @ManyToOne
+    @JoinColumn(name = "userId", nullable = false)
+    private UserEntity user;
 
-    @ManyToMany(mappedBy = "roles")
-    @JsonIgnore
-    private List<UserEntity> users;
-
-} 
+}

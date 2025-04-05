@@ -23,7 +23,12 @@ These instructions will help you set up and run the project on your local machin
 
 - Java 17 or higher
 - Gradle
-- [Docker](https://www.docker.com/products/docker-desktop/) or [Podman](https://podman-desktop.io/) (for running PostgreSQL database)
+- [Docker](https://www.docker.com/products/docker-desktop/)
+- [IntelliJ IDEA](https://www.jetbrains.com/idea/) (for development)
+- [Visual Studio Code](https://code.visualstudio.com/) (optional editor)
+- [Postman](https://www.postman.com/) (for API testing)
+- [Podman Desktop](https://podman-desktop.io/) (alternative to Docker for containerization)
+- [pgAdmin](https://www.pgadmin.org/) (for managing PostgreSQL databases)
 
 ## Installation
 
