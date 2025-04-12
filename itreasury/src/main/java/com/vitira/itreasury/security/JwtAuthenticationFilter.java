@@ -48,34 +48,28 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
         // Extract JWT token
         jwt = authHeader.substring(7);
-        
-        try {
-            // Extract username (email) from token
-            userEmail = jwtService.extractUsername(jwt);
-            
-            // If username extracted and not already authenticated
-            if (userEmail != null && SecurityContextHolder.getContext().getAuthentication() == null) {
-                UserDetails userDetails = this.userDetailsService.loadUserByUsername(userEmail);
-                
-                // If token is valid, set up authentication in security context
-                if (jwtService.isTokenValid(jwt, userDetails)) {
-                    UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
-                            userDetails,
-                            null,
-                            userDetails.getAuthorities()
-                    );
-                    authToken.setDetails(
-                            new WebAuthenticationDetailsSource().buildDetails(request)
-                    );
-                    SecurityContextHolder.getContext().setAuthentication(authToken);
-                }
+
+        // Extract username (email) from token
+        userEmail = jwtService.extractUsername(jwt);
+
+        // If username extracted and not already authenticated
+        if (userEmail != null && SecurityContextHolder.getContext().getAuthentication() == null) {
+            UserDetails userDetails = this.userDetailsService.loadUserByUsername(userEmail);
+
+            // If token is valid, set up authentication in security context
+            if (jwtService.isTokenValid(jwt, userDetails)) {
+                UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
+                        userDetails,
+                        null,
+                        userDetails.getAuthorities()
+                );
+                authToken.setDetails(
+                        new WebAuthenticationDetailsSource().buildDetails(request)
+                );
+                SecurityContextHolder.getContext().setAuthentication(authToken);
             }
-            filterChain.doFilter(request, response);
-        } catch (Exception e) {
-            // Log the exception details but continue the filter chain
-            logger.error("Failed to process JWT token", e);
         }
-        
         filterChain.doFilter(request, response);
+
     }
 } 

@@ -27,8 +27,8 @@ public class EmailClient {
 			fetcher.connect(configManager);
 
 			// Create search terms
-			String subjectFilter = "Daily Account Statement (MT940)";
-			Date dateFilter = new Date(System.currentTimeMillis() - (7L * 24 * 60 * 60 * 1000)); // Emails from the last
+			String subjectFilter = "MT940 Statement for Account";
+			Date dateFilter = new Date(System.currentTimeMillis() - (2L * 24 * 60 * 60 * 1000)); // Emails from the last
 																									// 7 days
 
 			emails = fetcher.fetchEmails(subjectFilter, dateFilter);

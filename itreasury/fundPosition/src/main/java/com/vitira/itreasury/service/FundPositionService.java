@@ -25,8 +25,8 @@ public class FundPositionService {
     @Autowired
     private BankRepository bankRepository;
 
-    public FundPositionDTO getFundPosition(Long companyId) {
-        List<BankAccount> bankAccounts = bankAccountRepository.findByCompanyId(companyId);
+    public FundPositionDTO getFundPosition() {
+        List<BankAccount> bankAccounts = bankAccountRepository.findAll();
         BigDecimal totalFunds = bankAccounts.stream()
                 .map(BankAccount::getBalance)
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
@@ -43,10 +43,13 @@ public class FundPositionService {
                 })
                 .collect(Collectors.toList());
 
-        Company company = companyRepository.findById(companyId).orElse(null);
-        String companyName = company != null ? company.getName() : null;
+        String companyName = "Vitira"; // Default company name
 
-        return new FundPositionDTO(companyId, companyName, totalFunds, bankwiseFunds);
+        return FundPositionDTO.builder()
+                .companyName(companyName)
+                .totalFunds(totalFunds)
+                .bankwiseFunds(bankwiseFunds)
+                .build();
     }
 }
 

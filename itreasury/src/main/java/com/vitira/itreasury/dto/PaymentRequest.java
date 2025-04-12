@@ -1,31 +1,21 @@
 package com.vitira.itreasury.dto;
 
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
+import lombok.*;
+
+@Getter
+@Setter
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class PaymentRequest {
-	private Long paymentId;
+
+	@NotNull(message = "Amount cannot be null")
 	private Double amount;
+	@NotEmpty(message = "Currency cannot be empty")
+	@NotNull(message = "Currency cannot be null")
 	private String currency;
+	private String description;
 
-	public Long getPaymentId() {
-		return paymentId;
-	}
-
-	public void setPaymentId(Long paymentId) {
-		this.paymentId = paymentId;
-	}
-
-	public Double getAmount() {
-		return amount;
-	}
-
-	public void setAmount(Double amount) {
-		this.amount = amount;
-	}
-
-	public String getCurrency() {
-		return currency;
-	}
-
-	public void setCurrency(String currency) {
-		this.currency = currency;
-	}
 }

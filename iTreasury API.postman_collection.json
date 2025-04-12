@@ -22,13 +22,14 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"email\": \"Laxman.Pawar@vitira.com\",\n  \"password\": \"password123\",\n  \"customerCode\": \"Vitira\"\n}"
+							"raw": "{\n  \"email\": \"abc@vitira.com\",\n  \"password\": \"passwor123\",\n  \"customerCode\": \"Vitira\"\n}"
 						},
 						"url": {
-							"raw": "{{baseUrl}}/api/v1/auth/register",
+							"raw": "{{baseUrl}}:{{port}}/api/v1/auth/register",
 							"host": [
 								"{{baseUrl}}"
 							],
+							"port": "{{port}}",
 							"path": [
 								"api",
 								"v1",
@@ -64,18 +65,65 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"email\": \"Laxman.Pawar@vitira.com\",\n  \"password\": \"password123\"\n}"
+							"raw": "{\n  \"email\": \"abc@vitira.com\",\n  \"password\": \"passwor123\"\n}"
 						},
 						"url": {
-							"raw": "{{baseUrl}}/api/v1/auth/authenticate",
+							"raw": "{{baseUrl}}:{{port}}/api/v1/auth/authenticate",
 							"host": [
 								"{{baseUrl}}"
 							],
+							"port": "{{port}}",
 							"path": [
 								"api",
 								"v1",
 								"auth",
 								"authenticate"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Logout",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);\r",
+									"postman.setEnvironmentVariable(\"jwtToken\", jsonData.token);"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{baseUrl}}:{{port}}/api/v1/auth/logout",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"port": "{{port}}",
+							"path": [
+								"api",
+								"v1",
+								"auth",
+								"logout"
 							]
 						}
 					},
@@ -102,61 +150,16 @@
 							}
 						],
 						"url": {
-							"raw": "{{baseUrl}}/api/v1/auth/currentUser",
+							"raw": "{{baseUrl}}:{{port}}/api/v1/auth/currentUser",
 							"host": [
 								"{{baseUrl}}"
 							],
+							"port": "{{port}}",
 							"path": [
 								"api",
 								"v1",
 								"auth",
 								"currentUser"
-							]
-						}
-					},
-					"response": []
-				}
-			]
-		},
-		{
-			"name": "Payments",
-			"item": [
-				{
-					"name": "Get Payment By ID",
-					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "{{token}}",
-									"type": "string"
-								}
-							]
-						},
-						"method": "GET",
-						"header": [
-							{
-								"key": "Authorization",
-								"value": "Bearer {{jwtToken}}"
-							}
-						],
-						"url": {
-							"raw": "{{baseUrl}}/api/v1/payments/{id}",
-							"host": [
-								"{{baseUrl}}"
-							],
-							"path": [
-								"api",
-								"v1",
-								"payments",
-								"{id}"
-							],
-							"variable": [
-								{
-									"key": "id",
-									"value": "1"
-								}
 							]
 						}
 					},
@@ -183,10 +186,11 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{baseUrl}}/api/v1/",
+							"raw": "{{baseUrl}}:{{port}}/api/v1/",
 							"host": [
 								"{{baseUrl}}"
 							],
+							"port": "{{port}}",
 							"path": [
 								"api",
 								"v1",
@@ -197,16 +201,394 @@
 					"response": []
 				}
 			]
+		},
+		{
+			"name": "Payments",
+			"item": [
+				{
+					"name": "Save Payment",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{jwtToken}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}:{{port}}/api/v1/fetchEmails",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"port": "{{port}}",
+							"path": [
+								"api",
+								"v1",
+								"fetchEmails"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Payment By ID",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{jwtToken}}"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}:{{port}}/api/v1/payments/1",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"port": "{{port}}",
+							"path": [
+								"api",
+								"v1",
+								"payments",
+								"1"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "EmailFetcher and SwiftParser",
+			"item": [
+				{
+					"name": "Fetch and Parse Emails",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{jwtToken}}"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}:{{port}}/api/v1/fetchEmails",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"port": "{{port}}",
+							"path": [
+								"api",
+								"v1",
+								"fetchEmails"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Fund Position",
+			"item": [
+				{
+					"name": "fundPosition Vitira",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{jwtToken}}"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}:{{port}}/api/v1/fundPosition",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"port": "{{port}}",
+							"path": [
+								"api",
+								"v1",
+								"fundPosition"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Email Scheduler",
+			"item": [
+				{
+					"name": "Store Transactions in database",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{jwtToken}}"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}:8080/api/mt940/store",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"mt940",
+								"store"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get All accounts",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{jwtToken}}"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}:8080/api/mt940/accounts",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"mt940",
+								"accounts"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get accounts by Bank Name",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{jwtToken}}"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}:8080/api/mt940/accounts/AXIS%20Bank",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"mt940",
+								"accounts",
+								"AXIS%20Bank"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get account by account Number",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{jwtToken}}"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}:8080/api/mt940/accounts/9876543210",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"mt940",
+								"accounts",
+								"9876543210"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Transactions by account Number",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{jwtToken}}"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}:8080/api/mt940/transactions/9876543210",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"mt940",
+								"transactions",
+								"9876543210"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
 		}
 	],
 	"variable": [
 		{
 			"key": "baseUrl",
-			"value": "http://localhost:8080"
+			"value": "http://localhost"
 		},
 		{
 			"key": "jwtToken",
 			"value": ""
+		},
+		{
+			"key": "port",
+			"value": "8090",
+			"type": "string"
 		}
 	]
 }

@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
+import com.vitira.itreasury.entity.Bank;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
@@ -37,6 +38,9 @@ public class MT940ParserService {
 	@Autowired
 	private TransactionRepository transactionRepository;
 
+	@Autowired
+	private BankService bankService;
+
 	public void parseAndSave(String attachment) {
 
 		System.out.println("Parsing : " + attachment);
@@ -52,29 +56,29 @@ public class MT940ParserService {
 	private void saveBankAccount(MT940 mt) {
 
 		System.out.println("Saving Bank Account details.");
-
-		String bankCode = "NA";
+		// Extract the BIC (often found in the :25: tag)
+        String swiftCode = mt.getSwiftMessage().getBlock1().getBIC().getBic8();
 		String accountNumber = mt.getField25().getAccount();
 		String accountHolder = "NA";
-		String bankName = "NA";
 
 		BigDecimal closingBalance = mt.getField62F().getAmountAsBigDecimal();
 		String currency = mt.getField62F().getCurrency(); // Closing available balance currency
 
-		System.out.println("BankCode: " + bankCode);
+		System.out.println("SwiftCode: " + swiftCode);
 		System.out.println("AccountNumber: " + accountNumber);
 		System.out.println("AccountHolder: " + accountHolder);
-		System.out.println("BankName: " + bankName);
 		System.out.println("closingBalance: " + closingBalance);
 		System.out.println("Currency: " + currency);
 
-		BankAccount bankAccount = new BankAccount();
-		bankAccount.setBankCode(bankCode);
-		bankAccount.setAccountHolder(accountHolder);
-		bankAccount.setAccountNumber(accountNumber);
-		bankAccount.setBankName(bankName);
-		bankAccount.setBalance(closingBalance);
-		bankAccount.setCurrency(currency);
+		Bank bank = bankService.getOrCreateBank(swiftCode);
+
+		BankAccount bankAccount = BankAccount.builder()
+				.accountHolder(accountHolder)
+				.accountNumber(accountNumber)
+				.bank(bank)
+				.balance(closingBalance)
+				.currency(currency)
+				.build();
 
 		try {
 			// Save to the database
@@ -95,17 +99,18 @@ public class MT940ParserService {
 	private void saveMT940Message(MT940 mt, BankAccount bankAccount) {
 		// Save Swift Message
 		System.out.println("Saving Swift message details.");
-		MT940Message swiftMessage = new MT940Message();
 
 		Field20 field20 = mt.getField20();
 		String refNum = field20 != null ? field20.getReference() : null;
 
-		swiftMessage.setTransactionReferenceNumber(refNum);
-		swiftMessage.setBankAccount(bankAccount);
-		swiftMessage.setMessageType("MT940");
-		swiftMessage.setMessageData(mt.message());
-		swiftMessage.setReceivedAt(LocalDateTime.now());
-		swiftMessage.setCreatedAt(LocalDateTime.now());
+		MT940Message swiftMessage = MT940Message.builder()
+				.transactionReferenceNumber(refNum)
+				.bankAccount(bankAccount)
+				.messageType("MT940")
+				.messageData(mt.message())
+				.receivedAt(LocalDateTime.now())
+				.createdAt(LocalDateTime.now())
+				.build();
 		try {
 			swiftMessage = mt940MessageRepository.save(swiftMessage);
 			saveTransactions(mt, swiftMessage);
@@ -141,10 +146,9 @@ public class MT940ParserService {
 				String trxType = field61.getTransactionType();
 				String identificationCode = field61.getIdentificationCode();
 				String referenceForAccOwner = field61.getReferenceForTheAccountOwner();
-				String referenceOfTheAccountServicingInstitution = field61
+				String referenceOfTheAccountServingInstitution = field61
 						.getReferenceOfTheAccountServicingInstitution();
-				String supplementaryDetails = field61.getSupplementaryDetails();
-				String desc = "";
+				String desc = "NOT AVAILABLE"; // default value
 
 				System.out.println("---------------------------");
 				System.out.println("Amount: " + amount);
@@ -160,19 +164,20 @@ public class MT940ParserService {
 					i++;
 				}
 
-				Transaction transaction = new Transaction();
-				transaction.setMt940Message(swiftMessage);
-				transaction.setValueDate(valueDate);
-				transaction.setEntryDate(entryDate);
-				transaction.setDebitCreditMark(dcMark);
-				transaction.setFundsCode(fundsCode);
-				transaction.setAmount(amount);
-				transaction.setTransactionType(trxType);
-				transaction.setIdentificationCode(identificationCode);
-				transaction.setIdentificationCode(referenceForAccOwner);
-				transaction.setIdentificationCode(referenceOfTheAccountServicingInstitution);
-				transaction.setIdentificationCode(supplementaryDetails);
-				transaction.setDescription(desc);
+				Transaction transaction = Transaction.builder()
+						.mt940Message(swiftMessage)
+						.valueDate(valueDate)
+						.entryDate(entryDate)
+						.debitCreditMark(dcMark)
+						.fundsCode(fundsCode)
+						.amount(amount)
+						.transactionType(trxType)
+						.identificationCode(identificationCode)
+						.referenceForAccOwner(referenceForAccOwner)
+						.refOfAccServingInstitution(referenceOfTheAccountServingInstitution)
+						.description(desc)
+						.build();
+
 				transactions.add(transaction);
 			}
 		}

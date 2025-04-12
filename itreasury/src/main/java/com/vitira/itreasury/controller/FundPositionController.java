@@ -11,8 +11,8 @@ public class FundPositionController {
     @Autowired
     private FundPositionService fundPositionService;
 
-    @GetMapping("/{companyId}")
-    public FundPositionDTO getFundPosition(@PathVariable Long companyId) {
-        return fundPositionService.getFundPosition(companyId);
+    @GetMapping()
+    public FundPositionDTO getFundPosition() {
+        return fundPositionService.getFundPosition();
     }
 }
