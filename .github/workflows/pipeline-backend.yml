@@ -159,7 +159,7 @@ jobs:
         run: ssh ${{ secrets.VM_USERNAME }}@${{ secrets.VM_IP }} "mkdir -p ci-cd"
 
       - name: Copy docker-compose file
-        run: scp -oStrictHostKeyChecking=no docker-compose.yml ${{ secrets.VM_USERNAME }}@${{ secrets.VM_IP }}:ci-cd/docker-compose.yml
+        run: scp -oStrictHostKeyChecking=no compose.yml ${{ secrets.VM_USERNAME }}@${{ secrets.VM_IP }}:ci-cd/docker-compose.yml
 
       - name: Check if Docker Compose is installed
         run: |
@@ -179,8 +179,8 @@ jobs:
           export EMAIL_USER_NAME=${{ secrets.EMAIL_USER_NAME }}
           export EMAIL_PASSWORD=${{ secrets.EMAIL_PASSWORD }}
           cd ci-cd
-          docker compose -f docker-compose.yml pull -q
-          docker compose -f docker-compose.yml up -d
+          docker compose -f compose.yml pull -q
+          docker compose -f compose.yml up -d
           EOF
 #  health-check:
 #    name: API Health Check
