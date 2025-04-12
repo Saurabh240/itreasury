@@ -3,7 +3,7 @@ name: i-treasury Backend API Pipeline
 on:
   push:
     branches:
-      - feature/cicd
+      - main
     paths:
       - itreasury/**
       - docker/backend/**
@@ -147,6 +147,13 @@ jobs:
     runs-on: ubuntu-latest
     needs: [build-image]
     steps:
+
+      - name: Add SSH Key
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          ssh-keyscan -H ${{ secrets.VM_IP }} >> ~/.ssh/known_hosts
 
       - name: Create deployment folder
         run: ssh ${{ secrets.VM_USERNAME }}@${{ secrets.VM_IP }} "mkdir -p ci-cd"
