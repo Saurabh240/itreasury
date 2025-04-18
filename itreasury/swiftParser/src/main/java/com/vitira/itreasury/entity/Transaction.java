@@ -3,7 +3,6 @@ package com.vitira.itreasury.entity;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
-import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -38,6 +37,10 @@ public class Transaction {
 	private String identificationCode;
 	private String referenceForAccOwner;
 	private String refOfAccServingInstitution;
+	private String supplementaryInfo;
 	private String description;
+
+	@ManyToOne
+	private TransactionCategory category; // Assigned category
 
 }

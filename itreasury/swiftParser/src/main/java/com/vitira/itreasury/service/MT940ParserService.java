@@ -5,7 +5,6 @@ import java.io.IOException;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
 
 import com.vitira.itreasury.entity.Bank;
@@ -40,6 +39,9 @@ public class MT940ParserService {
 
 	@Autowired
 	private BankService bankService;
+
+	@Autowired
+	private TransactionCategorizationService transactionCategorizationService;
 
 	public void parseAndSave(String attachment) {
 
@@ -132,58 +134,44 @@ public class MT940ParserService {
 			if (t.getName().equals("61")) {
 				Field61 field61 = (Field61) t.asField();
 
-				Calendar calValueDate = field61.getValueDateAsCalendar();
-				Calendar calEntryDate = field61.getEntryDateAsCalendar();
-
-				System.out.println(calValueDate);
-				System.out.println(calEntryDate);
-
-				LocalDateTime valueDate = DateTimeUtils.calendarToLocalDateTime(calValueDate);
-				LocalDateTime entryDate = DateTimeUtils.calendarToLocalDateTime(calEntryDate);
-				String dcMark = field61.getDebitCreditMark();
-				String fundsCode = field61.getFundsCode();
-				BigDecimal amount = field61.getAmountAsBigDecimal();
-				String trxType = field61.getTransactionType();
-				String identificationCode = field61.getIdentificationCode();
-				String referenceForAccOwner = field61.getReferenceForTheAccountOwner();
-				String referenceOfTheAccountServingInstitution = field61
-						.getReferenceOfTheAccountServicingInstitution();
-				String desc = "NOT AVAILABLE"; // default value
-
-				System.out.println("---------------------------");
-				System.out.println("Amount: " + amount);
-				System.out.println("Transaction Type: " + trxType);
-				System.out.println("Identification: " + identificationCode); // since version 7.8
-				System.out.println("Reference Acc Owner: " + referenceForAccOwner);
 				/*
 				 * look ahead for field 86
 				 */
+				String desc = "NOT AVAILABLE"; // default value
 				if (i + 1 < loop.size() && loop.getTag(i + 1).getName().equals("86")) {
 					desc = loop.getTag(i + 1).getValue();
 					System.out.println("Description: " + desc);
 					i++;
 				}
+				Transaction transaction = buildTransaction(swiftMessage, field61);
+				transaction.setDescription(desc);
 
-				Transaction transaction = Transaction.builder()
-						.mt940Message(swiftMessage)
-						.valueDate(valueDate)
-						.entryDate(entryDate)
-						.debitCreditMark(dcMark)
-						.fundsCode(fundsCode)
-						.amount(amount)
-						.transactionType(trxType)
-						.identificationCode(identificationCode)
-						.referenceForAccOwner(referenceForAccOwner)
-						.refOfAccServingInstitution(referenceOfTheAccountServingInstitution)
-						.description(desc)
-						.build();
+				// Categorize transaction
+				Transaction categorizedTransaction = transactionCategorizationService.categorizeTransaction(transaction);
 
-				transactions.add(transaction);
+				transactions.add(categorizedTransaction);
 			}
 		}
 
 		// Save Transactions
 		transactionRepository.saveAll(transactions);
+	}
+
+	Transaction buildTransaction(MT940Message swiftMessage, Field61 field61) {
+
+		return Transaction.builder()
+				.mt940Message(swiftMessage)
+				.valueDate(DateTimeUtils.calendarToLocalDateTime(field61.getValueDateAsCalendar()))
+				.entryDate(DateTimeUtils.calendarToLocalDateTime(field61.getEntryDateAsCalendar()))
+				.debitCreditMark(field61.getDebitCreditMark())
+				.fundsCode(field61.getFundsCode())
+				.amount(field61.getAmountAsBigDecimal())
+				.transactionType(field61.getTransactionType())
+				.identificationCode(field61.getIdentificationCode())
+				.referenceForAccOwner(field61.getReferenceForTheAccountOwner())
+				.refOfAccServingInstitution(field61.getReferenceOfTheAccountServicingInstitution())
+				.supplementaryInfo(field61.getSupplementaryDetails())
+				.build();
 	}
 
 }

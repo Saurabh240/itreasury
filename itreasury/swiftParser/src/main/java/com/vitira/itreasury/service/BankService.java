@@ -1,10 +1,10 @@
 package com.vitira.itreasury.service;
 
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.vitira.itreasury.entity.Bank;
-import com.vitira.itreasury.entity.BankAccount;
+import com.vitira.itreasury.entity.BankSwiftCode;
 import com.vitira.itreasury.repository.BankRepository;
-import com.vitira.itreasury.repository.BankAccountRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Service;
@@ -12,7 +12,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 
 @Service
@@ -21,16 +20,13 @@ public class BankService {
     @Autowired
     private BankRepository bankRepository;
 
-    @Autowired
-    private BankAccountRepository bankAccountRepository;
-
-    private final ObjectMapper objectMapper = new ObjectMapper();
-    private List<Map<String, String>> swiftCodes;
+    private final List<BankSwiftCode> swiftCodes;
 
     public BankService() {
         try {
             ClassPathResource resource = new ClassPathResource("swift_codes.json");
-            swiftCodes = objectMapper.readValue(resource.getInputStream(), List.class);
+            ObjectMapper objectMapper = new ObjectMapper();
+            swiftCodes = objectMapper.readValue(resource.getInputStream(), new TypeReference<>() {});
         } catch (IOException e) {
             throw new RuntimeException("Failed to load swift codes", e);
         }
@@ -42,17 +38,17 @@ public class BankService {
         Bank bank = bankRepository.findBySwiftCode(swiftCode);
         if (bank == null) {
             // Find bank details from JSON
-            Optional<Map<String, String>> bankDetails = swiftCodes.stream()
-                .filter(b -> b.get("swift_code").equals(swiftCode))
+            Optional<BankSwiftCode> bankDetails = swiftCodes.stream()
+                .filter(b -> b.getSwiftCode().equals(swiftCode))
                 .findFirst();
 
             if (bankDetails.isPresent()) {
-                Map<String, String> details = bankDetails.get();
+                BankSwiftCode bankSwiftCode = bankDetails.get();
                 bank = new Bank();
                 bank.setSwiftCode(swiftCode);
-                bank.setName(details.get("bank_name"));
-                bank.setBranch(details.get("branch"));
-                bank.setAddress(details.get("city"));
+                bank.setName(bankSwiftCode.getBankName());
+                bank.setBranch(bankSwiftCode.getBranch());
+                bank.setAddress(bankSwiftCode.getCity());
                 bankRepository.save(bank);
             } else {
                 // If bank not found in JSON, create with minimal details

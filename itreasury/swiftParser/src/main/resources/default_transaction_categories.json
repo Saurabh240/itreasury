@@ -1,0 +1,122 @@
+[
+  {
+    "id": 1,
+    "categoryType": "INFLOW",
+    "categoryName": "LocalCollections",
+    "categoryDescription": "Local customer collections",
+    "supplementaryKeywords": "CUSTPYMT",
+    "descKeywords": "collection,local"
+  },
+  {
+    "id": 2,
+    "categoryType": "INFLOW",
+    "categoryName": "ExportSales",
+    "categoryDescription": "Export sales",
+    "supplementaryKeywords": "IMP",
+    "descKeywords": "export,sales"
+  },
+  {
+    "id": 3,
+    "categoryType": "INFLOW",
+    "categoryName": "TaxRefunds",
+    "categoryDescription": "Tax refunds",
+    "supplementaryKeywords": "TAX",
+    "descKeywords": "tax,refund"
+  },
+  {
+    "id": 4,
+    "categoryType": "INFLOW",
+    "categoryName": "InterestReceipts",
+    "categoryDescription": "Tax refunds",
+    "supplementaryKeywords": "INT",
+    "descKeywords": "Interest,received"
+  },
+  {
+    "id": 5,
+    "categoryType": "INFLOW",
+    "categoryName": "LoanAvailed",
+    "categoryDescription": "Tax refunds",
+    "supplementaryKeywords": "LOAN",
+    "descKeywords": "loan,availed"
+  },
+  {
+    "id": 6,
+    "categoryType": "INFLOW",
+    "categoryName": "Miscellaneous",
+    "categoryDescription": "Miscellaneous inflow transactions",
+    "supplementaryKeywords": "MISC",
+    "descKeywords": "miscellaneous"
+  },
+  {
+    "id": 7,
+    "categoryType": "OUTFLOW",
+    "categoryName": "LocalPurchases",
+    "categoryDescription": "Local purchases",
+    "supplementaryKeywords": "CMS",
+    "descKeywords": "purchase,local"
+  },
+  {
+    "id": 8,
+    "categoryType": "OUTFLOW",
+    "categoryName": "Imports",
+    "categoryDescription": "Import payments",
+    "supplementaryKeywords": "IMP",
+    "descKeywords": "import,payment"
+  },
+  {
+    "id": 9,
+    "categoryType": "OUTFLOW",
+    "categoryName": "FinanceCost",
+    "categoryDescription": "Finance cost",
+    "supplementaryKeywords": "FIN",
+    "descKeywords": "Finance,cost"
+  },
+  {
+    "id": 10,
+    "categoryType": "OUTFLOW",
+    "categoryName": "RepaymentOfLoans",
+    "categoryDescription": "Repayment of loans",
+    "supplementaryKeywords": "Principal,PRIN",
+    "descKeywords": "Loan,Repayment"
+  },
+  {
+    "id": 11,
+    "categoryType": "OUTFLOW",
+    "categoryName": "Salaries",
+    "categoryDescription": "Salaries",
+    "supplementaryKeywords": "Salary,HR,REIM",
+    "descKeywords": "salary,wages"
+  },
+  {
+    "id": 12,
+    "categoryType": "OUTFLOW",
+    "categoryName": "DirectTaxes",
+    "categoryDescription": "Direct taxes",
+    "supplementaryKeywords": "GST",
+    "descKeywords": "tax,direct"
+  },
+  {
+    "id": 13,
+    "categoryType": "OUTFLOW",
+    "categoryName": "IndirectTaxes",
+    "categoryDescription": "Indirect taxes",
+    "supplementaryKeywords": "TDS",
+    "descKeywords": "tax,indirect"
+  },
+  {
+    "id": 14,
+    "categoryType": "OUTFLOW",
+    "categoryName": "BankCharges",
+    "categoryDescription": "Bank Charges",
+    "supplementaryKeywords": "CHG",
+    "descKeywords": "bank,charges"
+  },
+  {
+    "id": 14,
+    "categoryType": "OUTFLOW",
+    "categoryName": "Miscellaneous",
+    "categoryDescription": "Miscellaneous outflow transactions",
+    "supplementaryKeywords": "MISC",
+    "descKeywords": "miscellaneous"
+  }
+]
