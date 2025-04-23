@@ -65,7 +65,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"email\": \"abc@vitira.com\",\n  \"password\": \"passwor123\"\n}"
+							"raw": "{\n  \"email\": \"abc@vitira.com\",\n  \"password\": \"passwor123\",\n  \"customerCode\": \"Vitira\"\n}"
 						},
 						"url": {
 							"raw": "{{baseUrl}}:{{port}}/api/v1/auth/authenticate",
@@ -114,7 +114,7 @@
 							"raw": ""
 						},
 						"url": {
-							"raw": "{{baseUrl}}:{{port}}/api/v1/auth/logout",
+							"raw": "{{baseUrl}}:{{port}}/api/v1/logout",
 							"host": [
 								"{{baseUrl}}"
 							],
@@ -122,7 +122,6 @@
 							"path": [
 								"api",
 								"v1",
-								"auth",
 								"logout"
 							]
 						}
@@ -207,9 +206,6 @@
 			"item": [
 				{
 					"name": "Save Payment",
-					"protocolProfileBehavior": {
-						"disableBodyPruning": true
-					},
 					"request": {
 						"auth": {
 							"type": "bearer",
@@ -221,7 +217,7 @@
 								}
 							]
 						},
-						"method": "GET",
+						"method": "POST",
 						"header": [
 							{
 								"key": "Authorization",
@@ -230,7 +226,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "",
+							"raw": "{\r\n    \"amount\": 1000.0,\r\n    \"currency\": \"INR\",\r\n    \"description\": \"This is dummy payment\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -238,7 +234,7 @@
 							}
 						},
 						"url": {
-							"raw": "{{baseUrl}}:{{port}}/api/v1/fetchEmails",
+							"raw": "{{baseUrl}}:{{port}}/api/v1/payments",
 							"host": [
 								"{{baseUrl}}"
 							],
@@ -246,7 +242,7 @@
 							"path": [
 								"api",
 								"v1",
-								"fetchEmails"
+								"payments"
 							]
 						}
 					},
@@ -371,6 +367,188 @@
 			]
 		},
 		{
+			"name": "Cash Flow",
+			"item": [
+				{
+					"name": "CashFlow Vitira",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{jwtToken}}"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}:{{port}}/api/v1/cashFlow?startDate=2025-03-22T00:00:00&endDate=2025-04-22T23:59:59",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"port": "{{port}}",
+							"path": [
+								"api",
+								"v1",
+								"cashFlow"
+							],
+							"query": [
+								{
+									"key": "startDate",
+									"value": "2025-03-22T00:00:00"
+								},
+								{
+									"key": "endDate",
+									"value": "2025-04-22T23:59:59"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Categorization Rules",
+			"item": [
+				{
+					"name": "Categorize Rule",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{jwtToken}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"debitCreditMark\": \"C\",\r\n  \"amount\": 100.0,\r\n  \"transactionType\": \"Credit\",\r\n  \"supplementaryInfo\": \"INTRATEAPR\",\r\n  \"description\": \"Interest Credited for April\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}:{{port}}/api/v1/transactions/categorize",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"port": "{{port}}",
+							"path": [
+								"api",
+								"v1",
+								"transactions",
+								"categorize"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Bulk categorize Rules",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{jwtToken}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "[\r\n    {\r\n        \"debitCreditMark\": \"D\",\r\n        \"amount\": 1400.0,\r\n        \"transactionType\": \"Debit\",\r\n        \"supplementaryInfo\": \"CHG\",\r\n        \"description\": \"Bank Service Charges\"\r\n    },\r\n    {\r\n        \"debitCreditMark\": \"C\",\r\n        \"amount\": 400.0,\r\n        \"transactionType\": \"Credit\",\r\n        \"supplementaryInfo\": \"INT\",\r\n        \"description\": \"Interest Credited for April\"\r\n    },\r\n    {\r\n        \"debitCreditMark\": \"D\",\r\n        \"amount\": 700.0,\r\n        \"transactionType\": \"Debit\",\r\n        \"supplementaryInfo\": \"CMS\",\r\n        \"description\": \"Local purchases\"\r\n    },\r\n    {\r\n        \"debitCreditMark\": \"C\",\r\n        \"amount\": 200.0,\r\n        \"transactionType\": \"Credit\",\r\n        \"supplementaryInfo\": \"IMP\",\r\n        \"description\": \"Export sales\"\r\n    },\r\n    {\r\n        \"debitCreditMark\": \"D\",\r\n        \"amount\": 1200.0,\r\n        \"transactionType\": \"Debit\",\r\n        \"supplementaryInfo\": \"GST\",\r\n        \"description\": \"Direct taxes\"\r\n    },\r\n    {\r\n        \"debitCreditMark\": \"C\",\r\n        \"amount\": 100.0,\r\n        \"transactionType\": \"Credit\",\r\n        \"supplementaryInfo\": \"CUSTPYMT\",\r\n        \"description\": \"Local customer collections\"\r\n    },\r\n    {\r\n        \"debitCreditMark\": \"D\",\r\n        \"amount\": 900.0,\r\n        \"transactionType\": \"Debit\",\r\n        \"supplementaryInfo\": \"FIN\",\r\n        \"description\": \"Finance cost\"\r\n    },\r\n    {\r\n        \"debitCreditMark\": \"C\",\r\n        \"amount\": 600.0,\r\n        \"transactionType\": \"Credit\",\r\n        \"supplementaryInfo\": \"MISC\",\r\n        \"description\": \"Miscellaneous transactions\"\r\n    },\r\n    {\r\n        \"debitCreditMark\": \"D\",\r\n        \"amount\": 1300.0,\r\n        \"transactionType\": \"Debit\",\r\n        \"supplementaryInfo\": \"TDS\",\r\n        \"description\": \"Indirect taxes\"\r\n    },\r\n    {\r\n        \"debitCreditMark\": \"D\",\r\n        \"amount\": 1000.0,\r\n        \"transactionType\": \"Debit\",\r\n        \"supplementaryInfo\": \"Principal,PRIN\",\r\n        \"description\": \"Repayment of loans\"\r\n    },\r\n    {\r\n        \"debitCreditMark\": \"C\",\r\n        \"amount\": 500.0,\r\n        \"transactionType\": \"Credit\",\r\n        \"supplementaryInfo\": \"LOAN\",\r\n        \"description\": \"Loan availed\"\r\n    },\r\n    {\r\n        \"debitCreditMark\": \"D\",\r\n        \"amount\": 1100.0,\r\n        \"transactionType\": \"Debit\",\r\n        \"supplementaryInfo\": \"Salary,HR,REIM\",\r\n        \"description\": \"Salaries\"\r\n    },\r\n    {\r\n        \"debitCreditMark\": \"C\",\r\n        \"amount\": 300.0,\r\n        \"transactionType\": \"Credit\",\r\n        \"supplementaryInfo\": \"TAX\",\r\n        \"description\": \"Tax refunds\"\r\n    },\r\n    {\r\n        \"debitCreditMark\": \"D\",\r\n        \"amount\": 800.0,\r\n        \"transactionType\": \"Debit\",\r\n        \"supplementaryInfo\": \"IMP\",\r\n        \"description\": \"Import payments\"\r\n    }\r\n]",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}:{{port}}/api/v1/transactions/categorize/bulk",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"port": "{{port}}",
+							"path": [
+								"api",
+								"v1",
+								"transactions",
+								"categorize",
+								"bulk"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "export Rules",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{jwtToken}}"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}:{{port}}/api/v1/category-rules/export",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"port": "{{port}}",
+							"path": [
+								"api",
+								"v1",
+								"category-rules",
+								"export"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
 			"name": "Email Scheduler",
 			"item": [
 				{
@@ -394,11 +572,11 @@
 							}
 						],
 						"url": {
-							"raw": "{{baseUrl}}:8080/api/mt940/store",
+							"raw": "{{baseUrl}}:8081/api/mt940/store",
 							"host": [
 								"{{baseUrl}}"
 							],
-							"port": "8080",
+							"port": "8081",
 							"path": [
 								"api",
 								"mt940",
@@ -429,11 +607,11 @@
 							}
 						],
 						"url": {
-							"raw": "{{baseUrl}}:8080/api/mt940/accounts",
+							"raw": "{{baseUrl}}:8081/api/mt940/accounts",
 							"host": [
 								"{{baseUrl}}"
 							],
-							"port": "8080",
+							"port": "8081",
 							"path": [
 								"api",
 								"mt940",
@@ -500,7 +678,7 @@
 							}
 						],
 						"url": {
-							"raw": "{{baseUrl}}:8080/api/mt940/accounts/9876543210",
+							"raw": "{{baseUrl}}:8080/api/mt940/account/9876543210",
 							"host": [
 								"{{baseUrl}}"
 							],
@@ -508,7 +686,7 @@
 							"path": [
 								"api",
 								"mt940",
-								"accounts",
+								"account",
 								"9876543210"
 							]
 						}
@@ -536,16 +714,128 @@
 							}
 						],
 						"url": {
-							"raw": "{{baseUrl}}:8080/api/mt940/transactions/9876543210",
+							"raw": "{{baseUrl}}:8081/api/mt940/transactions/9876543210",
 							"host": [
 								"{{baseUrl}}"
 							],
-							"port": "8080",
+							"port": "8081",
 							"path": [
 								"api",
 								"mt940",
 								"transactions",
 								"9876543210"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "OpenAPI docs",
+			"item": [
+				{
+					"name": "Get All Endpoints (JSON)",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{jwtToken}}"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}:{{port}}/api/v1/v3/api-docs",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"port": "{{port}}",
+							"path": [
+								"api",
+								"v1",
+								"v3",
+								"api-docs"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get All Endpoints (YAML)",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{jwtToken}}"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}:{{port}}/api/v1/v3/api-docs.yaml",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"port": "{{port}}",
+							"path": [
+								"api",
+								"v1",
+								"v3",
+								"api-docs.yaml"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get All Endpoints (YAML) Copy",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{jwtToken}}"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}:{{port}}/api/v1/swagger-ui.html",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"port": "{{port}}",
+							"path": [
+								"api",
+								"v1",
+								"swagger-ui.html"
 							]
 						}
 					},
@@ -580,6 +870,11 @@
 		{
 			"key": "baseUrl",
 			"value": "http://localhost"
+		},
+		{
+			"key": "baseUrl1",
+			"value": "http://20.83.161.23",
+			"type": "string"
 		},
 		{
 			"key": "jwtToken",
