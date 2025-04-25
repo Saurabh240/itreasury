@@ -1,22 +1,11 @@
 package com.vitira.itreasury.service;
 
-import java.io.File;
-import java.io.IOException;
-import java.math.BigDecimal;
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
-
-import com.vitira.itreasury.entity.Bank;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataIntegrityViolationException;
-import org.springframework.stereotype.Service;
-
 import com.prowidesoftware.swift.model.SwiftTagListBlock;
 import com.prowidesoftware.swift.model.Tag;
 import com.prowidesoftware.swift.model.field.Field20;
 import com.prowidesoftware.swift.model.field.Field61;
 import com.prowidesoftware.swift.model.mt.mt9xx.MT940;
+import com.vitira.itreasury.entity.Bank;
 import com.vitira.itreasury.entity.BankAccount;
 import com.vitira.itreasury.entity.MT940Message;
 import com.vitira.itreasury.entity.Transaction;
@@ -24,6 +13,17 @@ import com.vitira.itreasury.helpers.DateTimeUtils;
 import com.vitira.itreasury.repository.BankAccountRepository;
 import com.vitira.itreasury.repository.MT940MessageRepository;
 import com.vitira.itreasury.repository.TransactionRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.io.File;
+import java.io.IOException;
+import java.math.BigDecimal;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class MT940ParserService {
@@ -43,6 +43,7 @@ public class MT940ParserService {
 	@Autowired
 	private TransactionCategorizationService transactionCategorizationService;
 
+	@Transactional
 	public void parseAndSave(String attachment) {
 
 		System.out.println("Parsing : " + attachment);
@@ -50,11 +51,16 @@ public class MT940ParserService {
 		try {
 			MT940 mt = MT940.parse(messageFile);
 			saveBankAccount(mt);
+			// Delete the file after successful processing
+			if (!messageFile.delete()) {
+				System.err.println("Warning: Could not delete file: " + attachment);
+			}
 		} catch (IOException e) {
 			System.err.println("Error parsing message file: " + e.getMessage());
 		}
 	}
 
+	@Transactional
 	private void saveBankAccount(MT940 mt) {
 
 		System.out.println("Saving Bank Account details.");
@@ -98,6 +104,7 @@ public class MT940ParserService {
 
 	}
 
+	@Transactional
 	private void saveMT940Message(MT940 mt, BankAccount bankAccount) {
 		// Save Swift Message
 		System.out.println("Saving Swift message details.");
@@ -121,6 +128,7 @@ public class MT940ParserService {
 		}
 	}
 
+	@Transactional
 	private void saveTransactions(MT940 mt, MT940Message swiftMessage) {
 		// Parse Transactions
 		System.out.println("Saving transactions.");
@@ -170,6 +178,7 @@ public class MT940ParserService {
 				.identificationCode(field61.getIdentificationCode())
 				.referenceForAccOwner(field61.getReferenceForTheAccountOwner())
 				.refOfAccServingInstitution(field61.getReferenceOfTheAccountServicingInstitution())
+				.transactionTypeCode(field61.getTransactionType())
 				.supplementaryInfo(field61.getSupplementaryDetails())
 				.build();
 	}

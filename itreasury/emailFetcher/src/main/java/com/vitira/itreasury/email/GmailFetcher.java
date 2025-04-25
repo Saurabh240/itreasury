@@ -73,9 +73,8 @@ public class GmailFetcher implements EmailFetcher {
 			email.setBody(getTextFromMessage(message));
 
 			// Process the message content and extract attachments
-			if (message.getContent() instanceof MimeMultipart) {
-				MimeMultipart multipart = (MimeMultipart) message.getContent();
-				for (int i = 0; i < multipart.getCount(); i++) {
+			if (message.getContent() instanceof MimeMultipart multipart) {
+                for (int i = 0; i < multipart.getCount(); i++) {
 					BodyPart bodyPart = multipart.getBodyPart(i);
 					if (Part.ATTACHMENT.equalsIgnoreCase(bodyPart.getDisposition())) {
 						// Save the attachment to a file

@@ -70,7 +70,7 @@ import org.apache.olingo.commons.api.format.ContentType;
  */
 @Component
 public class ERPClientApp {
-	private ODataClient client;
+	private final ODataClient client;
 	private Edm edm;
 	private final String BASE_ERP_ODATA_URL = "http://localhost:8080/odata-server-30/cars.svc";
 
@@ -216,9 +216,8 @@ public class ERPClientApp {
 			Object value = entry.getValue();
 			if (value instanceof Map) {
 				value = prettyPrint((Map<String, Object>) value, level + 1);
-			} else if (value instanceof Calendar) {
-				Calendar cal = (Calendar) value;
-				value = SimpleDateFormat.getInstance().format(cal.getTime());
+			} else if (value instanceof Calendar cal) {
+                value = SimpleDateFormat.getInstance().format(cal.getTime());
 			}
 			b.append(value).append("\n");
 		}

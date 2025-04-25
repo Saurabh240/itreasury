@@ -29,6 +29,7 @@ import io.swagger.v3.oas.annotations.servers.Server;
         servers = {
                 @Server(
                         description = "Local server", url = "http://localhost:8090"
+
                 ),
                 @Server(
                         description = "Production server", url = "https://api.vitira.in"

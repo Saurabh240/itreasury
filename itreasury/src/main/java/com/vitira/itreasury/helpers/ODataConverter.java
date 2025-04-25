@@ -15,7 +15,7 @@ import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
 public class ODataConverter<T> {
 
-	private ObjectMapper objectMapper;
+	private final ObjectMapper objectMapper;
 
 	private final Class<T> clazz;
 

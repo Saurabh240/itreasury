@@ -12,10 +12,8 @@ import java.math.BigDecimal;
 @AllArgsConstructor
 @NoArgsConstructor
 public class TransactionDTO {
-
     private String categoryName;
     private BigDecimal amount;
     private String currency;
     private String categoryDescription;
-
 }

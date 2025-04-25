@@ -55,16 +55,20 @@ dependencies {
         exclude group: 'commons-logging', module: 'commons-logging'
     }
 
-	implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.0.2'
+	implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.8.6'
 
+	// Test dependencies
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	testImplementation 'org.junit.jupiter:junit-jupiter-api:5.10.2'
+	testImplementation 'org.junit.jupiter:junit-jupiter-engine:5.10.2'
+	testImplementation 'org.mockito:mockito-core:5.11.0'
+	testImplementation 'org.mockito:mockito-junit-jupiter:5.11.0'
 	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 	
 	configurations.all {
     	exclude group: 'org.springframework.boot', module: 'spring-boot-starter-logging'
     }
 	
-
 	implementation project(':emailFetcher')
 	implementation project(':swiftParser')
 	implementation project(':fundPosition')
@@ -89,6 +93,16 @@ subprojects {
     dependencies {
     	compileOnly 'org.projectlombok:lombok'
     	annotationProcessor 'org.projectlombok:lombok'
+
+		implementation 'org.springframework.boot:spring-boot-starter-validation'
+    	
+    	// Test dependencies for subprojects
+    	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    	testImplementation 'org.junit.jupiter:junit-jupiter-api:5.10.2'
+    	testImplementation 'org.junit.jupiter:junit-jupiter-engine:5.10.2'
+    	testImplementation 'org.mockito:mockito-core:5.11.0'
+    	testImplementation 'org.mockito:mockito-junit-jupiter:5.11.0'
+    	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
     }
 
     dependencyManagement {

@@ -2,121 +2,199 @@
   {
     "id": 1,
     "categoryType": "INFLOW",
-    "categoryName": "LocalCollections",
-    "categoryDescription": "Local customer collections",
-    "supplementaryKeywords": "CUSTPYMT",
-    "descKeywords": "collection,local"
+    "categoryName": "Foreign Dividend",
+    "categoryDescription": "Foreign dividend payments",
+    "identificationCodes": "DIV",
+    "transactionTypeCodes": "F",
+    "descKeywords": "dividend,foreign,international"
   },
   {
     "id": 2,
     "categoryType": "INFLOW",
-    "categoryName": "ExportSales",
-    "categoryDescription": "Export sales",
-    "supplementaryKeywords": "IMP",
-    "descKeywords": "export,sales"
+    "categoryName": "Normal Dividend",
+    "categoryDescription": "Local dividend payments",
+    "identificationCodes": "DIV",
+    "transactionTypeCodes": "N",
+    "descKeywords": "dividend,local,domestic"
   },
   {
     "id": 3,
     "categoryType": "INFLOW",
-    "categoryName": "TaxRefunds",
-    "categoryDescription": "Tax refunds",
-    "supplementaryKeywords": "TAX",
-    "descKeywords": "tax,refund"
+    "categoryName": "Foreign Forex",
+    "categoryDescription": "Foreign exchange transactions",
+    "identificationCodes": "FEX",
+    "transactionTypeCodes": "F",
+    "descKeywords": "forex,foreign exchange,currency"
   },
   {
     "id": 4,
     "categoryType": "INFLOW",
-    "categoryName": "InterestReceipts",
-    "categoryDescription": "Tax refunds",
-    "supplementaryKeywords": "INT",
-    "descKeywords": "Interest,received"
+    "categoryName": "Normal Forex",
+    "categoryDescription": "Local forex transactions",
+    "identificationCodes": "FEX",
+    "transactionTypeCodes": "N",
+    "descKeywords": "forex,foreign exchange,currency"
   },
   {
     "id": 5,
     "categoryType": "INFLOW",
-    "categoryName": "LoanAvailed",
-    "categoryDescription": "Tax refunds",
-    "supplementaryKeywords": "LOAN",
-    "descKeywords": "loan,availed"
+    "categoryName": "Foreign Transfer",
+    "categoryDescription": "Foreign transfer transactions",
+    "identificationCodes": "TRF",
+    "transactionTypeCodes": "F",
+    "descKeywords": "transfer,foreign,international"
   },
   {
     "id": 6,
     "categoryType": "INFLOW",
-    "categoryName": "Miscellaneous",
-    "categoryDescription": "Miscellaneous inflow transactions",
-    "supplementaryKeywords": "MISC",
-    "descKeywords": "miscellaneous"
+    "categoryName": "Normal Transfer",
+    "categoryDescription": "Local transfer transactions",
+    "identificationCodes": "TRF",
+    "transactionTypeCodes": "N",
+    "descKeywords": "transfer,local,domestic"
   },
   {
     "id": 7,
-    "categoryType": "OUTFLOW",
-    "categoryName": "LocalPurchases",
-    "categoryDescription": "Local purchases",
-    "supplementaryKeywords": "CMS",
-    "descKeywords": "purchase,local"
+    "categoryType": "INFLOW",
+    "categoryName": "Foreign Cash",
+    "categoryDescription": "Foreign cash transactions",
+    "identificationCodes": "CSH",
+    "transactionTypeCodes": "F",
+    "descKeywords": "cash,foreign,international"
   },
   {
     "id": 8,
-    "categoryType": "OUTFLOW",
-    "categoryName": "Imports",
-    "categoryDescription": "Import payments",
-    "supplementaryKeywords": "IMP",
-    "descKeywords": "import,payment"
+    "categoryType": "INFLOW",
+    "categoryName": "Normal Cash",
+    "categoryDescription": "Local cash transactions",
+    "identificationCodes": "CSH",
+    "transactionTypeCodes": "N",
+    "descKeywords": "cash,local,domestic"
   },
   {
     "id": 9,
-    "categoryType": "OUTFLOW",
-    "categoryName": "FinanceCost",
-    "categoryDescription": "Finance cost",
-    "supplementaryKeywords": "FIN",
-    "descKeywords": "Finance,cost"
+    "categoryType": "INFLOW",
+    "categoryName": "Foreign Charges",
+    "categoryDescription": "Foreign charge transactions",
+    "identificationCodes": "CHG",
+    "transactionTypeCodes": "F",
+    "descKeywords": "charges,fees,foreign"
   },
   {
     "id": 10,
-    "categoryType": "OUTFLOW",
-    "categoryName": "RepaymentOfLoans",
-    "categoryDescription": "Repayment of loans",
-    "supplementaryKeywords": "Principal,PRIN",
-    "descKeywords": "Loan,Repayment"
+    "categoryType": "INFLOW",
+    "categoryName": "Normal Charges",
+    "categoryDescription": "Local charge transactions",
+    "identificationCodes": "CHG",
+    "transactionTypeCodes": "N",
+    "descKeywords": "charges,fees,local"
   },
   {
     "id": 11,
-    "categoryType": "OUTFLOW",
-    "categoryName": "Salaries",
-    "categoryDescription": "Salaries",
-    "supplementaryKeywords": "Salary,HR,REIM",
-    "descKeywords": "salary,wages"
+    "categoryType": "INFLOW",
+    "categoryName": "Foreign Investment",
+    "categoryDescription": "Foreign investment transactions",
+    "identificationCodes": "INV",
+    "transactionTypeCodes": "F",
+    "descKeywords": "investment,foreign,international"
   },
   {
     "id": 12,
-    "categoryType": "OUTFLOW",
-    "categoryName": "DirectTaxes",
-    "categoryDescription": "Direct taxes",
-    "supplementaryKeywords": "GST",
-    "descKeywords": "tax,direct"
+    "categoryType": "INFLOW",
+    "categoryName": "Normal Investment",
+    "categoryDescription": "Local investment transactions",
+    "identificationCodes": "INV",
+    "transactionTypeCodes": "N",
+    "descKeywords": "investment,local,domestic"
   },
   {
     "id": 13,
-    "categoryType": "OUTFLOW",
-    "categoryName": "IndirectTaxes",
-    "categoryDescription": "Indirect taxes",
-    "supplementaryKeywords": "TDS",
-    "descKeywords": "tax,indirect"
+    "categoryType": "INFLOW",
+    "categoryName": "Foreign Draft",
+    "categoryDescription": "Foreign draft transactions",
+    "identificationCodes": "DRF",
+    "transactionTypeCodes": "F",
+    "descKeywords": "draft,foreign,international"
   },
   {
     "id": 14,
-    "categoryType": "OUTFLOW",
-    "categoryName": "BankCharges",
-    "categoryDescription": "Bank Charges",
-    "supplementaryKeywords": "CHG",
-    "descKeywords": "bank,charges"
+    "categoryType": "INFLOW",
+    "categoryName": "Normal Draft",
+    "categoryDescription": "Local draft transactions",
+    "identificationCodes": "DRF",
+    "transactionTypeCodes": "N",
+    "descKeywords": "draft,local,domestic"
   },
   {
-    "id": 14,
+    "id": 15,
+    "categoryType": "INFLOW",
+    "categoryName": "Foreign Direct Debit",
+    "categoryDescription": "Foreign direct debit transactions",
+    "identificationCodes": "DDT",
+    "transactionTypeCodes": "F",
+    "descKeywords": "direct debit,foreign,international"
+  },
+  {
+    "id": 16,
+    "categoryType": "INFLOW",
+    "categoryName": "Normal Direct Debit",
+    "categoryDescription": "Local direct debit transactions",
+    "identificationCodes": "DDT",
+    "transactionTypeCodes": "N",
+    "descKeywords": "direct debit,local,domestic"
+  },
+  {
+    "id": 17,
+    "categoryType": "INFLOW",
+    "categoryName": "Foreign Commission",
+    "categoryDescription": "Foreign commission transactions",
+    "identificationCodes": "COM",
+    "transactionTypeCodes": "F",
+    "descKeywords": "commission,fees,foreign"
+  },
+  {
+    "id": 18,
+    "categoryType": "INFLOW",
+    "categoryName": "Normal Commission",
+    "categoryDescription": "Local commission transactions",
+    "identificationCodes": "COM",
+    "transactionTypeCodes": "N",
+    "descKeywords": "commission,fees,local"
+  },
+  {
+    "id": 19,
+    "categoryType": "INFLOW",
+    "categoryName": "Foreign Check",
+    "categoryDescription": "Foreign check transactions",
+    "identificationCodes": "CHK",
+    "transactionTypeCodes": "F",
+    "descKeywords": "check,cheque,foreign"
+  },
+  {
+    "id": 20,
+    "categoryType": "INFLOW",
+    "categoryName": "Normal Check",
+    "categoryDescription": "Local check transactions",
+    "identificationCodes": "CHK",
+    "transactionTypeCodes": "N",
+    "descKeywords": "check,cheque,local"
+  },
+  {
+    "id": 21,
+    "categoryType": "INFLOW",
+    "categoryName": "Miscellaneous",
+    "categoryDescription": "Default category for unmatched inflow transactions",
+    "identificationCodes": "",
+    "transactionTypeCodes": "",
+    "descKeywords": ""
+  },
+  {
+    "id": 22,
     "categoryType": "OUTFLOW",
     "categoryName": "Miscellaneous",
-    "categoryDescription": "Miscellaneous outflow transactions",
-    "supplementaryKeywords": "MISC",
-    "descKeywords": "miscellaneous"
+    "categoryDescription": "Default category for unmatched outflow transactions",
+    "identificationCodes": "",
+    "transactionTypeCodes": "",
+    "descKeywords": ""
   }
 ]

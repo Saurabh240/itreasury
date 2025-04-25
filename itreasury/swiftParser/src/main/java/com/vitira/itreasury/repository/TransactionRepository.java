@@ -8,6 +8,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Repository
@@ -17,4 +18,14 @@ public interface TransactionRepository extends JpaRepository<Transaction, Long> 
             "FROM Transaction t JOIN t.category tc " +
             "WHERE tc.categoryType = :categoryType GROUP BY tc.categoryName, tc.categoryDescription")
     List<TransactionDTO> findTransactionsByCategoryType(@Param("categoryType") CategoryType categoryType);
+
+    @Query("SELECT new com.vitira.itreasury.dto.TransactionDTO(tc.categoryName, SUM(t.amount), 'INR', tc.categoryDescription) " +
+            "FROM Transaction t JOIN t.category tc " +
+            "WHERE tc.categoryType = :categoryType AND t.valueDate BETWEEN :startDateTime AND :endDateTime " +
+            "GROUP BY tc.categoryName, tc.categoryDescription")
+    List<TransactionDTO> findByCategoryTypeAndTransactionDateBetween(
+            @Param("categoryType") CategoryType categoryType,
+            @Param("startDateTime") LocalDateTime startDateTime,
+            @Param("endDateTime") LocalDateTime endDateTime);
+
 }

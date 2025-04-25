@@ -23,5 +23,8 @@ public class AuthenticationRequest {
     @NotEmpty(message = "Password is required")
     @NotBlank(message = "Password is required")
     private String password;
+    @NotEmpty(message = "Customer Code is required")
+    @NotBlank(message = "Customer Code is required")
+    private String customerCode;
 
 } 

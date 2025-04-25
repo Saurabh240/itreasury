@@ -4,7 +4,7 @@ import java.io.IOException;
 import java.util.Properties;
 
 public class ConfigurationManager {
-	private Configuration config;
+	private final Configuration config;
 
 	public ConfigurationManager(String configFilePath) throws IOException {
 		this.config = new Configuration(configFilePath);

@@ -23,11 +23,9 @@ public class TransactionMapper {
     public TransactionDTO toTransactionDTO(Transaction transaction) {
         return TransactionDTO.builder()
                 .categoryName(transaction.getCategory().getCategoryName())
-//                .categoryType(transaction.getCategory().getCategoryType())
                 .amount(transaction.getAmount())
-                .currency("USD") // Assuming currency is always USD
+                .currency(transaction.getCurrency())
                 .categoryDescription(transaction.getCategory().getCategoryDescription())
                 .build();
     }
-
 }

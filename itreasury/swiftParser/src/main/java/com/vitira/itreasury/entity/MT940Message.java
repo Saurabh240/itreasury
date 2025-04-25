@@ -1,20 +1,10 @@
 package com.vitira.itreasury.entity;
 
+import jakarta.persistence.*;
+import lombok.*;
+
 import java.time.LocalDateTime;
 import java.util.List;
-
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.Lob;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.Table;
-import lombok.*;
 
 @Setter
 @Getter
@@ -38,9 +28,8 @@ public class MT940Message {
 	
 	@Column(name = "message_type")
 	private String messageType;
-	
-	@Lob
-	@Column(name = "message_data")
+
+	@Column(name = "message_data", columnDefinition = "TEXT")
 	private String messageData;
 	@Column(name = "received_at")
 	private LocalDateTime receivedAt;

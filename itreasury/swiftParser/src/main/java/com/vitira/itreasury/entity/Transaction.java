@@ -1,16 +1,13 @@
 package com.vitira.itreasury.entity;
 
+import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
-
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Table;
-import lombok.*;
 
 @Data
 @Builder
@@ -33,10 +30,12 @@ public class Transaction {
 	private String debitCreditMark;
 	private String fundsCode;
 	private BigDecimal amount;
+	private String currency;
 	private String transactionType;
 	private String identificationCode;
 	private String referenceForAccOwner;
 	private String refOfAccServingInstitution;
+	private String transactionTypeCode;
 	private String supplementaryInfo;
 	private String description;
 

@@ -13,6 +13,7 @@ import com.vitira.itreasury.security.JwtService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -76,8 +77,17 @@ public class AuthenticationService {
         return jwtToken;
     }
 
+    @Transactional
     public AuthenticationResponse authenticate(AuthenticationRequest request) {
-        // Authenticate user with Spring Security
+        // First verify the customer code
+        var user = userRepository.findByEmail(request.getEmail())
+                .orElseThrow(() -> new BadCredentialsException("Invalid credentials"));
+
+        if (!user.getCustomerCode().equals(request.getCustomerCode())) {
+            throw new BadCredentialsException("Invalid customer code");
+        }
+
+        // Then authenticate with Spring Security
         var auth = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
                         request.getEmail(),
@@ -86,21 +96,20 @@ public class AuthenticationService {
         );
 
         // If no exception thrown, authentication was successful
-        // Find the user by email
         var claims = new HashMap<String, Object>();
-        var user = ((UserEntity)auth.getPrincipal());
+        user = ((UserEntity)auth.getPrincipal());
         claims.put("email", user.getEmail());
+        claims.put("customerCode", user.getCustomerCode());
         
         // Generate JWT token
         var jwtToken = jwtService.generateToken(claims, user);
         
-        // Return token in response
         return AuthenticationResponse.builder()
                 .token(jwtToken)
                 .build();
     }
 
-//    @Transactional
+    @Transactional
     public void activateAccount(String token) {
         var savedToken = tokenRepository.findByToken(token)
                 .orElseThrow(() -> new IllegalStateException("Token not found"));
@@ -110,7 +119,7 @@ public class AuthenticationService {
         }
 
         var user = userRepository.findById(savedToken.getId())
-                .orElseThrow(() -> new IllegalStateException("User not found"));;
+                .orElseThrow(() -> new IllegalStateException("User not found"));
         user.setEnabled(true);
         userRepository.save(user);
 

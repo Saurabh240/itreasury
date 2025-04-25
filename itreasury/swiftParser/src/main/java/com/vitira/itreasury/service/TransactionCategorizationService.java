@@ -20,53 +20,81 @@ public class TransactionCategorizationService {
     private TransactionCategoryRepository categoryRepository;
 
     private final String DEFAULT_CATEGORY_NAME = "Miscellaneous";
+    private final String FOREIGN_TRANSACTION_CODE = "F";
+    private final String NORMAL_TRANSACTION_CODE = "N";
 
     @Transactional
     public Transaction categorizeTransaction(Transaction transaction) {
         // Fetch all categories
         List<TransactionCategory> categories = categoryRepository.findAll();
         CategoryType categoryType = getCategoryType(transaction.getDebitCreditMark());
-        // Match transaction description with category keywords
+        
+        // Match transaction based on hierarchical criteria
         for (TransactionCategory category : categories) {
             if (categoryType == category.getCategoryType()) {
-                // Check both descKeywords and supplementaryKeywords
-                if (matchesKeywords(transaction, category)) {
+                if (matchesHierarchicalCriteria(transaction, category)) {
                     transaction.setCategory(category);
-                    return transaction; // Stop after the first match
+                    return transaction;
                 }
             }
         }
 
-        // If no category matched, set a default category (if needed)
+        // If no category matched, set a default category
         TransactionCategory defaultCategory = categoryRepository.findByCategoryTypeAndCategoryName(categoryType, DEFAULT_CATEGORY_NAME);
-
         transaction.setCategory(defaultCategory);
         return transaction;
     }
 
-    private boolean matchesKeywords(Transaction transaction, TransactionCategory category) {
-        if (transaction.getDescription() == null && transaction.getSupplementaryInfo() == null) {
+    private boolean matchesHierarchicalCriteria(Transaction transaction, TransactionCategory category) {
+        // Step 1: Check identification code match
+        String identificationCode = transaction.getIdentificationCode() != null ? transaction.getIdentificationCode() : "";
+        boolean identificationCodeMatch = false;
+        
+        for (String code : category.getIdentificationCodes().split(",")) {
+            if (identificationCode.equalsIgnoreCase(code.trim())) {
+                identificationCodeMatch = true;
+                break;
+            }
+        }
+        
+        if (!identificationCodeMatch) {
             return false;
         }
-
-        String supplementaryInfo = transaction.getSupplementaryInfo() != null ? transaction.getSupplementaryInfo() : "";
-        for (String keyword : category.getSupplementaryKeywords().split(",")) {
-            if (supplementaryInfo.toLowerCase().contains(keyword.toLowerCase())) {
-                return true;
+        
+        // Step 2: Check transaction type code if identification code matched
+        String transactionTypeCode = transaction.getTransactionTypeCode() != null ? transaction.getTransactionTypeCode() : "";
+        boolean transactionTypeMatch = false;
+        
+        for (String code : category.getTransactionTypeCodes().split(",")) {
+            String trimmedCode = code.trim();
+            if (trimmedCode.equalsIgnoreCase(FOREIGN_TRANSACTION_CODE) && 
+                transactionTypeCode.equalsIgnoreCase(FOREIGN_TRANSACTION_CODE)) {
+                transactionTypeMatch = true;
+                break;
+            } else if (trimmedCode.equalsIgnoreCase(NORMAL_TRANSACTION_CODE) && 
+                      transactionTypeCode.equalsIgnoreCase(NORMAL_TRANSACTION_CODE)) {
+                transactionTypeMatch = true;
+                break;
             }
         }
-
-        String desc = transaction.getDescription() != null ? transaction.getDescription() : "";
+        
+        if (!transactionTypeMatch) {
+            return false;
+        }
+        
+        // Step 3: Check description keywords if both previous steps matched
+        String description = transaction.getDescription() != null ? transaction.getDescription() : "";
         for (String keyword : category.getDescKeywords().split(",")) {
-            if (desc.toLowerCase().contains(keyword.toLowerCase())) {
+            if (description.toLowerCase().contains(keyword.toLowerCase().trim())) {
                 return true;
             }
         }
+        
         return false;
     }
 
     private CategoryType getCategoryType(String debitCreditMark) {
         return "C".equalsIgnoreCase(debitCreditMark) ? INFLOW : OUTFLOW;
     }
-
 }
+
