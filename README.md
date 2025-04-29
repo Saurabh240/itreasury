@@ -103,6 +103,29 @@ The `FundPositionService` class provides methods to get the fund position for a 
 
 The `CashFlowService` class provides methods to get the cash flow for a company, including the incoming and outgoing cash-flows.
 
+### API Documentation
+
+The application provides OpenAPI (Swagger) documentation that can be accessed in two ways:
+
+1. **Interactive UI**:
+   - Access the Swagger UI at `http://localhost:8090/swagger-ui.html`
+   - This provides an interactive interface to explore and test all available APIs
+
+2. **OpenAPI YAML**:
+   - Access the OpenAPI specification in YAML format at `http://localhost:8090/v3/api-docs.yaml`
+   - This can be used to:
+     - Import into API testing tools like Postman
+     - Generate client SDKs
+     - Document API specifications
+     - Validate API implementations
+
+The OpenAPI documentation includes:
+- Detailed API endpoints
+- Request/response schemas
+- Authentication requirements
+- Example requests and responses
+- API versioning information
+
 ## Contributing
 
 Contributions are welcome! Please fork the repository and create a pull request with your changes.

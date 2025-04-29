@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "d3124a58-10f3-49a1-90b3-f0416e127e00",
+		"_postman_id": "615e2458-11cf-4fcc-9f9a-10e4bf0ddc75",
 		"name": "iTreasury API",
 		"description": "Postman collection for iTreasury API endpoints",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
@@ -22,7 +22,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"email\": \"abc@vitira.com\",\n  \"password\": \"passwor123\",\n  \"customerCode\": \"Vitira\"\n}"
+							"raw": "{\n  \"email\": \"abc@vitira.com\",\n  \"password\": \"password123\",\n  \"customerCode\": \"Vitira\"\n}"
 						},
 						"url": {
 							"raw": "{{baseUrl}}:{{port}}/api/v1/auth/register",
@@ -65,7 +65,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"email\": \"abc@vitira.com\",\n  \"password\": \"passwor123\",\n  \"customerCode\": \"Vitira\"\n}"
+							"raw": "{\n  \"email\": \"abc@vitira.com\",\n  \"password\": \"password123\",\n  \"customerCode\": \"Vitira\"\n}"
 						},
 						"url": {
 							"raw": "{{baseUrl}}:{{port}}/api/v1/auth/authenticate",
@@ -131,16 +131,6 @@
 				{
 					"name": "Get Current User",
 					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "{{token}}",
-									"type": "string"
-								}
-							]
-						},
 						"method": "GET",
 						"header": [
 							{
@@ -172,16 +162,6 @@
 				{
 					"name": "Home Page",
 					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "{{token}}",
-									"type": "string"
-								}
-							]
-						},
 						"method": "GET",
 						"header": [],
 						"url": {
@@ -207,16 +187,6 @@
 				{
 					"name": "Save Payment",
 					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "{{token}}",
-									"type": "string"
-								}
-							]
-						},
 						"method": "POST",
 						"header": [
 							{
@@ -251,16 +221,6 @@
 				{
 					"name": "Get Payment By ID",
 					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "{{token}}",
-									"type": "string"
-								}
-							]
-						},
 						"method": "GET",
 						"header": [
 							{
@@ -287,21 +247,101 @@
 			]
 		},
 		{
+			"name": "Transactions",
+			"item": [
+				{
+					"name": "Save Transaction",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{jwtToken}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"debitCreditMark\": \"C\",\r\n    \"amount\": 100,\r\n    \"transactionType\": \"INFLOW\",\r\n    \"supplementaryInfo\": \"CMP\",\r\n    \"description\": \"This is dummy payment\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}:{{port}}/api/v1/transaction",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"port": "{{port}}",
+							"path": [
+								"api",
+								"v1",
+								"transaction"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Transaction By ID",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{jwtToken}}"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}:{{port}}/api/v1/transaction/1",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"port": "{{port}}",
+							"path": [
+								"api",
+								"v1",
+								"transaction",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get all transactions",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{jwtToken}}"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}:{{port}}/api/v1/transaction",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"port": "{{port}}",
+							"path": [
+								"api",
+								"v1",
+								"transaction"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
 			"name": "EmailFetcher and SwiftParser",
 			"item": [
 				{
 					"name": "Fetch and Parse Emails",
 					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "{{token}}",
-									"type": "string"
-								}
-							]
-						},
 						"method": "GET",
 						"header": [
 							{
@@ -332,16 +372,6 @@
 				{
 					"name": "fundPosition Vitira",
 					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "{{token}}",
-									"type": "string"
-								}
-							]
-						},
 						"method": "GET",
 						"header": [
 							{
@@ -372,16 +402,6 @@
 				{
 					"name": "CashFlow Vitira",
 					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "{{token}}",
-									"type": "string"
-								}
-							]
-						},
 						"method": "GET",
 						"header": [
 							{
@@ -417,21 +437,222 @@
 			]
 		},
 		{
+			"name": "Compliance Records",
+			"item": [
+				{
+					"name": "Create Compliance Record",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{jwt_token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Annual Tax Filing\",\n    \"complianceCategory\": \"TAX\",\n    \"complianceFrequency\": \"ANNUALLY\",\n    \"description\": \"Annual tax filing for the fiscal year 2023\",\n    \"status\": \"PENDING\",\n    \"isComplied\": false,\n    \"dueDate\": \"2023-12-31T23:59:59\",\n    \"completionDate\": null,\n    \"assignedTo\": \"john.doe@company.com\",\n    \"notes\": \"Please ensure all financial documents are ready\",\n    \"severity\": \"HIGH\",\n    \"priority\": \"URGENT\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}:{{port}}/api/v1/compliance",
+							"host": ["{{baseUrl}}"],
+							"port": "{{port}}",
+							"path": ["api", "v1", "compliance"]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Compliance Record",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{jwt_token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Annual Tax Filing\",\n    \"complianceCategory\": \"TAX\",\n    \"complianceFrequency\": \"ANNUALLY\",\n    \"description\": \"Annual tax filing for the fiscal year 2023 - Updated\",\n    \"status\": \"IN_PROGRESS\",\n    \"isComplied\": false,\n    \"dueDate\": \"2023-12-31T23:59:59\",\n    \"completionDate\": null,\n    \"assignedTo\": \"john.doe@company.com\",\n    \"notes\": \"Documents are being prepared\",\n    \"severity\": \"HIGH\",\n    \"priority\": \"URGENT\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}:{{port}}/api/v1/compliance/1",
+							"host": ["{{baseUrl}}"],
+							"port": "{{port}}",
+							"path": ["api", "v1", "compliance", "1"]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Compliance Record by ID",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{jwt_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}:{{port}}/api/v1/compliance/1",
+							"host": ["{{baseUrl}}"],
+							"port": "{{port}}",
+							"path": ["api", "v1", "compliance", "1"]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get All Compliance Records",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{jwt_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}:{{port}}/api/v1/compliance",
+							"host": ["{{baseUrl}}"],
+							"port": "{{port}}",
+							"path": ["api", "v1", "compliance"]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Compliance Record",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{jwt_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}:{{port}}/api/v1/compliance/1",
+							"host": ["{{baseUrl}}"],
+							"port": "{{port}}",
+							"path": ["api", "v1", "compliance", "1"]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Records by Status",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{jwt_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}:{{port}}/api/v1/compliance/status/PENDING",
+							"host": ["{{baseUrl}}"],
+							"port": "{{port}}",
+							"path": ["api", "v1", "compliance", "status", "PENDING"]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Records by Category",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{jwt_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}:{{port}}/api/v1/compliance/category/TAX",
+							"host": ["{{baseUrl}}"],
+							"port": "{{port}}",
+							"path": ["api", "v1", "compliance", "category", "TAX"]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Records by Severity",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{jwt_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}:{{port}}/api/v1/compliance/severity/HIGH",
+							"host": ["{{baseUrl}}"],
+							"port": "{{port}}",
+							"path": ["api", "v1", "compliance", "severity", "HIGH"]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Records by Priority",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{jwt_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}:{{port}}/api/v1/compliance/priority/URGENT",
+							"host": ["{{baseUrl}}"],
+							"port": "{{port}}",
+							"path": ["api", "v1", "compliance", "priority", "URGENT"]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Records by Severity and Priority",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{jwt_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}:{{port}}/api/v1/compliance/severity/HIGH/priority/URGENT",
+							"host": ["{{baseUrl}}"],
+							"port": "{{port}}",
+							"path": ["api", "v1", "compliance", "severity", "HIGH", "priority", "URGENT"]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
 			"name": "Categorization Rules",
 			"item": [
 				{
 					"name": "Categorize Rule",
 					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "{{token}}",
-									"type": "string"
-								}
-							]
-						},
 						"method": "POST",
 						"header": [
 							{
@@ -467,16 +688,6 @@
 				{
 					"name": "Bulk categorize Rules",
 					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "{{token}}",
-									"type": "string"
-								}
-							]
-						},
 						"method": "POST",
 						"header": [
 							{
@@ -513,16 +724,6 @@
 				{
 					"name": "export Rules",
 					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "{{token}}",
-									"type": "string"
-								}
-							]
-						},
 						"method": "GET",
 						"header": [
 							{
@@ -554,16 +755,6 @@
 				{
 					"name": "Store Transactions in database",
 					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "{{token}}",
-									"type": "string"
-								}
-							]
-						},
 						"method": "POST",
 						"header": [
 							{
@@ -589,16 +780,6 @@
 				{
 					"name": "Get All accounts",
 					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "{{token}}",
-									"type": "string"
-								}
-							]
-						},
 						"method": "GET",
 						"header": [
 							{
@@ -624,16 +805,6 @@
 				{
 					"name": "Get accounts by Bank Name",
 					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "{{token}}",
-									"type": "string"
-								}
-							]
-						},
 						"method": "GET",
 						"header": [
 							{
@@ -660,16 +831,6 @@
 				{
 					"name": "Get account by account Number",
 					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "{{token}}",
-									"type": "string"
-								}
-							]
-						},
 						"method": "GET",
 						"header": [
 							{
@@ -696,16 +857,6 @@
 				{
 					"name": "Get Transactions by account Number",
 					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "{{token}}",
-									"type": "string"
-								}
-							]
-						},
 						"method": "GET",
 						"header": [
 							{
@@ -737,16 +888,6 @@
 				{
 					"name": "Get All Endpoints (JSON)",
 					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "{{token}}",
-									"type": "string"
-								}
-							]
-						},
 						"method": "GET",
 						"header": [
 							{
@@ -773,16 +914,6 @@
 				{
 					"name": "Get All Endpoints (YAML)",
 					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "{{token}}",
-									"type": "string"
-								}
-							]
-						},
 						"method": "GET",
 						"header": [
 							{
@@ -809,16 +940,6 @@
 				{
 					"name": "Get All Endpoints (YAML) Copy",
 					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "{{token}}",
-									"type": "string"
-								}
-							]
-						},
 						"method": "GET",
 						"header": [
 							{
@@ -844,15 +965,23 @@
 			]
 		}
 	],
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "{{token}}",
+				"type": "string"
+			}
+		]
+	},
 	"event": [
 		{
 			"listen": "prerequest",
 			"script": {
 				"type": "text/javascript",
 				"packages": {},
-				"exec": [
-					""
-				]
+				"exec": [""]
 			}
 		},
 		{
@@ -860,9 +989,7 @@
 			"script": {
 				"type": "text/javascript",
 				"packages": {},
-				"exec": [
-					""
-				]
+				"exec": [""]
 			}
 		}
 	],

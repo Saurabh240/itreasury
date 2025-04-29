@@ -56,6 +56,88 @@ Open Credit : Other than above
 Collections : Other than above
 ****************************************************************
 
+********************************************************************************
+Domestic Transfer (RTGS/NEFT)
+plaintext
+:61:250422C50000,00NTRF//RTGS/INV12345
+:86:/PAYMENT/RTGS Transfer/RECEIVER/ABC Pvt Ltd
+:61: Transaction of ₹50,000.00 credited via RTGS.
+
+:86: Supplementary information about the receiver and payment type.
+
+2. International Transfer (SWIFT)
+plaintext
+:61:250422D100000,00NINT//SWIFT/REF789
+:86:/REMITTANCE/Payment for Invoice/COMPANY/Global Exports Ltd
+:61: ₹100,000 debited for an international wire transfer.
+
+:86: Description of the remittance and beneficiary.
+
+3. Payroll Processing
+plaintext
+:61:250422C2000000,00NSAL//PAYROLL/BATCHPAY2025
+:86:/SALARY CREDIT/Payroll for April 2025
+:61: Salary payments totaling ₹2,000,000 credited in bulk.
+
+:86: Additional reference to payroll details.
+
+4. Vendor Payment
+plaintext
+:61:250422D25000,00NPUR//BILLPAY/INV789456
+:86:/PURCHASE/Invoice Payment/SUPPLIER/Supplies Co.
+:61: ₹25,000 debited for an invoice payment.
+
+:86: Supplementary details about the supplier and invoice.
+
+5. Tax Payment
+plaintext
+:61:250422D10000,00NTAX//GST1234567
+:86:/TAX PAYMENT/GST for Q1 2025
+:61: ₹10,000 debited for a GST payment.
+
+:86: Description of the tax and applicable quarter.
+
+6. Fixed Deposit
+plaintext
+:61:250422C5000000,00NFDP//FDOPEN/REF456123
+:86:/INVESTMENT/Fixed Deposit Opened
+:61: ₹5,000,000 credited to open a fixed deposit.
+
+:86: Information about the FD investment.
+
+7. Charges
+plaintext
+:61:250422D150,00NCHG//CHRG/REF001
+:86:/BANK FEES/Charges for Transactions
+:61: ₹150 debited for bank service charges.
+
+:86: Explanation of the nature of the charges.
+
+8. Dividend Credit
+plaintext
+:61:250422C20000,00NDIV//DIV2025/REF987
+:86:/DIVIDEND/Quarterly Dividend Received
+:61: ₹20,000 credited as a dividend.
+
+:86: Details of the dividend payment.
+
+9. Foreign Exchange Transaction
+plaintext
+:61:250422C5000,00NFEX//FX1234/USD/INR
+:86:/FOREX/Conversion of USD to INR
+:61: ₹5,000 credited after a foreign currency conversion.
+
+:86: Includes the exchange details.
+
+10. Cash Withdrawal
+plaintext
+:61:250422D10000,00NCSH//ATM/REFATM123
+:86:/CASH WITHDRAWAL/At Company Branch
+:61: ₹10,000 debited for a cash withdrawal.
+
+:86: Reference to the ATM or branch.
+********************************************************************************
+
 Questions: 
 We need some open source or cracked version of ERP so that we can test our application end-to-end
 Also, we need higher configurations machines for testing

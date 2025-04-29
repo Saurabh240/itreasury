@@ -1,0 +1,13 @@
+plugins {
+    id 'buildlogic.java-library-conventions'
+}
+
+dependencies {
+    implementation 'org.springframework.boot:spring-boot-starter'
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    
+    // Cloud Storage
+    implementation 'org.springframework.cloud:spring-cloud-starter-aws:2.2.6.RELEASE'
+    implementation 'com.azure:azure-storage-blob:12.30.0'
+    implementation 'com.google.cloud:google-cloud-storage:2.51.0'
+} 

@@ -73,6 +73,8 @@ dependencies {
 	implementation project(':swiftParser')
 	implementation project(':fundPosition')
 	implementation project(':cashFlow')
+	implementation project(':compliance')
+	implementation project(':storage')
 }
 
 tasks.named('test') {
