@@ -21,7 +21,7 @@ import java.util.function.Function;
 @Service
 public class JwtService {
 
-    @Value("${jwt.secret}")
+    @Value("${jwt.secret-key}")
     private String jwtSecret;
 
     @Value("${jwt.expiration}")
@@ -48,7 +48,7 @@ public class JwtService {
                 .setClaims(extraClaims)
                 .setSubject(userDetails.getUsername())
                 .setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis() + jwtExpiration))
+                .setExpiration(new Date(System.currentTimeMillis() + jwtExpiration*1000))
                 .claim("authorities", authorities)
                 .signWith(getSigningKey(), SignatureAlgorithm.HS256)
                 .compact();

@@ -1,22 +1,23 @@
 package com.vitira.itreasury.email;
 
-import java.util.Date;
-import java.util.List;
-import java.util.ArrayList;
-import java.io.IOException;
+import com.vitira.itreasury.config.EmailConfiguration;
+import com.vitira.itreasury.model.Email;
+import org.springframework.stereotype.Component;
 
 import javax.mail.MessagingException;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
-import com.vitira.itreasury.config.ConfigurationManager;
-import com.vitira.itreasury.model.Email;
-
+@Component
 public class EmailClient {
 	private final EmailFetcher fetcher;
-	private final ConfigurationManager configManager;
+	private final EmailConfiguration config;
 
-	public EmailClient() throws IOException {
-		this.configManager = new ConfigurationManager("src/main/resources/config.properties");
-		String providerStr = configManager.getEmailProvider();
+	public EmailClient(EmailConfiguration config) {
+		this.config = config;
+		String providerStr = config.getProvider();
 		EmailProvider provider = EmailProvider.valueOf(providerStr.toUpperCase());
 		this.fetcher = EmailFetcherFactory.createEmailFetcher(provider);
 	}
@@ -24,12 +25,11 @@ public class EmailClient {
 	public List<Email> executeFetch() throws MessagingException {
 		List<Email> emails = new ArrayList<>();
 		try {
-			fetcher.connect(configManager);
+			fetcher.connect(config);
 
 			// Create search terms
 			String subjectFilter = "MT940 Statement for Account";
-			Date dateFilter = new Date(System.currentTimeMillis() - (2L * 24 * 60 * 60 * 1000)); // Emails from the last
-																									// 7 days
+			Date dateFilter = new Date(System.currentTimeMillis() - (1L * 24 * 60 * 60 * 1000)); // Emails from the last 1 days
 
 			emails = fetcher.fetchEmails(subjectFilter, dateFilter);
 

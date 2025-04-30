@@ -11,7 +11,7 @@ public class HomeController {
 
 	@GetMapping("/")
 	public ResponseEntity<String> homePage() {
-		return ResponseEntity.ok("Hello World!");
+		return ResponseEntity.ok("Hello i-Treasury!");
 	}
 
 }

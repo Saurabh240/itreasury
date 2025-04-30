@@ -1,22 +1,22 @@
 package com.vitira.itreasury.service;
 
-import java.util.List;
-import java.util.ArrayList;
-
+import com.vitira.itreasury.email.EmailClient;
+import com.vitira.itreasury.model.Email;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.vitira.itreasury.service.MT940ParserService;
-import com.vitira.itreasury.email.EmailClient;
-import com.vitira.itreasury.model.Email;
 import javax.mail.MessagingException;
-import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class EmailFetcherService {
 
 	@Autowired
 	private MT940ParserService mt940Parser;
+
+	@Autowired
+	private EmailClient emailClient;
 
 	public void fetchEmailAttachments() {
 
@@ -29,15 +29,13 @@ public class EmailFetcherService {
 	private List<String> getAllAttachments() {
 
 		List<String> allAttachments = new ArrayList<>();
-		EmailClient client;
 		try {
-			client = new EmailClient();
-			List<Email> emails = client.executeFetch();
+			List<Email> emails = emailClient.executeFetch();
 			for (Email email : emails) {
 				allAttachments.addAll(email.getAttachments());
 			}
 
-		} catch (IOException | MessagingException e) {
+		} catch (MessagingException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}

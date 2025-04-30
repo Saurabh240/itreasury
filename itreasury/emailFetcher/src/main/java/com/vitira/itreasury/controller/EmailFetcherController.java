@@ -8,12 +8,12 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class EmailFetcherController {
 
-	@Autowired
-	private EmailFetcherService emailService;
+    @Autowired
+    private EmailFetcherService emailService;
 
-	@GetMapping("/fetchEmails")
-	public String fetchEmails() {
-		emailService.fetchEmailAttachments();
-		return "Email attachments fetched and processed successfully!";
-	}
+    @GetMapping("/fetchEmails")
+    public String fetchEmails() {
+        emailService.fetchEmailAttachments();
+        return "Email attachments fetched and processed successfully!";
+    }
 }

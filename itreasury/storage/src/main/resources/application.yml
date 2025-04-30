@@ -1,0 +1,22 @@
+app:
+  storage:
+    type: 'local  # Options: local, aws, azure'
+    max-file-size: 10MB
+    local:
+      base-dir: ${user.home}/app-storage
+    allowed-file-types: pdf,doc,docx,xls,xlsx,jpg,jpeg,png
+    upload-path-prefix: 'uploads '
+
+azure:
+  storage:
+    connection-string: ${AZURE_STORAGE_CONNECTION_STRING}
+    container-name: ${AZURE_STORAGE_CONTAINER_NAME}
+
+aws:
+  access:
+    key:
+      secret: ${AWS_SECRET_ACCESS_KEY}
+      id: ${AWS_ACCESS_KEY_ID}
+  region: ${AWS_REGION}
+  s3:
+    bucket: ${AWS_S3_BUCKET}

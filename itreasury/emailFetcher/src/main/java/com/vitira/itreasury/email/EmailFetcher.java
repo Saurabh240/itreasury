@@ -1,19 +1,17 @@
 package com.vitira.itreasury.email;
 
+import com.vitira.itreasury.config.EmailConfiguration;
+import com.vitira.itreasury.model.Email;
+
+import javax.mail.MessagingException;
 import java.io.IOException;
 import java.util.Date;
 import java.util.List;
-import java.util.Properties;
-
-import javax.mail.MessagingException;
-
-import com.vitira.itreasury.config.ConfigurationManager;
-import com.vitira.itreasury.model.Email;
 
 public interface EmailFetcher {
-	void connect(ConfigurationManager configManager) throws MessagingException;
+	void connect(EmailConfiguration config) throws MessagingException;
 
-	List<Email> fetchEmails(String subjectFilter, Date dateFilter) throws MessagingException, IOException;
+    List<Email> fetchEmails(String subjectFilter, Date dateFilter) throws MessagingException, IOException;
 
 	void close() throws MessagingException;
 }
