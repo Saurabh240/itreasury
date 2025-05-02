@@ -18,23 +18,39 @@ services:
       - type: bind
         source: C:/Cloning
         target: /dump
-#      - type: bind
-#        source: C:/Cloning/PGDATA
-#        target: /var/lib/postgresql/data/pgdata
-#    networks:
-#      - spring-network
-    restart: unless-stopped
-
-  itreasury-api:
-    container_name: itreasury-api
-    image: vitira/itreasury:latest
-    ports:
-      - "8090:8090"
     networks:
       - spring-network
-    depends_on:
-      - postgres_db
+    restart: unless-stopped
+
+#  itreasury-api:
+#    container_name: itreasury-api
+#    image: vitira/itreasury:latest
+#    ports:
+#      - "8090:8090"
+#    networks:
+#      - spring-network
+#    depends_on:
+#      - postgres_db
+  
+  keycloak:
+     container_name: keycloak-itreasury
+     image: quay.io/keycloak/keycloak:24.0
+     ports:
+       - 9090:8080
+     environment:
+       KEYCLOAK_ADMIN: admin
+       KEYCLOAK_ADMIN_PASSWORD: admin
+     networks:
+       - spring-network
+     command:
+       - "start-dev"
 
 networks:
   spring-network:
     driver: bridge
+
+volumes:
+   postgres:
+     driver: local
+   keycloak:
+     driver: local

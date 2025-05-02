@@ -1,7 +1,6 @@
 package com.vitira.itreasury.config;
 
 
-import com.vitira.itreasury.entity.UserEntity;
 import org.springframework.data.domain.AuditorAware;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -9,10 +8,10 @@ import org.springframework.security.core.context.SecurityContextHolder;
 
 import java.util.Optional;
 
-public class ApplicationAuditAware implements AuditorAware<Long> {
+public class ApplicationAuditAware implements AuditorAware<String> {
 
     @Override
-    public Optional<Long> getCurrentAuditor() {
+    public Optional<String> getCurrentAuditor() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
         if (authentication == null ||
@@ -21,8 +20,7 @@ public class ApplicationAuditAware implements AuditorAware<Long> {
             return Optional.empty();
         }
 
-        UserEntity userPrincipal = (UserEntity) authentication.getPrincipal();
-        return Optional.ofNullable(userPrincipal.getId());
+        return Optional.ofNullable(authentication.getName());
     }
 
 }

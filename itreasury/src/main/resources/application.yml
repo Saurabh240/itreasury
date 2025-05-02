@@ -30,7 +30,13 @@ spring:
   #   enabled: true
   #   locations: classpath:db/migration
   #   baseline-on-migrate: true
-  
+
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: "http://localhost:9090/realms/vitira-realm"
+
   mail:
     imap:
       host: ${MAIL_IMAP_HOST:imap.gmail.com}

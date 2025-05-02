@@ -10,6 +10,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -46,10 +47,10 @@ public class ComplianceRecord {
     private boolean isComplied; // Indicates if the compliance task is complied with
 
     @Column(nullable = false)
-    private LocalDateTime dueDate; // Deadline for compliance completion
+    private LocalDate dueDate; // Deadline for compliance completion
 
     @Column
-    private LocalDateTime completionDate; // Actual date when compliance was completed
+    private LocalDate completionDate; // Actual date when compliance was completed
 
     @Column
     private String assignedTo; // Person or team responsible for the compliance task

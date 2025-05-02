@@ -3,21 +3,16 @@ package com.vitira.itreasury.service;
 import com.vitira.itreasury.dto.PaymentRequest;
 import com.vitira.itreasury.dto.PaymentResponse;
 import com.vitira.itreasury.entity.Payment;
-import com.vitira.itreasury.entity.UserEntity;
 import com.vitira.itreasury.exception.PaymentNotFoundException;
 import com.vitira.itreasury.mapper.PaymentMapper;
 import com.vitira.itreasury.repository.PaymentRepository;
-// import com.vitira.itreasury.exception.PaymentNotFoundException;
 import jakarta.transaction.Transactional;
-import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -33,8 +28,7 @@ public class PaymentService {
 	public PaymentResponse savePayment(PaymentRequest paymentRequest, Authentication connectedUser) {
 		// Map the incoming request data to an internal Payment entity object
 		Payment payment = paymentMapper.toPayment(paymentRequest);
-		UserEntity user = (UserEntity) connectedUser.getPrincipal();
-		payment.setCreatedBy(user.getUsername());
+		payment.setCreatedBy(connectedUser.getName());
 
 		// Save the payment entity to the database
 		Payment savedPayment = paymentRepository.save(payment);

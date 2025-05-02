@@ -7,6 +7,7 @@ import com.vitira.itreasury.enums.Priority;
 import com.vitira.itreasury.enums.Severity;
 import lombok.Data;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -20,8 +21,8 @@ public class ComplianceRecordRequestDTO {
     private String status;
     @JsonProperty("isComplied")
     private boolean isComplied;
-    private LocalDateTime dueDate;
-    private LocalDateTime completionDate;
+    private LocalDate dueDate;
+    private LocalDate completionDate;
     private String assignedTo;
     private String notes;
     private Severity severity;

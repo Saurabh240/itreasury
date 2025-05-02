@@ -10,6 +10,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -27,8 +28,8 @@ public class ComplianceRecordDTO {
     private String status;
     @JsonProperty("isComplied")
     private boolean isComplied;
-    private LocalDateTime dueDate;
-    private LocalDateTime completionDate;
+    private LocalDate dueDate;
+    private LocalDate completionDate;
     private String assignedTo;
     private String notes;
     private Severity severity;

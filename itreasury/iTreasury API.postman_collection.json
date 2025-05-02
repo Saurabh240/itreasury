@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "615e2458-11cf-4fcc-9f9a-10e4bf0ddc75",
+		"_postman_id": "231efd56-7b75-4723-89b4-b3aef092386d",
 		"name": "iTreasury API",
 		"description": "Postman collection for iTreasury API endpoints",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
@@ -8,11 +8,14 @@
 	},
 	"item": [
 		{
-			"name": "Authentication",
+			"name": "JWT Authentication (Deprecated)",
 			"item": [
 				{
 					"name": "Register",
 					"request": {
+						"auth": {
+							"type": "noauth"
+						},
 						"method": "POST",
 						"header": [
 							{
@@ -56,6 +59,9 @@
 						}
 					],
 					"request": {
+						"auth": {
+							"type": "noauth"
+						},
 						"method": "POST",
 						"header": [
 							{
@@ -149,6 +155,128 @@
 								"v1",
 								"auth",
 								"currentUser"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Keycloak Authentication",
+			"item": [
+				{
+					"name": "Get Token URL",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);\r",
+									"postman.setEnvironmentVariable(\"jwtToken\", jsonData.token);"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{baseUrl}}:9090/realms/vitira-realm/.well-known/openid-configuration",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"port": "9090",
+							"path": [
+								"realms",
+								"vitira-realm",
+								".well-known",
+								"openid-configuration"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Token Generation",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);\r",
+									"postman.setEnvironmentVariable(\"token\", jsonData.access_token);"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "grant_type",
+									"value": "password",
+									"type": "text"
+								},
+								{
+									"key": "client_id",
+									"value": "itreasury",
+									"type": "text"
+								},
+								{
+									"key": "username",
+									"value": "laxman.pawar@vitira.in",
+									"type": "text"
+								},
+								{
+									"key": "password",
+									"value": "Vitira@123",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{baseUrl}}:9090/realms/vitira-realm/protocol/openid-connect/token",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"port": "9090",
+							"path": [
+								"realms",
+								"vitira-realm",
+								"protocol",
+								"openid-connect",
+								"token"
 							]
 						}
 					},
@@ -455,13 +583,53 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"name\": \"Annual Tax Filing\",\n    \"complianceCategory\": \"TAX\",\n    \"complianceFrequency\": \"ANNUALLY\",\n    \"description\": \"Annual tax filing for the fiscal year 2023\",\n    \"status\": \"PENDING\",\n    \"isComplied\": false,\n    \"dueDate\": \"2023-12-31T23:59:59\",\n    \"completionDate\": null,\n    \"assignedTo\": \"john.doe@company.com\",\n    \"notes\": \"Please ensure all financial documents are ready\",\n    \"severity\": \"HIGH\",\n    \"priority\": \"URGENT\"\n}"
+							"raw": "{\n    \"name\": \"Annual Tax Filing\",\n    \"complianceCategory\": \"TAX\",\n    \"complianceFrequency\": \"ANNUALLY\",\n    \"description\": \"Annual tax filing for the fiscal year 2023\",\n    \"status\": \"PENDING\",\n    \"isComplied\": false,\n    \"dueDate\": \"2023-12-31\",\n    \"completionDate\": null,\n    \"assignedTo\": \"john.doe@company.com\",\n    \"notes\": \"Please ensure all financial documents are ready\",\n    \"severity\": \"HIGH\",\n    \"priority\": \"URGENT\"\n}"
 						},
 						"url": {
 							"raw": "{{baseUrl}}:{{port}}/api/v1/compliance",
-							"host": ["{{baseUrl}}"],
+							"host": [
+								"{{baseUrl}}"
+							],
 							"port": "{{port}}",
-							"path": ["api", "v1", "compliance"]
+							"path": [
+								"api",
+								"v1",
+								"compliance"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Bulk Compliance Records",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{jwt_token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "[\n    {\n        \"name\": \"Corporate Tax Filing\",\n        \"complianceCategory\": \"TAX\",\n        \"complianceFrequency\": \"ANNUALLY\",\n        \"description\": \"Annual corporate tax filing for fiscal year 2023\",\n        \"status\": \"PENDING\",\n        \"isComplied\": false,\n        \"dueDate\": \"2023-12-31\",\n        \"completionDate\": null,\n        \"assignedTo\": \"finance.team@company.com\",\n        \"notes\": \"Ensure all financial statements are finalized and reviewed\",\n        \"severity\": \"HIGH\",\n        \"priority\": \"URGENT\"\n    },\n    {\n        \"name\": \"Anti-Money Laundering Policy Review\",\n        \"complianceCategory\": \"LEGAL\",\n        \"complianceFrequency\": \"QUARTERLY\",\n        \"description\": \"Review and update AML policies as per regulatory requirements\",\n        \"status\": \"COMPLETED\",\n        \"isComplied\": true,\n        \"dueDate\": \"2023-09-30\",\n        \"completionDate\": \"2023-09-25T15:00:00\",\n        \"assignedTo\": \"compliance.officer@company.com\",\n        \"notes\": \"Updated policies aligned with recent regulatory changes\",\n        \"severity\": \"MEDIUM\",\n        \"priority\": \"HIGH\"\n    },\n    {\n        \"name\": \"Quarterly Financial Audit\",\n        \"complianceCategory\": \"FINANCIAL\",\n        \"complianceFrequency\": \"QUARTERLY\",\n        \"description\": \"Conduct a financial audit for Q3 FY2023\",\n        \"status\": \"PENDING\",\n        \"isComplied\": false,\n        \"dueDate\": \"2023-10-15\",\n        \"completionDate\": null,\n        \"assignedTo\": \"audit.team@company.com\",\n        \"notes\": \"Ensure accuracy of balance sheets and income statements\",\n        \"severity\": \"HIGH\",\n        \"priority\": \"URGENT\"\n    },\n    {\n        \"name\": \"Carbon Emission Reporting\",\n        \"complianceCategory\": \"ENVIRONMENTAL\",\n        \"complianceFrequency\": \"MONTHLY\",\n        \"description\": \"Report monthly carbon emissions data to regulatory authorities\",\n        \"status\": \"PENDING\",\n        \"isComplied\": false,\n        \"dueDate\": \"2023-10-01\",\n        \"completionDate\": null,\n        \"assignedTo\": \"sustainability.team@company.com\",\n        \"notes\": \"Gather data from all facilities and validate accuracy\",\n        \"severity\": \"MEDIUM\",\n        \"priority\": \"HIGH\"\n    }\n]"
+						},
+						"url": {
+							"raw": "{{baseUrl}}:{{port}}/api/v1/compliance/bulk",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"port": "{{port}}",
+							"path": [
+								"api",
+								"v1",
+								"compliance",
+								"bulk"
+							]
 						}
 					},
 					"response": []
@@ -482,13 +650,20 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"name\": \"Annual Tax Filing\",\n    \"complianceCategory\": \"TAX\",\n    \"complianceFrequency\": \"ANNUALLY\",\n    \"description\": \"Annual tax filing for the fiscal year 2023 - Updated\",\n    \"status\": \"IN_PROGRESS\",\n    \"isComplied\": false,\n    \"dueDate\": \"2023-12-31T23:59:59\",\n    \"completionDate\": null,\n    \"assignedTo\": \"john.doe@company.com\",\n    \"notes\": \"Documents are being prepared\",\n    \"severity\": \"HIGH\",\n    \"priority\": \"URGENT\"\n}"
+							"raw": "{\n    \"priority\": \"MEDIUM\",\n    \"complianceFrequency\": \"QUARTERLY\"\n}"
 						},
 						"url": {
 							"raw": "{{baseUrl}}:{{port}}/api/v1/compliance/1",
-							"host": ["{{baseUrl}}"],
+							"host": [
+								"{{baseUrl}}"
+							],
 							"port": "{{port}}",
-							"path": ["api", "v1", "compliance", "1"]
+							"path": [
+								"api",
+								"v1",
+								"compliance",
+								"1"
+							]
 						}
 					},
 					"response": []
@@ -505,9 +680,16 @@
 						],
 						"url": {
 							"raw": "{{baseUrl}}:{{port}}/api/v1/compliance/1",
-							"host": ["{{baseUrl}}"],
+							"host": [
+								"{{baseUrl}}"
+							],
 							"port": "{{port}}",
-							"path": ["api", "v1", "compliance", "1"]
+							"path": [
+								"api",
+								"v1",
+								"compliance",
+								"1"
+							]
 						}
 					},
 					"response": []
@@ -524,9 +706,15 @@
 						],
 						"url": {
 							"raw": "{{baseUrl}}:{{port}}/api/v1/compliance",
-							"host": ["{{baseUrl}}"],
+							"host": [
+								"{{baseUrl}}"
+							],
 							"port": "{{port}}",
-							"path": ["api", "v1", "compliance"]
+							"path": [
+								"api",
+								"v1",
+								"compliance"
+							]
 						}
 					},
 					"response": []
@@ -543,9 +731,16 @@
 						],
 						"url": {
 							"raw": "{{baseUrl}}:{{port}}/api/v1/compliance/1",
-							"host": ["{{baseUrl}}"],
+							"host": [
+								"{{baseUrl}}"
+							],
 							"port": "{{port}}",
-							"path": ["api", "v1", "compliance", "1"]
+							"path": [
+								"api",
+								"v1",
+								"compliance",
+								"1"
+							]
 						}
 					},
 					"response": []
@@ -562,9 +757,17 @@
 						],
 						"url": {
 							"raw": "{{baseUrl}}:{{port}}/api/v1/compliance/status/PENDING",
-							"host": ["{{baseUrl}}"],
+							"host": [
+								"{{baseUrl}}"
+							],
 							"port": "{{port}}",
-							"path": ["api", "v1", "compliance", "status", "PENDING"]
+							"path": [
+								"api",
+								"v1",
+								"compliance",
+								"status",
+								"PENDING"
+							]
 						}
 					},
 					"response": []
@@ -581,9 +784,17 @@
 						],
 						"url": {
 							"raw": "{{baseUrl}}:{{port}}/api/v1/compliance/category/TAX",
-							"host": ["{{baseUrl}}"],
+							"host": [
+								"{{baseUrl}}"
+							],
 							"port": "{{port}}",
-							"path": ["api", "v1", "compliance", "category", "TAX"]
+							"path": [
+								"api",
+								"v1",
+								"compliance",
+								"category",
+								"TAX"
+							]
 						}
 					},
 					"response": []
@@ -600,9 +811,17 @@
 						],
 						"url": {
 							"raw": "{{baseUrl}}:{{port}}/api/v1/compliance/severity/HIGH",
-							"host": ["{{baseUrl}}"],
+							"host": [
+								"{{baseUrl}}"
+							],
 							"port": "{{port}}",
-							"path": ["api", "v1", "compliance", "severity", "HIGH"]
+							"path": [
+								"api",
+								"v1",
+								"compliance",
+								"severity",
+								"HIGH"
+							]
 						}
 					},
 					"response": []
@@ -619,9 +838,17 @@
 						],
 						"url": {
 							"raw": "{{baseUrl}}:{{port}}/api/v1/compliance/priority/URGENT",
-							"host": ["{{baseUrl}}"],
+							"host": [
+								"{{baseUrl}}"
+							],
 							"port": "{{port}}",
-							"path": ["api", "v1", "compliance", "priority", "URGENT"]
+							"path": [
+								"api",
+								"v1",
+								"compliance",
+								"priority",
+								"URGENT"
+							]
 						}
 					},
 					"response": []
@@ -638,9 +865,19 @@
 						],
 						"url": {
 							"raw": "{{baseUrl}}:{{port}}/api/v1/compliance/severity/HIGH/priority/URGENT",
-							"host": ["{{baseUrl}}"],
+							"host": [
+								"{{baseUrl}}"
+							],
 							"port": "{{port}}",
-							"path": ["api", "v1", "compliance", "severity", "HIGH", "priority", "URGENT"]
+							"path": [
+								"api",
+								"v1",
+								"compliance",
+								"severity",
+								"HIGH",
+								"priority",
+								"URGENT"
+							]
 						}
 					},
 					"response": []
@@ -981,7 +1218,9 @@
 			"script": {
 				"type": "text/javascript",
 				"packages": {},
-				"exec": [""]
+				"exec": [
+					""
+				]
 			}
 		},
 		{
@@ -989,7 +1228,9 @@
 			"script": {
 				"type": "text/javascript",
 				"packages": {},
-				"exec": [""]
+				"exec": [
+					""
+				]
 			}
 		}
 	],

@@ -2,9 +2,7 @@ package com.vitira.itreasury.config;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.vitira.itreasury.entity.Role;
 import com.vitira.itreasury.entity.TransactionCategory;
-import com.vitira.itreasury.repository.RoleRepository;
 import com.vitira.itreasury.repository.TransactionCategoryRepository;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
@@ -17,15 +15,6 @@ import java.util.List;
 public class DataInitializer {
 
     private final ObjectMapper objectMapper = new ObjectMapper();
-
-    @Bean
-    public CommandLineRunner runner(RoleRepository roleRepository) {
-        return args -> {
-            if(roleRepository.findByName(Role.USER).isEmpty()) {
-                roleRepository.save(Role.builder().name(Role.USER).build());
-            }
-        };
-    }
 
     @Bean
     public CommandLineRunner preloadCategories(TransactionCategoryRepository categoryRepository) {
