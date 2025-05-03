@@ -1,0 +1,7 @@
+package com.vitira.itreasury.exception;
+
+public class ExcelProcessingException extends RuntimeException {
+    public ExcelProcessingException(String message) {
+        super(message);
+    }
+}
