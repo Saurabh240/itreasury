@@ -1,6 +1,7 @@
 package com.vitira.itreasury.handler;
 
 import com.vitira.itreasury.exception.PaymentNotFoundException;
+import com.vitira.itreasury.exception.ResourceNotFoundException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.DisabledException;
@@ -100,4 +101,10 @@ public class GlobalExceptionHandler {
                 );
     }
 
+    @ExceptionHandler(ResourceNotFoundException.class)
+    public ResponseEntity<String> handleNotFound(ResourceNotFoundException ex) {
+        return ResponseEntity
+                .status(BAD_REQUEST)
+                .body(ex.getMessage());
+    }
 }
