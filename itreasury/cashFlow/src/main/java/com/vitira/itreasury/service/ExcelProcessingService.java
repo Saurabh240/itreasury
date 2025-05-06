@@ -1,9 +1,12 @@
 package com.vitira.itreasury.service;
 
-import com.vitira.itreasury.dto.PaymentRecord;
-import com.vitira.itreasury.exception.ExcelProcessingException;
-import com.vitira.itreasury.rules.RuleEngine;
-import org.apache.poi.ss.usermodel.*;
+import com.vitira.itreasury.entity.CashFlowEntry;
+import com.vitira.itreasury.enums.Source;
+import com.vitira.itreasury.repository.CashFlowEntryRepository;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.util.NumberToTextConverter;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.stereotype.Service;
@@ -11,61 +14,63 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
 @Service
 public class ExcelProcessingService {
-    private final RuleEngine ruleEngine;
+    private final CashFlowEntryRepository repo;
+    private final RuleEngineService ruleEngine;
 
-    public ExcelProcessingService(RuleEngine ruleEngine) {
-        this.ruleEngine = ruleEngine;
+    public ExcelProcessingService(CashFlowEntryRepository repo,
+                                  RuleEngineService ruleEngine) {
+        this.repo        = repo;
+        this.ruleEngine  = ruleEngine;
     }
 
-    public List<PaymentRecord> process(MultipartFile file) throws IOException {
+    public List<CashFlowEntry> importErpSheet(MultipartFile file) throws IOException {
+        List<CashFlowEntry> entries = new ArrayList<>();
+
         try (Workbook wb = new XSSFWorkbook(file.getInputStream())) {
             Sheet sheet = wb.getSheetAt(1);
-            List<PaymentRecord> output = new ArrayList<>();
 
             for (Row row : sheet) {
                 if (row.getRowNum() == 0) continue;
-                PaymentRecord rec = mapRow(row);
-                ruleEngine.classify(rec);
-                output.add(rec);
+                entries.add(mapRowToEntry(row));
             }
-            return output;
         }
+        List<CashFlowEntry> valid = ruleEngine.applyRules(entries);
+        return repo.saveAll(valid);
     }
 
-    private PaymentRecord mapRow(Row row) {
-        PaymentRecord r = new PaymentRecord();
-        r.setSupplierCode(cellAsString(row.getCell(1))); // adjust indices!
-        Cell dateCell = row.getCell(10);
-        if (!DateUtil.isCellDateFormatted(dateCell)) {
-            throw new ExcelProcessingException(
-                    "Missing or invalid invoice date in Column K at row " + (row.getRowNum()+1)
-            );
-        }
-        r.setInvoiceDate(
-                dateCell.getLocalDateTimeCellValue().toLocalDate()
-        );
+    private CashFlowEntry mapRowToEntry(Row row) {
+        String docValue = cellAsString(row.getCell(13));
+        String text = cellAsString(row.getCell(14));
+        String supplierCode = cellAsString(row.getCell(1));
+        LocalDate invoiceDate = row.getCell(9)
+                .getLocalDateTimeCellValue()
+                .toLocalDate();
+        LocalDate dueDate = row.getCell(10)
+                .getLocalDateTimeCellValue()
+                .toLocalDate();
+        BigDecimal amount = new BigDecimal(row.getCell(12).toString());
 
-        Cell amtCell = row.getCell(12);
-        if (amtCell == null) {
-            throw new ExcelProcessingException(
-                    "Missing amount in Column M at row " + (row.getRowNum()+1)
-            );
-        }
-        r.setAmount(new BigDecimal(row.getCell(12).toString()));
-        r.setDocCurr(cellAsString(row.getCell(13)));
-        r.setText(cellAsString(row.getCell(14)));
-        return r;
+        return CashFlowEntry.builder()
+                .invoiceDate(invoiceDate)
+                .source(Source.ERP)
+                .docCurrValue(docValue)
+                .supplierCode(supplierCode)
+                .text(text)
+                .dueDate(dueDate)
+                .amount(amount)
+                .build();
     }
 
     private String cellAsString(Cell c) {
         if (c == null) return null;
         return switch (c.getCellType()) {
-            case STRING -> c.getStringCellValue();
+            case STRING  -> c.getStringCellValue();
             case NUMERIC -> NumberToTextConverter.toText(c.getNumericCellValue());
             default      -> c.toString();
         };

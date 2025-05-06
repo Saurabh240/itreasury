@@ -75,6 +75,8 @@ dependencies {
 	implementation project(':cashFlow')
 	implementation project(':compliance')
 	implementation project(':storage')
+	implementation project(':ruleengine')
+	implementation project(':domains')
 }
 
 tasks.named('test') {
