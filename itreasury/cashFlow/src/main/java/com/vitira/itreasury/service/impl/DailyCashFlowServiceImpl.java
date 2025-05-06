@@ -1,3 +1,4 @@
+/*
 package com.vitira.itreasury.service.impl;
 
 import com.vitira.itreasury.dto.CategoryAmountDto;
@@ -26,13 +27,12 @@ public class DailyCashFlowServiceImpl implements DailyCashFlowService {
     public DailyCashFlowDto getTodaysCashFlow() {
         LocalDate today = LocalDate.now();
 
-        // fetch ERP data
         List<DailyCashFlowEntity> erpList = repo.findByDate(today);
-        // stub Manual data
-        List<CategoryAmountDto> manualIns  = getManualInflowsFor(today);
-        List<CategoryAmountDto> manualOuts = getManualOutflowsFor(today);
+//        List<CategoryAmountDto> manualIns  = getManualInflowsFor(today);
+//        List<CategoryAmountDto> manualOuts = getManualOutflowsFor(today);
 
-        return buildDailyDto(today, erpList, manualIns, manualOuts);
+//        return buildDailyDto(today, erpList, manualIns, manualOuts);
+        return null;
     }
 
     @Override
@@ -42,10 +42,8 @@ public class DailyCashFlowServiceImpl implements DailyCashFlowService {
             LocalDate d = LocalDate.now().plusDays(i);
 
             List<DailyCashFlowEntity> erpEntities  = repo.findByDate(d);
-            List<CategoryAmountDto> manualIns  = getManualInflowsFor(d);
-            List<CategoryAmountDto> manualOuts = getManualOutflowsFor(d);
 
-            week.add(buildDailyDto(d, erpEntities, manualIns, manualOuts));
+//            week.add(buildDailyDto(d, erpEntities, manualIns, manualOuts));
         }
         return week;
     }
@@ -85,14 +83,4 @@ public class DailyCashFlowServiceImpl implements DailyCashFlowService {
                 .map(e -> new CategoryAmountDto(e.getKey(), e.getValue()))
                 .collect(Collectors.toList());
     }
-
-    private List<CategoryAmountDto> getManualInflowsFor(LocalDate date) {
-        // TODO → wire up ExcelImportService + ExcelProcessingService here
-        return Collections.emptyList();
-    }
-
-    private List<CategoryAmountDto> getManualOutflowsFor(LocalDate date) {
-        // TODO → wire up ExcelImportService + ExcelProcessingService here
-        return Collections.emptyList();
-    }
-}
+}*/

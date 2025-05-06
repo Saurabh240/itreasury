@@ -1,11 +1,14 @@
 package com.vitira.itreasury.entity;
 
 import com.vitira.itreasury.enums.CategoryType;
+import com.vitira.itreasury.enums.Urgency;
 import com.vitira.itreasury.enums.Source;
 import com.vitira.itreasury.enums.PaymentType;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
 import java.time.Instant;
@@ -17,6 +20,8 @@ import java.time.LocalDate;
         indexes = @Index(name = "IDX_cashflow_business_date", columnList = "business_date")
 )
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
 @Builder
 public class CashFlowEntry {
     @Id
@@ -27,9 +32,6 @@ public class CashFlowEntry {
     @Column(name = "source", nullable = false, length = 10)
     private Source source;
 
-    @Column(length = 100)
-    private String category;
-
     @Enumerated(EnumType.STRING)
     @Column(name = "category_type", length = 50)
     private CategoryType categoryType;
@@ -37,6 +39,10 @@ public class CashFlowEntry {
     @Enumerated(EnumType.STRING)
     @Column(name = "payment_type", length = 50)
     private PaymentType paymentType;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "urgency", length = 50)
+    private Urgency urgency;
 
     @Column(nullable = false, precision = 19, scale = 4)
     private BigDecimal amount;

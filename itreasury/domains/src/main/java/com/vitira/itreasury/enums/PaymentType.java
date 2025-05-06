@@ -1,27 +1,28 @@
 package com.vitira.itreasury.enums;
 
 public enum PaymentType {
-    LOCAL_PAYMENT("LOCAL_PAYMENT"),
-    MSME_PAYMENT("MSME_PAYMENT"),
-    IMPORT_PAYMENT("IMPORT_PAYMENT"),
+    LOCAL_PAYMENT("LOCAL"),
+    MSME_PAYMENT("MSME"),
+    IMPORT_PAYMENT("IMPORT"),
     TAXES("TAXES"),
-    FINANCE_COST("FINANCE_COST"),
+    FINANCE_COST("FINANCE"),
     SALARIES ("SALARIES"),
+    EXPORT_PAYMENT ("EXPORT"),
     OTHERS ("OTHERS");
 
-    private final String type;
+    private final String values;
 
     PaymentType(String type) {
-        this.type = type;
+        this.values = type;
     }
 
-    public String getType() {
-        return type;
+    public String getValues() {
+        return values;
     }
 
     public static PaymentType fromString(String text) {
         for (PaymentType paymentType : PaymentType.values()) {
-            if (paymentType.type.equalsIgnoreCase(text)) {
+            if (paymentType.values.equalsIgnoreCase(text)) {
                 return paymentType;
             }
         }

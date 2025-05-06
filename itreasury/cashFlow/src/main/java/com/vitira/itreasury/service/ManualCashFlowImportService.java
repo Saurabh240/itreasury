@@ -1,5 +1,8 @@
 package com.vitira.itreasury.service;
 
+import com.vitira.itreasury.enums.CategoryType;
+import com.vitira.itreasury.enums.PaymentType;
+import com.vitira.itreasury.enums.Urgency;
 import com.vitira.itreasury.enums.Source;
 import com.vitira.itreasury.entity.CashFlowEntry;
 import com.vitira.itreasury.repository.CashFlowEntryRepository;
@@ -15,6 +18,7 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class ManualCashFlowImportService {
@@ -42,23 +46,47 @@ public class ManualCashFlowImportService {
             }
         }
 
-        List<CashFlowEntry> valid = ruleEngine.applyRules(entries);
-
-        repo.saveAll(valid);
+//        List<CashFlowEntry> valid = ruleEngine.applyRules(entries);
+        List<CashFlowEntry> toSave = entries.stream()
+                .map(entry -> repo.findByPaymentTypeAndUrgencyAndDueDate(
+                        entry.getPaymentType(),
+                        entry.getUrgency(),
+                        entry.getDueDate()
+                )
+                .map(existing -> {
+                    existing.setAmount(entry.getAmount());
+                    existing.setInvoiceDate(entry.getInvoiceDate());
+                    existing.setDueDate(entry.getInvoiceDate());
+                    existing.setCategoryType(entry.getCategoryType());
+                    return existing;
+                })
+                .orElse(entry)).collect(Collectors.toList());
+        repo.saveAll(toSave);
     }
 
     private CashFlowEntry mapRowToEntry(Row row) {
+        BigDecimal amount;
+        CategoryType categoryType;
+        PaymentType paymentType = PaymentType.fromString(row.getCell(0).getStringCellValue());
+        String urgency = Urgency.fromString(row.getCell(1).getStringCellValue()).toString();
+        if (row.getCell(2).getNumericCellValue() !=0) {
+            amount = BigDecimal.valueOf(row.getCell(2).getNumericCellValue());
+            categoryType = CategoryType.OUTFLOW;
+        } else {
+            amount = BigDecimal.valueOf(row.getCell(3).getNumericCellValue());
+            categoryType = CategoryType.INFLOW;
+        }
         LocalDate date      = row.getCell(4).getLocalDateTimeCellValue().toLocalDate();
-        String category     = row.getCell(0).getStringCellValue();
         LocalDate dueDate   = row.getCell(4).getLocalDateTimeCellValue().toLocalDate();
-        BigDecimal amount   = BigDecimal.valueOf(row.getCell(2).getNumericCellValue());
 
         return CashFlowEntry.builder()
                 .invoiceDate(date)
                 .source(Source.MANUAL)
-                .category(category)
+                .paymentType(paymentType)
+                .urgency(Urgency.valueOf(urgency))
                 .dueDate(dueDate)
                 .amount(amount)
+                .categoryType(categoryType)
                 .build();
     }
 }

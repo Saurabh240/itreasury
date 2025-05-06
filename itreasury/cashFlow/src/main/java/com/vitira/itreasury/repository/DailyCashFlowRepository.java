@@ -1,3 +1,4 @@
+/*
 package com.vitira.itreasury.repository;
 
 import com.vitira.itreasury.entity.DailyCashFlowEntity;
@@ -11,4 +12,4 @@ import java.util.List;
 public interface DailyCashFlowRepository extends JpaRepository<DailyCashFlowEntity, Long> {
     List<DailyCashFlowEntity> findByDate(LocalDate date);
     List<DailyCashFlowEntity> findByDateBetween(LocalDate start, LocalDate end);
-}
+}*/
