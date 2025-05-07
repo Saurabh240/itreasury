@@ -8,6 +8,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Optional;
 
 @Repository
@@ -24,4 +25,8 @@ public interface CashFlowEntryRepository extends JpaRepository<CashFlowEntry, Lo
             Urgency urgency,
             LocalDate  dueDate
     );
+
+    List<CashFlowEntry> findByInvoiceDate(LocalDate invoiceDate);
+
+    List<CashFlowEntry> findByInvoiceDateBetween(LocalDate start, LocalDate end);
 }

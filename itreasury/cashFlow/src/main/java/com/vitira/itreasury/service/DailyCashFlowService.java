@@ -5,7 +5,7 @@ import com.vitira.itreasury.dto.DailyCashFlowDto;
 
 import java.util.List;
 
-//public interface DailyCashFlowService {
-//    DailyCashFlowDto getTodaysCashFlow();
-//    List<DailyCashFlowDto> getNext7DaysCashFlow();
-//}
+public interface DailyCashFlowService {
+    DailyCashFlowDto getTodaysCashFlow();
+    List<DailyCashFlowDto> getNext7DaysCashFlow();
+}

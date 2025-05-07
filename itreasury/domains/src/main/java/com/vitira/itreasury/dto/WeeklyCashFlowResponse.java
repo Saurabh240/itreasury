@@ -1,15 +1,12 @@
 package com.vitira.itreasury.dto;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 
 import java.util.List;
 
 @Data
+@AllArgsConstructor
 public class WeeklyCashFlowResponse {
     private List<DailyCashFlowDto> next7Days;
-
-    public WeeklyCashFlowResponse() {}
-    public WeeklyCashFlowResponse(List<DailyCashFlowDto> next7Days) {
-        this.next7Days = next7Days;
-    }
 }
