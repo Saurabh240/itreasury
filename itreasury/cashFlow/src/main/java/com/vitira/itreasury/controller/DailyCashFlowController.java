@@ -5,12 +5,15 @@ import com.vitira.itreasury.dto.WeeklyCashFlowResponse;
 import com.vitira.itreasury.service.DailyCashFlowService;
 import com.vitira.itreasury.service.ExcelProcessingService;
 import com.vitira.itreasury.service.ManualCashFlowImportService;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.List;
 
 
@@ -31,8 +34,16 @@ public class DailyCashFlowController {
     }
 
     @GetMapping("/today")
-    public ResponseEntity<DailyCashFlowDto> getToday() {
-        DailyCashFlowDto dto = service.getTodaysCashFlow();
+    public ResponseEntity<DailyCashFlowDto> getDaily(
+            @RequestParam(name = "date", required = false)
+            @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
+            LocalDate date
+    ) {
+        LocalDate target = date != null
+                ? date
+                : LocalDate.now(ZoneId.of("Asia/Kolkata"));
+
+        DailyCashFlowDto dto = service.getDailyCashFlow(target);
         return ResponseEntity
                 .ok()
                 .contentType(MediaType.APPLICATION_JSON)
@@ -40,9 +51,22 @@ public class DailyCashFlowController {
     }
 
     @GetMapping("/weekly")
-    public ResponseEntity<WeeklyCashFlowResponse> getWeekly() {
-        List<DailyCashFlowDto> week = service.getNext7DaysCashFlow();
-        WeeklyCashFlowResponse resp = new WeeklyCashFlowResponse(week);
+    public ResponseEntity<WeeklyCashFlowResponse> getWeekly(
+            @RequestParam(name = "startDate", required = false)
+            @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
+            LocalDate start,
+
+            @RequestParam(name = "endDate",   required = false)
+            @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
+            LocalDate end
+    ) {
+        LocalDate today = LocalDate.now(ZoneId.of("Asia/Kolkata"));
+        LocalDate startDate = (start != null) ? start : today.plusDays(1);
+        LocalDate endDate   = (end   != null) ? end   : today.plusDays(7);
+
+        List<DailyCashFlowDto> weekDtos = service.getCashFlowBetween(startDate, endDate);
+        WeeklyCashFlowResponse resp = new WeeklyCashFlowResponse(weekDtos);
+
         return ResponseEntity
                 .ok()
                 .contentType(MediaType.APPLICATION_JSON)

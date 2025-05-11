@@ -11,7 +11,6 @@ import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.time.ZoneId;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -25,28 +24,26 @@ public class DailyCashFlowServiceImpl implements DailyCashFlowService {
     }
 
     @Override
-    public DailyCashFlowDto getTodaysCashFlow() {
-        LocalDate today = LocalDate.now(ZoneId.of("Asia/Kolkata"));
-        List<CashFlowEntry> entries = repo.findByInvoiceDate(today);
-        return buildDailyDto(today, entries);
+    public DailyCashFlowDto getDailyCashFlow(LocalDate date) {
+        List<CashFlowEntry> entries = repo.findByInvoiceDate(date);
+        return buildDailyDto(date, entries);
     }
 
     @Override
-    public List<DailyCashFlowDto> getNext7DaysCashFlow() {
-        LocalDate today = LocalDate.now(ZoneId.of("Asia/Kolkata"));
-        LocalDate start = today.plusDays(1);
-        LocalDate end   = today.plusDays(7);
-
+    public List<DailyCashFlowDto> getCashFlowBetween(LocalDate start, LocalDate end) {
         List<CashFlowEntry> entries = repo.findByInvoiceDateBetween(start, end);
 
+        // bucket per day
         Map<LocalDate, List<CashFlowEntry>> buckets = new TreeMap<>();
         for (LocalDate d = start; !d.isAfter(end); d = d.plusDays(1)) {
             buckets.put(d, new ArrayList<>());
         }
-        for (CashFlowEntry e : entries) {
-            buckets.computeIfAbsent(e.getInvoiceDate(), dd -> new ArrayList<>()).add(e);
-        }
+        entries.forEach(e ->
+                buckets.computeIfAbsent(e.getInvoiceDate(), dd -> new ArrayList<>())
+                        .add(e)
+        );
 
+        // map to DTOs
         return buckets.entrySet().stream()
                 .map(e -> buildDailyDto(e.getKey(), e.getValue()))
                 .collect(Collectors.toList());
